@@ -16,7 +16,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Remove environmental toxins, unclog micro-pores and purify skin with our sulphate-free botanical face cleanser infused with rose water and gotu kola.',
       productName: 'Botanical Clarifying Wash',
       price: 299,
-      image: '/assets/full-daycream.png',
+      image: '/assets/step-facewash.png',
       tips: 'Massage in gentle upward circular motions for 60 seconds with lukewarm water.'
     },
     {
@@ -27,7 +27,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Spritz pure steam-distilled Damask rose water across face and neck to re-establish the skin’s physiological acid mantle and prepare cells for serum absorption.',
       productName: 'Rose & Hibiscus Hydrating Mist',
       price: 349,
-      image: '/assets/full-faceserum.png',
+      image: '/assets/step-toner.png',
       tips: 'Pat gently onto damp skin. Do not let it fully dry before applying your serum.'
     },
     {
@@ -38,7 +38,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Infuse deep dermal layers with Kashmiri Mogra saffron, ethyl ascorbic acid and hyaluronic acid to erase dullness and reverse free radical damage.',
       productName: 'Kashmiri Saffron Glow Serum',
       price: 549,
-      image: '/assets/full-faceserum.png',
+      image: '/assets/step-serum.png',
       tips: 'Warm 3 to 4 drops between clean palms and press gently into face, neck, and decollete.'
     },
     {
@@ -49,7 +49,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Seal in hydration with our signature Radiance Day Cream, fortified with cold-pressed rosehip seed oil and botanical squalane for 24-hour glow.',
       productName: 'Radiance Day Cream',
       price: 499,
-      image: '/assets/full-daycream.png',
+      image: '/assets/step-cream.png',
       tips: 'Follow with lead-free Matte Lust Lipstick or Lip & Cheek Tint for effortless natural radiance.'
     }
   ];
@@ -160,7 +160,7 @@ export const DailyRitualSection: React.FC = () => {
                     className="max-h-full max-w-full object-contain filter drop-shadow-lg group-hover:scale-108 transition-transform duration-500 ease-out"
                   />
                 </div>
-                <div className="absolute -bottom-3 -right-3 bg-[#78844B] text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-md">
+                <div className="absolute bottom-2 right-2 sm:-bottom-3 sm:-right-3 bg-[#78844B] text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-md">
                   Step {current.number} Essential
                 </div>
               </div>
@@ -173,3 +173,4 @@ export const DailyRitualSection: React.FC = () => {
     </section>
   );
 };
+

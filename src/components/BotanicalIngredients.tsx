@@ -21,7 +21,7 @@ const INGREDIENTS: Ingredient[] = [
     name: 'Kashmiri Mogra Saffron',
     scientificName: 'Crocus Sativus',
     region: 'Pampore, Kashmir',
-    image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/ingredient-saffron.png',
     role: 'Cellular Illumination & Spot Fading',
     description: 'Harvested by hand in the misty valleys of Kashmir, these red-gold threads are rich in crocin and antioxidants that combat cellular oxidative stress and fade melanin pigmentation.',
     benefits: ['Evens skin discoloration', 'Imparts a warm dewy glow', 'Boosts cellular microcirculation'],
@@ -33,7 +33,7 @@ const INGREDIENTS: Ingredient[] = [
     name: 'Kannauj Damask Rose',
     scientificName: 'Rosa Damascena',
     region: 'Kannauj, Uttar Pradesh',
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/ingredient-rose.png',
     role: 'Hydration & Dermal Soothing',
     description: 'Steam-distilled at dawn using centuries-old deg-bhapka copper stills to preserve pure essential rose hydrosol that calms irritation, tightens enlarged pores, and balances physiological pH.',
     benefits: ['Tightens and refines pores', 'Instant anti-inflammatory soothing', 'Locks cellular moisture'],
@@ -45,7 +45,7 @@ const INGREDIENTS: Ingredient[] = [
     name: 'Pure Desi Cow Ghee',
     scientificName: 'Clarified A2 Butterfat',
     region: 'Artisanal Indian Gaushalas',
-    image: 'https://images.unsplash.com/photo-1589927986089-35812388d1f4?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/ingredient-ghee.png',
     role: 'Ocular Cooling & Lash Nourishment',
     description: 'Hand-churned following the traditional Bilona method. Infused with natural camphor and cooling herbs to serve as the gentle, lead-free nourishing base for our herbal kajal.',
     benefits: ['Cools strained computer-tired eyes', 'Promotes eyelash density', 'Zero chemical stinging or redness'],
@@ -57,7 +57,7 @@ const INGREDIENTS: Ingredient[] = [
     name: '18-Herb Ayurvedic Infusion',
     scientificName: 'Bhringraj & Amla Synergy',
     region: 'Western Ghats, Kerala',
-    image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=600&q=80',
+    image: '/assets/ingredient-herbs.png',
     role: 'Follicular Revival & Hair Fall Control',
     description: 'Bhringraj (the king of hair), amla, rosemary, and fenugreek seeds slowly simmered in cold-pressed coconut oil for 72 hours to extract rich bio-actives that stimulate dormant hair follicles.',
     benefits: ['Stops hair breakage and shedding', 'Nourishes dry flaky scalps', 'Restores mirror-like shine'],
@@ -215,3 +215,4 @@ export const BotanicalIngredients: React.FC = () => {
     </section>
   );
 };
+

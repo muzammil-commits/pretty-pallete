@@ -61,7 +61,7 @@ export const BestSellers: React.FC = () => {
               type="button"
               onClick={handlePrev}
               disabled={currentIndex === 0}
-              className={`absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white border border-[#F8C6CF] shadow-lg flex items-center justify-center transition-all cursor-pointer ${
+              className={`absolute left-1 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border border-[#F8C6CF] shadow-lg flex items-center justify-center transition-all cursor-pointer ${
                 currentIndex === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[#FDF1F4] hover:text-[#A82F4D] hover:scale-105'
               }`}
               aria-label="Previous products"
@@ -70,7 +70,7 @@ export const BestSellers: React.FC = () => {
             </button>
           )}
 
-          {/* Product Grid - Full Pictures Clearly Visible (image copy 11.png) */}
+          {/* Product Grid - Full Pictures Filling Full Box (image copy 23.png) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
             {visibleProducts.map((product: Product) => {
               const inWishlist = isInWishlist(product.id);
@@ -80,13 +80,13 @@ export const BestSellers: React.FC = () => {
                   key={product.id}
                   className="group relative rounded-3xl bg-[#FFFDF9] border border-[#F8C6CF]/70 p-4 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between"
                 >
-                  {/* Card Top: Full Picture Frame (image copy 11.png) */}
-                  <div className="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden bg-gradient-to-b from-[#FDF1F4] to-white flex items-center justify-center mb-4 p-3 border border-[#F8C6CF]/30">
-                    <Link to={`/product/${product.slug}`} className="w-full h-full flex items-center justify-center">
+                  {/* Card Top: Full Picture Frame filling box (image copy 23.png) */}
+                  <div className="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden bg-[#FDF1F4] flex items-center justify-center mb-4 border border-[#F8C6CF]/40 shadow-inner">
+                    <Link to={`/product/${product.slug}`} className="w-full h-full block">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="max-h-full max-w-full object-contain filter drop-shadow-md group-hover:scale-108 transition-transform duration-500 ease-out"
+                        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
                       />
                     </Link>
 
@@ -186,7 +186,7 @@ export const BestSellers: React.FC = () => {
               type="button"
               onClick={handleNext}
               disabled={currentIndex >= maxIndex}
-              className={`absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white border border-[#F8C6CF] shadow-lg flex items-center justify-center transition-all cursor-pointer ${
+              className={`absolute right-1 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border border-[#F8C6CF] shadow-lg flex items-center justify-center transition-all cursor-pointer ${
                 currentIndex >= maxIndex ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[#FDF1F4] hover:text-[#A82F4D] hover:scale-105'
               }`}
               aria-label="Next products"

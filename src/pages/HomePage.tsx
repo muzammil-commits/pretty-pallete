@@ -13,7 +13,7 @@ import { HomeFaqSection } from '../components/HomeFaqSection';
 
 export const HomePage: React.FC = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden">
       {/* 1. Hero Banner - Animated, Desktop (image copy 3) & Mobile (image copy 18) */}
       <Hero />
 

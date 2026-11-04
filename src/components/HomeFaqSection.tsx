@@ -92,3 +92,4 @@ export const HomeFaqSection: React.FC = () => {
     </section>
   );
 };
+

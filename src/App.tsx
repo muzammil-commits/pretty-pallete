@@ -32,7 +32,7 @@ export const App: React.FC = () => {
     <StoreProvider>
       <BrowserRouter>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen relative selection:bg-[#F8C6CF] selection:text-[#A82F4D]">
+        <div className="flex flex-col min-h-screen relative w-full max-w-full overflow-x-hidden selection:bg-[#F8C6CF] selection:text-[#A82F4D]">
           
           {/* Main Navigation Header */}
           <Header />

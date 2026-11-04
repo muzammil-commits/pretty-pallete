@@ -29,7 +29,7 @@ export const AboutSection: React.FC = () => {
               </div>
 
               {/* Floating Badge */}
-              <div className="absolute -bottom-4 -right-4 bg-[#A82F4D] text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
+              <div className="absolute bottom-2 right-2 sm:-bottom-4 sm:-right-4 bg-[#A82F4D] text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-300" />
                 <span>100% Handcrafted</span>
               </div>

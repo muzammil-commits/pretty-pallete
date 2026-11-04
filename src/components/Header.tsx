@@ -62,11 +62,11 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full select-none transition-all duration-300">
+    <header className="relative z-40 w-full max-w-full overflow-x-clip bg-[#FDF1F4] select-none border-b border-[#F8C6CF]/40">
       
       {/* 1. Announcement Bar - Smooth Auto-Scrolling Marquee (image copy 14.png) */}
       {cms.announcementBar.enabled && (
-        <div className="bg-[#78844B] text-[#FFF9EF] py-2 overflow-hidden relative border-b border-[#4C542C]/40 shadow-xs">
+        <div className="bg-[#78844B] text-[#FFF9EF] py-2 overflow-hidden relative border-b border-[#4C542C]/40 shadow-xs w-full max-w-full">
           <div className="animate-marquee flex items-center gap-10 whitespace-nowrap text-xs sm:text-sm font-medium tracking-wide">
             {/* Set 1 */}
             {marqueeItems.map((item, i) => {
@@ -133,23 +133,19 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Main Header - Increased Logo Size (image copy 15.png) & Grand Navigation */}
-      <div className={`transition-all duration-300 border-b border-[#F8C6CF]/50 ${
-        scrolled 
-          ? 'bg-[#FDF1F4]/98 backdrop-blur-md shadow-md py-1.5' 
-          : 'bg-[#FDF1F4] py-2 sm:py-3 shadow-xs'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+      {/* 3. Main Header - Clean Layout (image copy 19.png & 21.png) */}
+      <div className="border-b border-[#F8C6CF]/50 bg-[#FDF1F4] py-2 sm:py-3 shadow-xs">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-2">
             
-            {/* Grand Logo Section - Significantly Enlarged and Eye-Catching (image copy 15.png) */}
+            {/* Grand Logo Section - Pure Brand Name Without Subtitles (image copy 21.png) */}
             <Link 
               to="/" 
-              className="flex items-center gap-3.5 group shrink-0 focus:outline-none"
+              className="flex items-center gap-2 sm:gap-3 group shrink-0 focus:outline-none min-w-0"
               title="Pretty Palette Home"
             >
-              {/* Grand Logo Size */}
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+              {/* Responsive Logo Size for Mobile & Desktop */}
+              <div className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0">
                 <img 
                   src="/assets/logo.png" 
                   alt="Pretty Palette Official Logo" 
@@ -157,17 +153,14 @@ export const Header: React.FC = () => {
                 />
               </div>
 
-              <div className="flex flex-col">
-                <span className="font-script text-2xl sm:text-3xl md:text-4xl font-bold text-[#A82F4D] tracking-wide leading-tight group-hover:text-[#FF647F] transition-colors drop-shadow-xs">
+              <div className="flex flex-col min-w-0">
+                <span className="font-script text-xl sm:text-3xl md:text-4xl font-bold text-[#A82F4D] tracking-wide leading-tight group-hover:text-[#FF647F] transition-colors drop-shadow-xs truncate">
                   Pretty Palette
-                </span>
-                <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#78844B] font-bold -mt-0.5 sm:-mt-1">
-                  Cosmetics • Skin Care • Hair Care
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation Links */}
+            {/* Desktop Navigation Links - Shop All removed per image copy 21.png */}
             <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
               <Link
                 to="/"
@@ -209,20 +202,10 @@ export const Header: React.FC = () => {
               >
                 Hair Care
               </Link>
-              <Link
-                to="/shop"
-                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                  isActive('/shop') 
-                    ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
-                    : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
-                }`}
-              >
-                Shop All
-              </Link>
             </nav>
 
             {/* Header Right Actions */}
-            <div className="flex items-center space-x-2.5 sm:space-x-4">
+            <div className="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
               
               {/* Header Email Subscribe Field */}
               <form 
@@ -344,15 +327,6 @@ export const Header: React.FC = () => {
                   }`}
                 >
                   Home
-                </Link>
-                <Link
-                  to="/shop"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-2.5 rounded-xl text-base transition-colors ${
-                    isActive('/shop') ? 'bg-[#F8C6CF] text-[#A82F4D] font-bold' : 'text-[#40251D] hover:bg-[#FCE5E8]'
-                  }`}
-                >
-                  Shop All Products
                 </Link>
                 <Link
                   to="/cosmetics"
