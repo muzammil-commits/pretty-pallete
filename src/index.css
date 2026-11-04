@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#FFFDF9] text-[#40251D] font-sans overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF9EF;
+}
+::-webkit-scrollbar-thumb {
+  background: #F8C6CF;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E98B9B;
+}
+
+/* Glass & Soft effects */
+.glass-header {
+  background: rgba(253, 241, 244, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.soft-shadow {
+  box-shadow: 0 10px 30px -10px rgba(168, 47, 77, 0.08);
+}
+
+.soft-card-shadow {
+  box-shadow: 0 4px 20px -2px rgba(168, 47, 77, 0.06);
+}
+
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 35px -8px rgba(168, 47, 77, 0.14);
+}
+
+/* Script accent class */
+.font-script {
+  font-family: 'Great Vibes', cursive;
+}
+
+/* Subtle botanical frame borders */
+.floral-frame {
+  position: relative;
+}
+.floral-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 28px;
+  background-image: radial-gradient(#F8C6CF 20%, transparent 20%);
+  background-size: 16px 16px;
+  opacity: 0.35;
+  pointer-events: none;
+}
