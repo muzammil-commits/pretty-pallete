@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Search, 
@@ -11,7 +11,9 @@ import {
   Sparkles,
   Phone,
   Mail,
-  ShieldAlert
+  ShieldAlert,
+  ArrowRight,
+  Leaf
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
@@ -27,7 +29,16 @@ export const Header: React.FC = () => {
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [headerEmail, setHeaderEmail] = useState('');
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleHeaderSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,41 +52,117 @@ export const Header: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  // Announcement items for infinite marquee ticker (image copy 14.png)
+  const marqueeItems = [
+    { text: "Free Shipping on Orders Above ₹999 | Glow Naturally, Live Beautifully ✨", icon: Truck },
+    { text: "100% Handcrafted Botanical & Cold-Pressed Formulations 🌿", icon: Leaf },
+    { text: "Use Code WELCOME10 to Get 10% OFF Your First Order ♡", icon: Sparkles },
+    { text: "Zero Parabens • Sulphate-Free • Safe for All Skin Types 🌸", icon: Sparkles },
+    { text: "Cruelty-Free Beauty Crafted with Artisanal Care in Guntur, India ♡", icon: Heart },
+  ];
+
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#FFFDF9] shadow-sm">
-      {/* 1. Announcement Bar */}
+    <header className="sticky top-0 z-40 w-full select-none transition-all duration-300">
+      
+      {/* 1. Announcement Bar - Smooth Auto-Scrolling Marquee (image copy 14.png) */}
       {cms.announcementBar.enabled && (
-        <div className="bg-[#78844B] text-[#FFF9EF] px-3 py-1.5 text-xs sm:text-sm font-medium tracking-wide text-center flex items-center justify-center gap-2">
-          <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#FFF9EF] inline-block shrink-0" />
-          <span>{cms.announcementBar.text}</span>
-          <Sparkles className="w-3 h-3 text-amber-200 inline-block shrink-0" />
+        <div className="bg-[#78844B] text-[#FFF9EF] py-2 overflow-hidden relative border-b border-[#4C542C]/40 shadow-xs">
+          <div className="animate-marquee flex items-center gap-10 whitespace-nowrap text-xs sm:text-sm font-medium tracking-wide">
+            {/* Set 1 */}
+            {marqueeItems.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={`m1-${i}`} className="inline-flex items-center gap-2 px-3">
+                  <Icon className="w-3.5 h-3.5 text-amber-200 shrink-0" />
+                  <span>{item.text}</span>
+                  <span className="text-amber-200/60 ml-4">•</span>
+                </div>
+              );
+            })}
+            {/* Set 2 (for seamless loop) */}
+            {marqueeItems.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={`m2-${i}`} className="inline-flex items-center gap-2 px-3">
+                  <Icon className="w-3.5 h-3.5 text-amber-200 shrink-0" />
+                  <span>{item.text}</span>
+                  <span className="text-amber-200/60 ml-4">•</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
-      {/* 2. Main Desktop & Tablet Header */}
-      <div className="bg-[#FDF1F4] border-b border-[#F8C6CF]/40">
+      {/* 2. Top Utility Bar with About Us & Contact Us (image copy 13.png) */}
+      <div className="bg-[#FCE5E8]/60 border-b border-[#F8C6CF]/40 py-1 px-4 sm:px-8 hidden md:block text-[11px] text-[#40251D]">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4 text-stone-600">
+            <span className="flex items-center gap-1 text-[#78844B] font-semibold">
+              <Sparkles className="w-3 h-3 text-[#78844B]" /> Authentic Artisanal Formulations
+            </span>
+            <span>•</span>
+            <span className="hover:text-[#A82F4D] transition-colors">
+              Helpline: +91 7569399887
+            </span>
+          </div>
+
+          {/* About Us & Contact Us prominently placed in top section */}
+          <div className="flex items-center space-x-4 font-semibold">
+            <Link 
+              to="/about-us" 
+              className={`hover:text-[#A82F4D] transition-colors ${isActive('/about-us') ? 'text-[#A82F4D] font-bold' : 'text-stone-700'}`}
+            >
+              About Us
+            </Link>
+            <span className="text-stone-300">|</span>
+            <Link 
+              to="/contact-us" 
+              className={`hover:text-[#A82F4D] transition-colors ${isActive('/contact-us') ? 'text-[#A82F4D] font-bold' : 'text-stone-700'}`}
+            >
+              Contact Us
+            </Link>
+            <span className="text-stone-300">|</span>
+            <Link 
+              to="/track-order" 
+              className="text-[#78844B] hover:text-[#4C542C] transition-colors"
+            >
+              Track Order
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Main Header - Increased Logo Size (image copy 15.png) & Grand Navigation */}
+      <div className={`transition-all duration-300 border-b border-[#F8C6CF]/50 ${
+        scrolled 
+          ? 'bg-[#FDF1F4]/98 backdrop-blur-md shadow-md py-1.5' 
+          : 'bg-[#FDF1F4] py-2 sm:py-3 shadow-xs'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 sm:h-24">
+          <div className="flex items-center justify-between">
             
-            {/* Logo Section - Completely clean, without white patch work */}
+            {/* Grand Logo Section - Significantly Enlarged and Eye-Catching (image copy 15.png) */}
             <Link 
               to="/" 
-              className="flex items-center gap-3 group shrink-0 focus:outline-none"
+              className="flex items-center gap-3.5 group shrink-0 focus:outline-none"
               title="Pretty Palette Home"
             >
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+              {/* Grand Logo Size */}
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
                 <img 
                   src="/assets/logo.png" 
                   alt="Pretty Palette Official Logo" 
-                  className="w-full h-full object-contain filter drop-shadow-sm"
+                  className="w-full h-full object-contain filter drop-shadow-md"
                 />
               </div>
-              <div className="hidden min-[420px]:flex flex-col">
-                <span className="font-script text-2xl sm:text-3xl font-bold text-[#A82F4D] tracking-wide leading-tight group-hover:text-[#FF647F] transition-colors">
+
+              <div className="flex flex-col">
+                <span className="font-script text-2xl sm:text-3xl md:text-4xl font-bold text-[#A82F4D] tracking-wide leading-tight group-hover:text-[#FF647F] transition-colors drop-shadow-xs">
                   Pretty Palette
                 </span>
-                <span className="text-[9px] uppercase tracking-widest text-[#78844B] font-semibold -mt-1">
-                  Cosmetics • Skin • Hair
+                <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#78844B] font-bold -mt-0.5 sm:-mt-1">
+                  Cosmetics • Skin Care • Hair Care
                 </span>
               </div>
             </Link>
@@ -84,7 +171,7 @@ export const Header: React.FC = () => {
             <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
               <Link
                 to="/"
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   isActive('/') 
                     ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
                     : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
@@ -94,7 +181,7 @@ export const Header: React.FC = () => {
               </Link>
               <Link
                 to="/cosmetics"
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   isActive('/cosmetics') 
                     ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
                     : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
@@ -104,7 +191,7 @@ export const Header: React.FC = () => {
               </Link>
               <Link
                 to="/skin-care"
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   isActive('/skin-care') 
                     ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
                     : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
@@ -114,7 +201,7 @@ export const Header: React.FC = () => {
               </Link>
               <Link
                 to="/hair-care"
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
                   isActive('/hair-care') 
                     ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
                     : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
@@ -122,12 +209,22 @@ export const Header: React.FC = () => {
               >
                 Hair Care
               </Link>
+              <Link
+                to="/shop"
+                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                  isActive('/shop') 
+                    ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
+                    : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
+                }`}
+              >
+                Shop All
+              </Link>
             </nav>
 
-            {/* Header Right Elements: Email Subscribe + Action Icons */}
-            <div className="flex items-center space-x-3 sm:space-x-4">
+            {/* Header Right Actions */}
+            <div className="flex items-center space-x-2.5 sm:space-x-4">
               
-              {/* Header Email Subscription Field (from reference desktop screenshot) */}
+              {/* Header Email Subscribe Field */}
               <form 
                 onSubmit={handleHeaderSubscribe} 
                 className="hidden xl:flex items-center bg-white rounded-full p-1 pl-4 border border-[#F8C6CF] shadow-xs focus-within:border-[#A82F4D]"
@@ -138,7 +235,7 @@ export const Header: React.FC = () => {
                   value={headerEmail}
                   onChange={(e) => setHeaderEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="bg-transparent text-xs text-[#40251D] placeholder:text-[#A82F4D]/50 focus:outline-none w-44"
+                  className="bg-transparent text-xs text-[#40251D] placeholder:text-[#A82F4D]/50 focus:outline-none w-40"
                 />
                 <button
                   type="submit"
@@ -152,7 +249,7 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative"
+                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative cursor-pointer"
                 title="Search products"
                 aria-label="Search products"
               >
@@ -162,13 +259,13 @@ export const Header: React.FC = () => {
               {/* Wishlist Link */}
               <Link
                 to="/wishlist"
-                className="p-2 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative"
+                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative"
                 title="Wishlist"
                 aria-label="View Wishlist"
               >
                 <Heart className="w-5 h-5" />
                 {wishlist.length > 0 && (
-                  <span className="absolute top-0 right-0 w-4 h-4 bg-[#FF647F] text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
+                  <span className="absolute top-1 right-1 w-4 h-4 bg-[#FF647F] text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
                     {wishlist.length}
                   </span>
                 )}
@@ -177,7 +274,7 @@ export const Header: React.FC = () => {
               {/* Account Link */}
               <Link
                 to="/account"
-                className="p-2 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors hidden sm:block"
+                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors hidden sm:block"
                 title="My Account"
                 aria-label="My Account"
               >
@@ -188,13 +285,13 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="p-2 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative cursor-pointer"
+                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative cursor-pointer"
                 title="Shopping Bag"
                 aria-label="Shopping Bag"
               >
                 <ShoppingBag className="w-5 h-5" />
                 {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 w-4 h-4 bg-[#A82F4D] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute top-1 right-1 w-4 h-4 bg-[#A82F4D] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
                     {cartCount}
                   </span>
                 )}
@@ -214,35 +311,30 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Mobile Animated Navigation Drawer */}
+      {/* 4. Mobile Side Navigation Drawer */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          {/* Drawer content */}
           <div className="fixed inset-y-0 right-0 max-w-xs w-full bg-[#FFFDF9] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-300">
             <div>
-              {/* Drawer Top */}
               <div className="flex items-center justify-between pb-4 border-b border-[#F8C6CF]">
-                <div className="flex items-center gap-2">
-                  <img src="/assets/logo.png" alt="Pretty Palette Logo" className="w-10 h-10 object-contain" />
+                <div className="flex items-center gap-3">
+                  <img src="/assets/logo.png" alt="Pretty Palette Logo" className="w-12 h-12 object-contain" />
                   <span className="font-script text-2xl font-bold text-[#A82F4D]">Pretty Palette</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-2 text-stone-500 hover:text-stone-800 rounded-full hover:bg-stone-100"
-                  aria-label="Close menu"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Navigation Links */}
               <div className="py-6 space-y-1 font-medium">
                 <Link
                   to="/"
@@ -294,14 +386,14 @@ export const Header: React.FC = () => {
                   <Link
                     to="/about-us"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:text-[#A82F4D]"
+                    className="block px-4 py-2 hover:text-[#A82F4D] font-medium"
                   >
                     About Us
                   </Link>
                   <Link
                     to="/contact-us"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:text-[#A82F4D]"
+                    className="block px-4 py-2 hover:text-[#A82F4D] font-medium"
                   >
                     Contact Us
                   </Link>
@@ -337,7 +429,6 @@ export const Header: React.FC = () => {
               </div>
             </div>
 
-            {/* Drawer Bottom Contact Info */}
             <div className="pt-4 border-t border-[#F8C6CF] text-xs text-stone-500 space-y-2">
               <a href="tel:+917569399887" className="flex items-center gap-2 hover:text-[#A82F4D]">
                 <Phone className="w-3.5 h-3.5 text-[#E98B9B]" /> +91 7569399887

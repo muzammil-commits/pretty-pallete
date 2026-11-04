@@ -82,3 +82,4 @@ export const WishlistPage: React.FC = () => {
     </div>
   );
 };
+

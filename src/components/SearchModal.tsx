@@ -114,3 +114,4 @@ export const SearchModal: React.FC = () => {
     </div>
   );
 };
+

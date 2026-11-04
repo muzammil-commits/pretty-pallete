@@ -174,3 +174,4 @@ export const PolicyPage: React.FC = () => {
     </div>
   );
 };
+

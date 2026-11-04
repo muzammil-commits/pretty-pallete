@@ -32,7 +32,7 @@ export const ShopPage: React.FC = () => {
   }, [products, selectedCategory, priceMax, searchTerm, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] py-10 sm:py-14">
+    <div className="min-h-screen bg-[#FFFDF9] py-10 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Banner Header */}
@@ -49,7 +49,7 @@ export const ShopPage: React.FC = () => {
         </div>
 
         {/* Filter & Sorting Controls */}
-        <div className="bg-[#FDF1F4] border border-[#F8C6CF] rounded-2xl p-4 sm:p-6 mb-8 shadow-xs">
+        <div className="bg-[#FDF1F4] border border-[#F8C6CF] rounded-3xl p-4 sm:p-6 mb-10 shadow-xs">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             
             {/* Category Pills */}
@@ -131,20 +131,20 @@ export const ShopPage: React.FC = () => {
               return (
                 <div
                   key={product.id}
-                  className="group relative rounded-2xl bg-[#FFFDF9] border border-[#F8C6CF]/60 p-4 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+                  className="group relative rounded-3xl bg-[#FFFDF9] border border-[#F8C6CF]/70 p-4 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
                 >
-                  {/* Card Top: Image & Badges */}
-                  <div className="relative w-full h-52 sm:h-56 rounded-xl overflow-hidden bg-[#FDF1F4] flex items-center justify-center mb-4">
+                  {/* Full Picture Container (image copy 11.png) */}
+                  <div className="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden bg-gradient-to-b from-[#FDF1F4] to-white flex items-center justify-center mb-4 p-3 border border-[#F8C6CF]/30">
                     <Link to={`/product/${product.slug}`} className="w-full h-full flex items-center justify-center">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="max-h-full max-w-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                        className="max-h-full max-w-full object-contain p-2 group-hover:scale-108 transition-transform duration-500 filter drop-shadow-md"
                       />
                     </Link>
 
                     {product.discount > 0 && (
-                      <span className="absolute top-2.5 left-2.5 bg-[#A82F4D] text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                      <span className="absolute top-3 left-3 bg-[#A82F4D] text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
                         {product.discount}% OFF
                       </span>
                     )}
@@ -152,7 +152,7 @@ export const ShopPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => toggleWishlist(product.id)}
-                      className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-stone-600 hover:text-[#FF647F] shadow-xs flex items-center justify-center transition-colors cursor-pointer"
+                      className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 hover:bg-white text-stone-600 hover:text-[#FF647F] shadow-xs flex items-center justify-center transition-colors cursor-pointer"
                       title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
                     >
                       <Heart 
@@ -163,7 +163,7 @@ export const ShopPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setQuickViewProduct(product)}
-                      className="absolute bottom-2.5 left-1/2 -translate-x-1/2 bg-white/90 hover:bg-white text-[#40251D] hover:text-[#A82F4D] text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 cursor-pointer"
+                      className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/95 hover:bg-white text-[#40251D] hover:text-[#A82F4D] text-xs font-bold px-4 py-2 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 cursor-pointer"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       <span>Quick View</span>
@@ -173,12 +173,12 @@ export const ShopPage: React.FC = () => {
                   {/* Card Body */}
                   <div className="text-center flex-grow flex flex-col justify-between">
                     <div>
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-[#78844B]">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-[#78844B] block mb-1">
                         {product.category}
                       </span>
                       <Link 
                         to={`/product/${product.slug}`}
-                        className="block font-serif text-lg font-bold text-[#40251D] hover:text-[#A82F4D] transition-colors leading-snug mb-1 line-clamp-1"
+                        className="block font-serif text-lg sm:text-xl font-bold text-[#40251D] hover:text-[#A82F4D] transition-colors leading-snug mb-1 line-clamp-1"
                       >
                         {product.name}
                       </Link>
@@ -198,7 +198,7 @@ export const ShopPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-center justify-center gap-2 mb-4">
-                        <span className="font-sans text-base sm:text-lg font-bold text-[#40251D]">
+                        <span className="font-sans text-lg sm:text-xl font-bold text-[#40251D]">
                           ₹{product.price}
                         </span>
                         {product.originalPrice > product.price && (
@@ -212,10 +212,10 @@ export const ShopPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => addToCart(product, 1, product.variants?.[0])}
-                      className="w-full bg-[#F8C6CF] hover:bg-[#FF647F] hover:text-white text-[#A82F4D] text-sm font-semibold py-2.5 px-4 rounded-full transition-all duration-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                      className="w-full bg-[#F8C6CF] hover:bg-[#FF647F] hover:text-white text-[#A82F4D] text-xs sm:text-sm font-bold py-3 px-4 rounded-full transition-all duration-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                     >
                       <ShoppingBag className="w-4 h-4" />
-                      <span>Add to Cart</span>
+                      <span>Add to Bag</span>
                     </button>
                   </div>
                 </div>

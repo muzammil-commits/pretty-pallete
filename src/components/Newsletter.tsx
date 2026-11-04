@@ -78,3 +78,4 @@ export const Newsletter: React.FC = () => {
     </section>
   );
 };
+

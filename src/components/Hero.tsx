@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, Sparkles } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export const Hero: React.FC = () => {
@@ -42,10 +42,10 @@ export const Hero: React.FC = () => {
   return (
     <section className="relative w-full overflow-hidden bg-[#FDF1F4] border-b border-[#F8C6CF]/50 select-none">
       
-      {/* 1. Hero Background Layer (image copy 3.png) */}
-      <div className="relative w-full min-h-[460px] sm:min-h-[520px] md:min-h-[580px] lg:min-h-[640px] flex items-center">
+      {/* Hero Media Layer */}
+      <div className="relative w-full min-h-[500px] sm:min-h-[560px] md:min-h-[600px] lg:min-h-[660px] flex items-center">
         
-        {/* Animated background image container */}
+        {/* Animated Background Container */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
           {cms.hero.mode === 'video' && cms.hero.videoUrl ? (
             <video 
@@ -60,38 +60,49 @@ export const Hero: React.FC = () => {
             </video>
           ) : (
             <div className="relative w-full h-full">
-              {/* As-it-is hero background with subtle animation */}
+              
+              {/* DESKTOP BACKGROUND: image copy 3.png (/assets/hero-bg.png) */}
               <img 
                 src="/assets/hero-bg.png" 
                 alt="Pretty Palette Natural Beauty Banner" 
-                className="w-full h-full object-cover object-right md:object-center transform scale-100 hover:scale-102 transition-transform duration-1000 ease-out"
+                className="hidden md:block w-full h-full object-cover object-right lg:object-center transform scale-100 hover:scale-102 transition-transform duration-1000 ease-out animate-pulse-soft"
                 style={{
-                  animation: 'subtlePulse 12s ease-in-out infinite alternate',
+                  animation: 'subtlePulse 14s ease-in-out infinite alternate',
+                }}
+              />
+
+              {/* MOBILE BACKGROUND: image copy 18.png ONLY (/assets/hero-mobile-bg.png) as requested */}
+              <img 
+                src="/assets/hero-mobile-bg.png" 
+                alt="Pretty Palette Natural Beauty Mobile Banner" 
+                className="block md:hidden w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000 ease-out"
+                style={{
+                  animation: 'mobileDrift 12s ease-in-out infinite alternate',
                 }}
               />
               
-              {/* Soft gradient overlay for text readability on mobile and desktop */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FDF1F4]/90 via-[#FDF1F4]/70 to-transparent md:w-3/5 lg:w-1/2 pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#FDF1F4]/60 via-transparent to-transparent pointer-events-none" />
+              {/* Soft Gradient Readability Overlays */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FDF1F4]/95 via-[#FDF1F4]/75 to-transparent md:w-3/5 lg:w-1/2 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#FDF1F4]/80 via-transparent to-transparent md:hidden pointer-events-none" />
             </div>
           )}
 
-          {/* Animated floating rose petals & sparkling specks drifting across the hero */}
+          {/* Animated Floating Botanical Rose Petals & Sparkling Specks */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {/* Drifting Petal 1 */}
-            <div className="absolute top-12 left-[15%] w-4 h-6 bg-[#E98B9B]/60 rounded-full blur-[0.5px] transform rotate-45 animate-float-slow" />
+            <div className="absolute top-10 left-[12%] w-5 h-7 bg-[#E98B9B]/60 rounded-full blur-[0.4px] transform rotate-45 animate-petal" />
             {/* Drifting Petal 2 */}
-            <div className="absolute top-28 left-[45%] w-3 h-5 bg-[#F8C6CF]/80 rounded-full blur-[0.3px] transform -rotate-12 animate-float-delayed" />
+            <div className="absolute top-24 left-[40%] w-4 h-6 bg-[#F8C6CF]/80 rounded-full blur-[0.3px] transform -rotate-12 animate-float-delayed" />
             {/* Drifting Petal 3 */}
-            <div className="absolute top-64 right-[25%] w-4 h-7 bg-[#E98B9B]/50 rounded-full blur-[0.4px] transform rotate-30 animate-float-slow" />
+            <div className="absolute top-60 right-[20%] w-5 h-8 bg-[#E98B9B]/50 rounded-full blur-[0.4px] transform rotate-30 animate-petal" />
             {/* Drifting Petal 4 */}
-            <div className="absolute bottom-16 left-[28%] w-3 h-5 bg-[#FF647F]/50 rounded-full blur-[0.5px] transform rotate-60 animate-float-delayed" />
+            <div className="absolute bottom-20 left-[25%] w-4 h-6 bg-[#FF647F]/40 rounded-full blur-[0.5px] transform rotate-60 animate-float-slow" />
             {/* Drifting Petal 5 */}
-            <div className="absolute top-8 right-[10%] w-5 h-8 bg-[#F8C6CF]/70 rounded-full blur-[0.6px] transform -rotate-45 animate-float-slow" />
+            <div className="absolute top-8 right-[10%] w-6 h-9 bg-[#F8C6CF]/70 rounded-full blur-[0.5px] transform -rotate-45 animate-float-delayed" />
           </div>
         </div>
 
-        {/* 2. Top-Right Script Tagline ("Care Glow Repeat ♡") from reference screenshot */}
+        {/* Top-Right Script Tagline ("Care Glow Repeat ♡") */}
         {activeSlide.taglineTopRight && (
           <div className="absolute top-6 right-6 sm:top-10 sm:right-12 z-20 text-right pointer-events-none hidden sm:block">
             <span className="font-script text-2xl sm:text-3xl md:text-4xl text-[#78844B] font-bold leading-tight drop-shadow-xs whitespace-pre-line block">
@@ -100,9 +111,9 @@ export const Hero: React.FC = () => {
           </div>
         )}
 
-        {/* 3. Hero Slide Content */}
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 md:py-20">
-          <div className="max-w-xl lg:max-w-2xl">
+        {/* Hero Slide Content */}
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-14 md:py-24">
+          <div className="max-w-xl lg:max-w-2xl animate-slide-up">
             
             {/* Script Subtitle ("Pretty Palette ♡") */}
             <div className="mb-2">
@@ -117,15 +128,15 @@ export const Hero: React.FC = () => {
             </h1>
 
             {/* Description Paragraph */}
-            <p className="text-base sm:text-lg md:text-xl text-[#40251D]/80 font-normal mb-8 max-w-lg leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-[#40251D]/85 font-normal mb-8 max-w-lg leading-relaxed">
               {activeSlide.subtitle}
             </p>
 
-            {/* CTA Button ("Shop Now ➔") in olive green matching reference screenshot */}
+            {/* CTA Button ("Shop Now ➔") */}
             <div className="flex items-center gap-4">
               <Link
                 to={activeSlide.ctaLink}
-                className="inline-flex items-center gap-2.5 bg-[#4C542C] hover:bg-[#3B4222] text-[#FFF9EF] px-7 sm:px-8 py-3.5 sm:py-4 rounded-full font-medium text-base sm:text-lg tracking-wide shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                className="inline-flex items-center gap-3 bg-[#4C542C] hover:bg-[#3B4222] text-[#FFF9EF] px-8 sm:px-9 py-3.5 sm:py-4 rounded-full font-semibold text-base sm:text-lg tracking-wide shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
               >
                 <span>{activeSlide.ctaText}</span>
                 <ArrowRight className="w-5 h-5 text-[#FFF9EF]" />
@@ -134,13 +145,13 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* 4. Carousel Left / Right Arrows */}
+        {/* Carousel Left / Right Arrows */}
         {slides.length > 1 && (
           <>
             <button
               type="button"
               onClick={handlePrev}
-              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 bg-white/85 hover:bg-white text-[#40251D] hover:text-[#A82F4D] rounded-full shadow-md flex items-center justify-center transition-all duration-200 cursor-pointer"
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 bg-white/90 hover:bg-white text-[#40251D] hover:text-[#A82F4D] rounded-full shadow-lg flex items-center justify-center transition-all duration-200 cursor-pointer"
               title="Previous slide"
               aria-label="Previous slide"
             >
@@ -150,7 +161,7 @@ export const Hero: React.FC = () => {
             <button
               type="button"
               onClick={handleNext}
-              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 bg-white/85 hover:bg-white text-[#40251D] hover:text-[#A82F4D] rounded-full shadow-md flex items-center justify-center transition-all duration-200 cursor-pointer"
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 bg-white/90 hover:bg-white text-[#40251D] hover:text-[#A82F4D] rounded-full shadow-lg flex items-center justify-center transition-all duration-200 cursor-pointer"
               title="Next slide"
               aria-label="Next slide"
             >
@@ -179,7 +190,11 @@ export const Hero: React.FC = () => {
       <style>{`
         @keyframes subtlePulse {
           0% { transform: scale(1.0); }
-          100% { transform: scale(1.03); }
+          100% { transform: scale(1.04); }
+        }
+        @keyframes mobileDrift {
+          0% { transform: scale(1.0) translateY(0); }
+          100% { transform: scale(1.06) translateY(-8px); }
         }
       `}</style>
     </section>

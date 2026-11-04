@@ -99,3 +99,4 @@ npm run build
 
 ## 📜 License
 © 2026 Pretty Palette. All rights reserved.
+

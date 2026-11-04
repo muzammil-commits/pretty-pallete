@@ -11,9 +11,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     discount: 40,
     rating: 4.8,
     reviewCount: 1200,
-    image: '/assets/prod-lipstick-photo.png',
+    image: '/assets/full-lipstick.png',
     gallery: [
-      '/assets/prod-lipstick-photo.png',
+      '/assets/full-lipstick.png',
       'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1599732487401-49b49b392a83?auto=format&fit=crop&w=800&q=80',
     ],
@@ -60,9 +60,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     discount: 28,
     rating: 4.8,
     reviewCount: 966,
-    image: '/assets/prod-facecream-photo.png',
+    image: '/assets/full-daycream.png',
     gallery: [
-      '/assets/prod-facecream-photo.png',
+      '/assets/full-daycream.png',
       'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1608248597359-0091fb72d42d?auto=format&fit=crop&w=800&q=80',
     ],
@@ -108,9 +108,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     discount: 20,
     rating: 4.8,
     reviewCount: 744,
-    image: '/assets/prod-hairoil-photo.png',
+    image: '/assets/full-faceserum.png',
     gallery: [
-      '/assets/prod-hairoil-photo.png',
+      '/assets/full-faceserum.png',
       'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
     ],
@@ -156,9 +156,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     discount: 20,
     rating: 4.8,
     reviewCount: 620,
-    image: '/assets/prod-kajal-photo.png',
+    image: '/assets/full-kajal.png',
     gallery: [
-      '/assets/prod-kajal-photo.png',
+      '/assets/full-kajal.png',
       'https://images.unsplash.com/photo-1597225244660-1cd128c64284?auto=format&fit=crop&w=800&q=80',
     ],
     shortDescription: 'Traditional soot kajal infused with pure cow ghee and camphor to cool and define eyes.',
@@ -248,9 +248,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     discount: 25,
     rating: 4.8,
     reviewCount: 512,
-    image: 'https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=800&q=80',
+    image: '/assets/full-shampoo.png',
     gallery: [
-      'https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=800&q=80',
+      '/assets/full-shampoo.png',
     ],
     shortDescription: 'Gentle clarifying shampoo that cleanses without stripping natural scalp moisture.',
     description: 'Formulated with organic red onion seed oil, plant keratin, and soothing rosemary to strengthen fragile roots.',
@@ -605,3 +605,4 @@ export const INITIAL_ORDERS: Order[] = [
     createdAt: '2026-10-28T14:32:00Z'
   }
 ];
+

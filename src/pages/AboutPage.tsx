@@ -28,7 +28,7 @@ export const AboutPage: React.FC = () => {
           <div className="md:col-span-5 flex justify-center">
             <div className="p-3 bg-gradient-to-tr from-[#F8C6CF] to-[#FFF9EF] rounded-3xl shadow-lg transform -rotate-1 hover:rotate-0 transition-transform">
               <img
-                src="/assets/about-framed.png"
+                src="/assets/about-products.png"
                 alt="Pretty Palette Handcrafted Formulations"
                 className="rounded-2xl w-full h-auto object-cover"
               />
@@ -107,3 +107,4 @@ export const AboutPage: React.FC = () => {
     </div>
   );
 };
+

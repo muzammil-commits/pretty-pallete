@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
-import { Star, Heart, ShoppingBag, Eye, ArrowUpDown, ChevronRight } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Star, Heart, ShoppingBag, Eye, ArrowUpDown, ChevronRight, Sparkles } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { Product, CategoryType } from '../types';
 
@@ -17,21 +17,21 @@ const CATEGORY_MAP: Record<string, CategoryConfig> = {
     title: 'Natural Cosmetics',
     scriptTitle: 'Pure Glamour, Pure Kindness ♡',
     description: 'Explore our range of artisanal lead-free lipsticks, traditional herbal kajal, compact setting powders, and pure botanical cheek tints crafted with organic plant pigments.',
-    bannerImage: '/assets/cat-cosmetics.png',
+    bannerImage: '/assets/banner-cosmetics.png',
     category: 'cosmetics'
   },
   'skin-care': {
     title: 'Skin Care Rituals',
     scriptTitle: 'Nourish. Protect. Glow ♡',
     description: 'Imbued with Kashmiri saffron, gotu kola, cold-pressed rosehip seed oil, and plant hyaluronic acid. Experience deep dermal replenishment and enduring luminosity.',
-    bannerImage: '/assets/cat-skincare.png',
+    bannerImage: '/assets/banner-skincare.png',
     category: 'skin-care'
   },
   'hair-care': {
     title: 'Hair Care Rituals',
     scriptTitle: 'Stronger. Healthier. Happier Hair ♡',
     description: 'Ancient Ayurvedic hair remedies blended with modern hair wellness. Infused with 18 rare botanicals, bhringraj, amla, rosemary, and sulphate-free clean cleansers.',
-    bannerImage: '/assets/cat-haircare.png',
+    bannerImage: '/assets/banner-haircare.png',
     category: 'hair-care'
   }
 };
@@ -56,7 +56,7 @@ export const CategoryPage: React.FC = () => {
   }, [products, config.category, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] py-8 sm:py-12">
+    <div className="min-h-screen bg-[#FFFDF9] py-8 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumbs */}
@@ -68,11 +68,11 @@ export const CategoryPage: React.FC = () => {
           <span className="font-semibold text-[#A82F4D] capitalize">{config.title}</span>
         </div>
 
-        {/* Unique Category Banner */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#FDF1F4] via-[#FCE5E8] to-[#FFF9EF] p-8 sm:p-12 mb-10 border border-[#F8C6CF] shadow-xs">
+        {/* Unique Category Banner (with image copy 6, 7, 8) */}
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#FDF1F4] via-[#FCE5E8] to-[#FFF9EF] p-8 sm:p-12 mb-12 border border-[#F8C6CF] shadow-xs">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             
-            <div className="md:col-span-8">
+            <div className="md:col-span-7">
               <span className="font-script text-3xl sm:text-4xl text-[#A82F4D] block mb-2">
                 {config.scriptTitle}
               </span>
@@ -84,8 +84,8 @@ export const CategoryPage: React.FC = () => {
               </p>
             </div>
 
-            <div className="md:col-span-4 flex justify-center">
-              <div className="w-48 h-36 sm:w-60 sm:h-44 rounded-2xl overflow-hidden shadow-md border-2 border-white transform rotate-1 hover:rotate-0 transition-transform">
+            <div className="md:col-span-5 flex justify-center">
+              <div className="w-full max-w-md h-56 sm:h-64 rounded-2xl overflow-hidden shadow-xl border-4 border-white transform rotate-1 hover:rotate-0 transition-transform">
                 <img
                   src={config.bannerImage}
                   alt={config.title}
@@ -100,10 +100,10 @@ export const CategoryPage: React.FC = () => {
         {/* Controls Bar */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#F8C6CF]/50">
           <p className="text-sm font-semibold text-stone-600">
-            Showing {categoryProducts.length} items
+            Showing {categoryProducts.length} handcrafted products
           </p>
 
-          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-stone-200">
+          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-stone-200 shadow-2xs">
             <ArrowUpDown className="w-4 h-4 text-[#A82F4D]" />
             <select
               value={sortBy}
@@ -118,7 +118,7 @@ export const CategoryPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Product Grid */}
+        {/* Product Grid with Full Visible Images */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
           {categoryProducts.map((product: Product) => {
             const inWishlist = isInWishlist(product.id);
@@ -126,20 +126,20 @@ export const CategoryPage: React.FC = () => {
             return (
               <div
                 key={product.id}
-                className="group relative rounded-2xl bg-[#FFFDF9] border border-[#F8C6CF]/60 p-4 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+                className="group relative rounded-3xl bg-[#FFFDF9] border border-[#F8C6CF]/70 p-4 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
               >
-                {/* Image */}
-                <div className="relative w-full h-52 sm:h-56 rounded-xl overflow-hidden bg-[#FDF1F4] flex items-center justify-center mb-4">
+                {/* Full Image Container */}
+                <div className="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden bg-gradient-to-b from-[#FDF1F4] to-white flex items-center justify-center mb-4 p-3 border border-[#F8C6CF]/30">
                   <Link to={`/product/${product.slug}`} className="w-full h-full flex items-center justify-center">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="max-h-full max-w-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                      className="max-h-full max-w-full object-contain p-2 group-hover:scale-108 transition-transform duration-500 filter drop-shadow-md"
                     />
                   </Link>
 
                   {product.discount > 0 && (
-                    <span className="absolute top-2.5 left-2.5 bg-[#A82F4D] text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                    <span className="absolute top-3 left-3 bg-[#A82F4D] text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
                       {product.discount}% OFF
                     </span>
                   )}
@@ -147,7 +147,7 @@ export const CategoryPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => toggleWishlist(product.id)}
-                    className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-stone-600 hover:text-[#FF647F] shadow-xs flex items-center justify-center transition-colors cursor-pointer"
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 hover:bg-white text-stone-600 hover:text-[#FF647F] shadow-xs flex items-center justify-center transition-colors cursor-pointer"
                   >
                     <Heart 
                       className={`w-4 h-4 ${inWishlist ? 'fill-[#FF647F] text-[#FF647F]' : ''}`} 
@@ -157,7 +157,7 @@ export const CategoryPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setQuickViewProduct(product)}
-                    className="absolute bottom-2.5 left-1/2 -translate-x-1/2 bg-white/90 hover:bg-white text-[#40251D] hover:text-[#A82F4D] text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 cursor-pointer"
+                    className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/95 hover:bg-white text-[#40251D] hover:text-[#A82F4D] text-xs font-bold px-4 py-2 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 cursor-pointer"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>Quick View</span>
@@ -189,7 +189,7 @@ export const CategoryPage: React.FC = () => {
                     </div>
 
                     <div className="flex items-center justify-center gap-2 mb-4">
-                      <span className="font-sans text-base sm:text-lg font-bold text-[#40251D]">
+                      <span className="font-sans text-lg font-bold text-[#40251D]">
                         ₹{product.price}
                       </span>
                       {product.originalPrice > product.price && (
@@ -203,10 +203,10 @@ export const CategoryPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => addToCart(product, 1, product.variants?.[0])}
-                    className="w-full bg-[#F8C6CF] hover:bg-[#FF647F] hover:text-white text-[#A82F4D] text-sm font-semibold py-2.5 px-4 rounded-full transition-all duration-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                    className="w-full bg-[#F8C6CF] hover:bg-[#FF647F] hover:text-white text-[#A82F4D] text-xs sm:text-sm font-bold py-3 px-4 rounded-full transition-all duration-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                   >
                     <ShoppingBag className="w-4 h-4" />
-                    <span>Add to Cart</span>
+                    <span>Add to Bag</span>
                   </button>
                 </div>
               </div>

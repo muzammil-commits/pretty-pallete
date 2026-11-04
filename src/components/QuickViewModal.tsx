@@ -195,3 +195,4 @@ export const QuickViewModal: React.FC = () => {
     </div>
   );
 };
+
