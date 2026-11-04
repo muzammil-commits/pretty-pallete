@@ -16,7 +16,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Remove environmental toxins, unclog micro-pores and purify skin with our sulphate-free botanical face cleanser infused with rose water and gotu kola.',
       productName: 'Botanical Clarifying Wash',
       price: 299,
-      image: '/assets/step-facewash.png',
+      image: '/assets/ritual-step-1.png',
       tips: 'Massage in gentle upward circular motions for 60 seconds with lukewarm water.'
     },
     {
@@ -27,7 +27,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Spritz pure steam-distilled Damask rose water across face and neck to re-establish the skin’s physiological acid mantle and prepare cells for serum absorption.',
       productName: 'Rose & Hibiscus Hydrating Mist',
       price: 349,
-      image: '/assets/step-toner.png',
+      image: '/assets/ritual-step-2.png',
       tips: 'Pat gently onto damp skin. Do not let it fully dry before applying your serum.'
     },
     {
@@ -38,7 +38,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Infuse deep dermal layers with Kashmiri Mogra saffron, ethyl ascorbic acid and hyaluronic acid to erase dullness and reverse free radical damage.',
       productName: 'Kashmiri Saffron Glow Serum',
       price: 549,
-      image: '/assets/step-serum.png',
+      image: '/assets/ritual-step-3.png',
       tips: 'Warm 3 to 4 drops between clean palms and press gently into face, neck, and decollete.'
     },
     {
@@ -49,7 +49,7 @@ export const DailyRitualSection: React.FC = () => {
       description: 'Seal in hydration with our signature Radiance Day Cream, fortified with cold-pressed rosehip seed oil and botanical squalane for 24-hour glow.',
       productName: 'Radiance Day Cream',
       price: 499,
-      image: '/assets/step-cream.png',
+      image: '/assets/ritual-step-4.png',
       tips: 'Follow with lead-free Matte Lust Lipstick or Lip & Cheek Tint for effortless natural radiance.'
     }
   ];
@@ -98,17 +98,17 @@ export const DailyRitualSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Interactive Ritual Showcase Card */}
-        <div className="bg-gradient-to-r from-[#FDF1F4] via-[#FFF9EF] to-[#FDF8EE] rounded-3xl border border-[#F8C6CF] p-8 sm:p-12 shadow-sm">
+        {/* Interactive Ritual Showcase Card - Grand Level (image copy 33.png) */}
+        <div className="bg-gradient-to-r from-[#FDF1F4] via-[#FFF9EF] to-[#FDF8EE] rounded-3xl border border-[#F8C6CF] p-6 sm:p-10 lg:p-12 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* Left: Step Info (7 cols) */}
-            <div className="lg:col-span-7 space-y-4">
+            {/* Left: Step Info (6 cols) */}
+            <div className="lg:col-span-6 space-y-4">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs font-bold px-3 py-1 rounded-full bg-[#A82F4D] text-white">
+                <span className="font-mono text-xs font-bold px-3.5 py-1 rounded-full bg-[#A82F4D] text-white shadow-xs">
                   Step {current.number}
                 </span>
-                <span className="text-xs font-semibold text-[#78844B] uppercase tracking-wider">
+                <span className="text-xs font-bold text-[#78844B] uppercase tracking-wider">
                   {current.time}
                 </span>
               </div>
@@ -122,7 +122,7 @@ export const DailyRitualSection: React.FC = () => {
               </p>
 
               {/* Ritual Pro Tip */}
-              <div className="p-4 rounded-2xl bg-white/90 border border-[#F8C6CF]/60 flex items-start gap-3">
+              <div className="p-4 rounded-2xl bg-white/95 border border-[#F8C6CF]/60 flex items-start gap-3 shadow-xs">
                 <Sparkles className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 <div>
                   <h5 className="font-bold text-xs uppercase tracking-wider text-[#40251D]">Beauty Tip:</h5>
@@ -134,7 +134,7 @@ export const DailyRitualSection: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleAddRoutineProduct}
-                  className="bg-[#A82F4D] hover:bg-[#8D253F] text-white px-6 py-3 rounded-full text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                  className="bg-[#A82F4D] hover:bg-[#8D253F] text-white px-6 py-3 rounded-full text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer active:scale-95"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>Add {current.productName} (₹{current.price})</span>
@@ -150,18 +150,23 @@ export const DailyRitualSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right: Product Showcase Visual (5 cols) */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative group max-w-sm w-full">
-                <div className="w-full h-72 sm:h-80 rounded-3xl bg-white p-6 border-2 border-white shadow-xl flex items-center justify-center overflow-hidden">
-                  <img
-                    src={current.image}
-                    alt={current.productName}
-                    className="max-h-full max-w-full object-contain filter drop-shadow-lg group-hover:scale-108 transition-transform duration-500 ease-out"
-                  />
+            {/* Right: Grand Level Ritual Visual (6 cols - image copy 33.png & 34-37.png) */}
+            <div className="lg:col-span-6 flex justify-center">
+              <div className="relative group w-full max-w-lg">
+                <div className="relative w-full h-72 sm:h-88 md:h-[380px] rounded-3xl overflow-hidden bg-white p-2 sm:p-2.5 border-2 border-[#F8C6CF]/80 shadow-xl transition-all duration-500 hover:shadow-2xl">
+                  <div className="w-full h-full rounded-2xl overflow-hidden relative">
+                    <img
+                      key={current.number}
+                      src={current.image}
+                      alt={current.title}
+                      className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-all duration-700 ease-out animate-fade-in"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+                  </div>
                 </div>
-                <div className="absolute bottom-2 right-2 sm:-bottom-3 sm:-right-3 bg-[#78844B] text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-md">
-                  Step {current.number} Essential
+                <div className="absolute bottom-3 right-3 sm:-bottom-3 sm:right-4 bg-gradient-to-r from-[#A82F4D] to-[#E98B9B] text-white px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold shadow-xl flex items-center gap-1.5 border border-white/80">
+                  <Sparkles className="w-4 h-4 text-amber-200" />
+                  <span>Step {current.number} • {current.action}</span>
                 </div>
               </div>
             </div>
