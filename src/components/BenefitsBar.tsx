@@ -56,12 +56,12 @@ export const BenefitsBar: React.FC = () => {
                   idx === 0 ? 'border-t-0' : ''
                 }`}
               >
-                {/* Circular Outlined Icon matching reference */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-[68px] md:h-[68px] shrink-0 flex items-center justify-center">
+                {/* Circular Outlined Icon matching reference (completely uncropped) */}
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 shrink-0 flex items-center justify-center p-0.5 overflow-visible">
                   <img
                     src={item.icon}
                     alt={item.alt}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain object-center select-none pointer-events-none"
                   />
                 </div>
 

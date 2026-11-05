@@ -124,7 +124,7 @@ export const AboutSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-16 sm:py-24 bg-gradient-to-b from-[#FFF4F7] via-[#FCE8EF]/40 to-[#FFF4F7] border-y border-[#FCE8EF] relative overflow-hidden">
+    <section className="w-full py-8 sm:py-12 bg-transparent relative overflow-hidden">
       
       {/* Decorative floral background glows with breathing animation */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-[#E88BAA]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
@@ -140,136 +140,96 @@ export const AboutSection: React.FC = () => {
               className="relative group max-w-md w-full cursor-pointer"
               title="Click to learn about our Handcrafted Process ♡"
             >
-              <div className="relative rounded-3xl overflow-hidden p-3 bg-gradient-to-tr from-[#F8C6CF] via-[#FFF9EF] to-[#FCE5E8] shadow-xl transform -rotate-1 group-hover:rotate-0 group-hover:scale-102 transition-all duration-500 border border-[#F8C6CF]/60">
+              <div className="relative rounded-3xl overflow-hidden p-3 bg-white shadow-xl transform -rotate-1 group-hover:rotate-0 group-hover:scale-102 transition-all duration-500 border border-[#F8C6CF]/70">
                 <img
                   src="/assets/about-products.png"
                   alt="Pretty Palette Pure Botanical Products"
-                  className="w-full h-auto rounded-2xl object-cover shadow-sm group-hover:scale-103 transition-transform duration-500"
+                  className="w-full h-auto rounded-2xl object-cover shadow-xs group-hover:scale-103 transition-transform duration-500"
                 />
                 
-                {/* Subtle Click Hint Overlay on Hover */}
-                <div className="absolute inset-3 rounded-2xl bg-[#A82F4D]/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <span className="bg-white/95 text-[#A82F4D] px-4 py-1.5 rounded-full text-xs font-bold shadow-md flex items-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition-all">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>View Handcrafted Story</span>
-                  </span>
+                {/* Handcrafted Badge on Bottom-Left matching Reference Screenshot */}
+                <div className="absolute bottom-5 left-5 bg-[#8A223B] text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md flex items-center gap-1.5 tracking-wide">
+                  <span>Handcrafted</span>
                 </div>
               </div>
-
-              {/* Floating Badge with Soft Bounce */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openPillarModal('handcrafted');
-                }}
-                className="absolute bottom-2 right-2 sm:-bottom-4 sm:-right-4 bg-[#A82F4D] hover:bg-[#8D253F] text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2 cursor-pointer transition-transform hover:scale-105"
-              >
-                <Sparkles className="w-4 h-4 text-amber-300 animate-spin-slow" />
-                <span>100% Handcrafted</span>
-              </button>
             </div>
           </div>
 
-          {/* Right: Brand Story Description & Three Interactive Pillar Cards */}
+          {/* Right: Brand Story Description & Three Interactive Pillar Cards matching Reference Screenshot */}
           <div className="lg:col-span-7 space-y-6 reveal-init reveal-right">
             <div>
-              <span className="font-script text-3xl sm:text-4xl text-[#A82F4D] block mb-1">
-                Our Artisanal Heritage ♡
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#40251D] leading-tight">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2723] leading-tight mb-3">
                 About Pretty Palette
               </h2>
             </div>
 
-            <p className="text-base sm:text-lg text-[#40251D]/80 leading-relaxed font-normal">
+            <p className="text-base sm:text-lg text-[#55474A] leading-relaxed font-normal">
               {about.text}
             </p>
 
-            {/* Three Interactive Pillar Cards: Vision, Mission, Values with Staggered Scroll Reveal & Popups */}
+            {/* Three Interactive Pillar Cards: Vision, Mission, Values matching Reference Screenshot */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               
-              {/* 1. Vision Card (Interactive Popup Trigger) */}
+              {/* 1. Vision Card */}
               <div 
                 onClick={() => openPillarModal('vision')}
-                className="group cursor-pointer p-4 rounded-2xl bg-white/90 hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-100"
+                className="group cursor-pointer p-5 rounded-2xl bg-[#FCEEF2] hover:bg-[#FBE5EC] border border-[#F8DDE5] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-2 relative"
+                title="Click to view our full Vision story"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FCE8EF] group-hover:bg-[#F8C6CF] flex items-center justify-center text-[#A82F4D] transition-colors">
-                    <Eye className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-bold text-[#A82F4D] bg-[#FFF4F7] px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
-                    Explore ↗
-                  </span>
+                <div className="w-9 h-9 rounded-full bg-[#F6D3DC] flex items-center justify-center text-[#9E2B47] mb-3">
+                  <Eye className="w-4 h-4" />
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors">
-                  Our Vision
+                <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-[#3E2723]">
+                  OUR VISION
                 </h4>
-                <p className="text-xs text-[#777078] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#66585B] leading-relaxed">
                   {about.vision}
                 </p>
-                <span className="block text-[10px] font-semibold text-[#A82F4D] pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Click for full vision popup ♡
-                </span>
               </div>
 
-              {/* 2. Mission Card (Interactive Popup Trigger) */}
+              {/* 2. Mission Card */}
               <div 
                 onClick={() => openPillarModal('mission')}
-                className="group cursor-pointer p-4 rounded-2xl bg-white/90 hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-200"
+                className="group cursor-pointer p-5 rounded-2xl bg-[#FCEEF2] hover:bg-[#FBE5EC] border border-[#F8DDE5] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-2 relative"
+                title="Click to view our full Mission story"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FCE8EF] group-hover:bg-[#F8C6CF] flex items-center justify-center text-[#A82F4D] transition-colors">
-                    <Target className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-bold text-[#A82F4D] bg-[#FFF4F7] px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
-                    Explore ↗
-                  </span>
+                <div className="w-9 h-9 rounded-full bg-[#F6D3DC] flex items-center justify-center text-[#9E2B47] mb-3">
+                  <Target className="w-4 h-4" />
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors">
-                  Our Mission
+                <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-[#3E2723]">
+                  OUR MISSION
                 </h4>
-                <p className="text-xs text-[#777078] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#66585B] leading-relaxed">
                   {about.mission}
                 </p>
-                <span className="block text-[10px] font-semibold text-[#A82F4D] pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Click for full mission popup ♡
-                </span>
               </div>
 
-              {/* 3. Values Card (Interactive Popup Trigger) */}
+              {/* 3. Values Card */}
               <div 
                 onClick={() => openPillarModal('values')}
-                className="group cursor-pointer p-4 rounded-2xl bg-white/90 hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-300"
+                className="group cursor-pointer p-5 rounded-2xl bg-[#FAF8ED] hover:bg-[#F5F2DF] border border-[#ECE9D7] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-2 relative"
+                title="Click to view our full Core Values story"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FCE8EF] group-hover:bg-[#F8C6CF] flex items-center justify-center text-[#A82F4D] transition-colors">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-bold text-[#A82F4D] bg-[#FFF4F7] px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
-                    Explore ↗
-                  </span>
+                <div className="w-9 h-9 rounded-full bg-[#E2E8D2] flex items-center justify-center text-[#556338] mb-3">
+                  <ShieldCheck className="w-4 h-4" />
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors">
-                  Our Values
+                <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-[#3E2723]">
+                  OUR VALUES
                 </h4>
-                <p className="text-xs text-[#777078] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#66585B] leading-relaxed">
                   {about.values}
                 </p>
-                <span className="block text-[10px] font-semibold text-[#A82F4D] pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Click for core values popup ♡
-                </span>
               </div>
 
             </div>
 
-            {/* Read More About Us Button (master prompt & image copy 40) */}
-            <div className="pt-2 reveal-init delay-400">
+            {/* Read Our Full Story Button matching Reference Screenshot */}
+            <div className="pt-2">
               <Link
                 to="/about-us"
-                className="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#A82F4D] to-[#C75C83] hover:opacity-95 text-white px-8 py-3.5 rounded-full text-sm font-bold tracking-wide shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer active:scale-98"
+                className="inline-flex items-center gap-2.5 bg-[#45542E] hover:bg-[#384525] text-white px-8 py-3.5 rounded-full text-sm font-bold tracking-wide shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer active:scale-98"
               >
-                <span>Read More About Us</span>
+                <span>Read Our Full Story</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

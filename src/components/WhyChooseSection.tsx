@@ -132,91 +132,109 @@ export const WhyChooseSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-8 sm:py-12 bg-transparent relative overflow-hidden select-none">
+    <section className="w-full py-4 sm:py-6 bg-transparent relative overflow-hidden select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Single Wide Banner matching image copy 47.png */}
-        <div className="relative w-full rounded-3xl overflow-hidden shadow-sm border border-[#EADBCC] bg-[#F9F6EE]">
-          
-          {/* Authentic Watercolor and Floral Background Texture from image copy 47.png */}
-          <div 
-            className="absolute inset-0 w-full h-full bg-cover bg-center opacity-90 pointer-events-none"
-            style={{ backgroundImage: `url('/assets/why-choose-banner.png')` }}
+        {/* DESKTOP & TABLET: Exact Banner from image copy 51.png with interactive hotspots (ZERO duplicate text) */}
+        <div className="hidden sm:block relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-[#EADBCC] bg-[#F9F6EE]">
+          <img
+            src="/assets/why-choose-banner-clean.png"
+            alt="Why Choose Pretty Palette"
+            className="w-full h-auto object-contain block select-none pointer-events-none"
           />
 
-          {/* Soft Gradient Overlay to ensure perfect text readability */}
-          <div className="absolute inset-0 bg-[#F9F6EE]/60 sm:bg-transparent pointer-events-none" />
+          {/* Interactive Button Hotspot: "Read More About Us" (approx left 3%, top 66%, width 18%, height 25%) */}
+          <Link
+            to="/about-us"
+            className="absolute left-[3%] top-[66%] w-[19%] h-[26%] rounded-lg transition-all duration-200 hover:ring-2 hover:ring-[#4C542C]/40 cursor-pointer"
+            title="Read More About Us"
+            aria-label="Read More About Us"
+          />
 
-          {/* Inner Content Grid: Left (~32%) and Right (~68%) */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center p-6 sm:p-10 lg:p-12 min-h-[380px] lg:min-h-[420px]">
+          {/* Interactive Formulation Standard Modal Hotspots for 4 Benefit Columns */}
+          <button
+            type="button"
+            onClick={() => handleCardClick('HANDMADE')}
+            className="absolute left-[33%] top-[10%] w-[16%] h-[80%] rounded-xl transition-all duration-200 hover:bg-white/20 cursor-pointer"
+            title="View Handmade Small Batch Standards"
+            aria-label="View Handmade Small Batch Standards"
+          />
+          <button
+            type="button"
+            onClick={() => handleCardClick('SKIN SAFE')}
+            className="absolute left-[50%] top-[10%] w-[16%] h-[80%] rounded-xl transition-all duration-200 hover:bg-white/20 cursor-pointer"
+            title="View Skin Safe Standards"
+            aria-label="View Skin Safe Standards"
+          />
+          <button
+            type="button"
+            onClick={() => handleCardClick('CRUELTY FREE')}
+            className="absolute left-[67%] top-[10%] w-[16%] h-[80%] rounded-xl transition-all duration-200 hover:bg-white/20 cursor-pointer"
+            title="View Cruelty Free Standards"
+            aria-label="View Cruelty Free Standards"
+          />
+          <button
+            type="button"
+            onClick={() => handleCardClick('SULPHATE FREE')}
+            className="absolute left-[84%] top-[10%] w-[15%] h-[80%] rounded-xl transition-all duration-200 hover:bg-white/20 cursor-pointer"
+            title="View Sulphate Free Standards"
+            aria-label="View Sulphate Free Standards"
+          />
+        </div>
+
+        {/* MOBILE VIEW: Clean Responsive 2x2 Layout with Same Brown Botanical Art & Watercolor Background */}
+        <div className="block sm:hidden rounded-2xl overflow-hidden shadow-sm border border-[#EADBCC] bg-[#F9F6EE] p-5 relative">
+          
+          {/* Header Area */}
+          <div className="text-center mb-6">
+            <h3 className="font-serif text-2xl font-bold text-[#2A2421] tracking-tight uppercase leading-tight">
+              WHY CHOOSE
+            </h3>
+            <span className="font-script text-3xl font-bold text-[#C75C83] block leading-tight mt-0.5">
+              Pretty Palette?
+            </span>
             
-            {/* LEFT SIDE: Brand Heading, Intro, Description, Read More Button (~32% -> col-span-4) */}
-            <div className="lg:col-span-4 flex flex-col justify-center space-y-3.5 sm:space-y-4 text-left pr-0 lg:pr-4">
-              <div>
-                <h3 className="font-serif text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#2A2421] tracking-tight uppercase leading-tight">
-                  WHY CHOOSE
-                </h3>
-                <span className="font-script text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#C75C83] block leading-tight mt-0.5">
-                  Pretty Palette?
-                </span>
-                
-                {/* Thin Decorative Horizontal Line with Centered Pink Heart */}
-                <div className="flex items-center gap-2 mt-2 w-full max-w-[220px]">
-                  <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
-                  <Heart className="w-3.5 h-3.5 fill-[#C75C83] text-[#C75C83] shrink-0" />
-                  <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
+            <div className="flex items-center justify-center gap-2 my-2.5 mx-auto max-w-[180px]">
+              <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
+              <Heart className="w-3.5 h-3.5 fill-[#C75C83] text-[#C75C83] shrink-0" />
+              <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
+            </div>
+
+            <p className="text-xs text-[#554E4B] leading-relaxed font-normal mb-3">
+              We believe in the power of nature and the goodness of safe ingredients. Each product is thoughtfully handmade to bring out the best in you because you deserve beauty that cares.
+            </p>
+
+            <Link
+              to="/about-us"
+              className="inline-block bg-[#5B6734] hover:bg-[#4A542A] text-white px-5 py-2 rounded-lg font-bold text-xs tracking-wide shadow-sm"
+            >
+              Read More About Us
+            </Link>
+          </div>
+
+          {/* 4 Benefits in 2x2 Grid */}
+          <div className="grid grid-cols-2 gap-3 text-center pt-2 border-t border-[#E8D1C7]">
+            {BENEFIT_ITEMS.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => handleCardClick(item.title)}
+                className="flex flex-col items-center p-2 rounded-xl bg-white/40 active:bg-white/80 transition-colors"
+              >
+                <div className="w-16 h-16 flex items-center justify-center mb-1">
+                  <img
+                    src={item.icon}
+                    alt={item.alt}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
+                <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-[#2A2421] mb-1">
+                  {item.title}
+                </h4>
+                <p className="text-[10px] text-[#554E4B] leading-tight">
+                  {item.description}
+                </p>
               </div>
-
-              {/* Description */}
-              <p className="text-xs sm:text-[13px] text-[#554E4B] leading-relaxed max-w-sm font-normal">
-                We believe in the power of nature and the goodness of safe ingredients. Each product is thoughtfully handmade to bring out the best in you because you deserve beauty that cares.
-              </p>
-
-              {/* Muted Natural Sage-Green Button */}
-              <div className="pt-1">
-                <Link
-                  to="/about-us"
-                  className="inline-block bg-[#5B6734] hover:bg-[#4A542A] text-white px-5 sm:px-6 py-2.5 rounded-lg font-bold text-xs sm:text-[13px] tracking-wide shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-                >
-                  Read More About Us
-                </Link>
-              </div>
-            </div>
-
-            {/* RIGHT SIDE: Four Benefit Columns Arranged Horizontally (~68% -> col-span-8) */}
-            <div className="lg:col-span-8">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
-                {BENEFIT_ITEMS.map((item) => (
-                  <div
-                    key={item.id}
-                    onClick={() => handleCardClick(item.title)}
-                    className="group cursor-pointer flex flex-col items-center justify-between p-2 sm:p-3 rounded-2xl hover:bg-white/40 transition-all duration-300 transform hover:-translate-y-1"
-                    title={`Click to view ${item.title} certification standard`}
-                  >
-                    {/* Elegant Brown Line-Art Illustration */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex items-center justify-center mb-2 shrink-0">
-                      <img
-                        src={item.icon}
-                        alt={item.alt}
-                        className="w-full h-full object-contain filter group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-
-                    {/* Benefit Heading */}
-                    <h4 className="font-sans text-xs sm:text-sm font-bold uppercase tracking-wider text-[#2A2421] group-hover:text-[#A82F4D] transition-colors mb-1.5 leading-tight">
-                      {item.title}
-                    </h4>
-
-                    {/* Description */}
-                    <p className="text-[11px] sm:text-xs text-[#554E4B] leading-snug font-normal max-w-[150px]">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
+            ))}
           </div>
 
         </div>
@@ -226,13 +244,11 @@ export const WhyChooseSection: React.FC = () => {
       {/* Interactive Formulation Detail Modal Popup */}
       {activePopup && (
         <div className="fixed inset-0 z-50 overflow-y-auto p-4 flex items-center justify-center animate-fade-in">
-          {/* Backdrop */}
           <div 
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setActivePopup(null)}
           />
 
-          {/* Modal Container */}
           <div className="relative max-w-lg w-full bg-[#FFFDF9] rounded-3xl shadow-2xl p-6 sm:p-8 border-2 border-[#F8C6CF] z-10 animate-zoom-in text-left">
             <button
               type="button"
@@ -243,7 +259,6 @@ export const WhyChooseSection: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Modal Header */}
             <div className="mb-5">
               <span className="text-[11px] uppercase tracking-widest font-bold text-[#78844B] block mb-1">
                 {activePopup.tagline}
@@ -256,7 +271,6 @@ export const WhyChooseSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Modal Body */}
             <div className="space-y-3 mb-6">
               {activePopup.content.map((paragraph, idx) => (
                 <p key={idx} className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
@@ -265,7 +279,6 @@ export const WhyChooseSection: React.FC = () => {
               ))}
             </div>
 
-            {/* Key Highlights */}
             <div className="bg-[#FFF9EF] rounded-2xl p-4 border border-[#F8C6CF]/60 mb-6">
               <h4 className="text-xs uppercase font-bold text-[#40251D] tracking-wider mb-2.5">
                 Our Guaranteed Standards
@@ -280,14 +293,12 @@ export const WhyChooseSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Promise Box */}
             <div className="border-l-2 border-[#A82F4D] pl-3 py-1 mb-6">
               <p className="text-xs text-[#A82F4D] font-semibold italic">
                 {activePopup.promise}
               </p>
             </div>
 
-            {/* Modal Footer CTA */}
             <div className="flex items-center justify-between pt-2 border-t border-[#F8C6CF]/50">
               <Link
                 to="/shop"

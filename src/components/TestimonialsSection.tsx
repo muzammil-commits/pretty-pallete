@@ -64,7 +64,7 @@ export const TestimonialsSection: React.FC = () => {
   const current = TESTIMONIALS[index];
 
   return (
-    <section className="w-full py-20 sm:py-28 bg-[#FFFDF9] border-b border-[#F8C6CF]/50 relative overflow-hidden">
+    <section className="w-full py-8 sm:py-12 bg-transparent relative overflow-hidden">
       
       {/* Decorative blurred backgrounds */}
       <div className="absolute top-1/2 left-10 w-72 h-72 bg-[#F8C6CF]/20 rounded-full blur-3xl pointer-events-none" />

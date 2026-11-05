@@ -37,7 +37,7 @@ export const CategoryCards: React.FC = () => {
   ];
 
   return (
-    <section className="w-full py-16 sm:py-24 bg-[#FFFDF9] relative overflow-hidden">
+    <section className="w-full py-8 sm:py-12 bg-transparent relative overflow-hidden">
       
       {/* Decorative Background Accents */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
