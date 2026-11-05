@@ -3,15 +3,10 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    /* Soft pink background color */
-    background-color: #FCE4EC; 
-    
-    /* Sides par flower graphics lagane ke liye */
-    background-image: url('../images/side-flowers.png');
-    background-repeat: no-repeat;
-    background-position: left top, right bottom;
-    background-size: 250px auto;
+  html, body {
+    /* Deep pink website background */
+    background-color: #FCE4EC;
+    background-image: linear-gradient(180deg, #FCE4EC 0%, #F9D0DC 50%, #FCE4EC 100%);
     background-attachment: fixed;
     color: #292329;
     font-family: 'Poppins', sans-serif;
