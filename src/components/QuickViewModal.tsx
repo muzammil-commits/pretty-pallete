@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { X, Star, ShoppingBag, Heart, Check, ArrowRight } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
@@ -10,6 +10,14 @@ export const QuickViewModal: React.FC = () => {
     quickViewProduct?.variants?.[0]
   );
   const [qty, setQty] = useState(1);
+
+  // Sync state whenever a different product is clicked
+  useEffect(() => {
+    if (quickViewProduct) {
+      setSelectedVariant(quickViewProduct.variants?.[0]);
+      setQty(1);
+    }
+  }, [quickViewProduct]);
 
   if (!quickViewProduct) return null;
 

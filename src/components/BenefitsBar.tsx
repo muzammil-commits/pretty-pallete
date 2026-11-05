@@ -1,111 +1,71 @@
 import React from 'react';
-import { Leaf, Heart, Diamond, HeartHandshake, Sparkles } from 'lucide-react';
-import { useStore } from '../context/StoreContext';
+
+interface FeatureCard {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+}
+
+const FEATURE_CARDS: FeatureCard[] = [
+  {
+    id: 'feat-1',
+    title: 'NATURAL INGREDIENTS',
+    subtitle: 'Thoughtfully selected ingredients for everyday beauty care.',
+    icon: '/assets/feature-icon-natural-ingredients.png'
+  },
+  {
+    id: 'feat-2',
+    title: 'SKIN SAFE FORMULA',
+    subtitle: 'Gentle formulations designed with skin care in mind.',
+    icon: '/assets/feature-icon-skin-safe.png'
+  },
+  {
+    id: 'feat-3',
+    title: 'MADE WITH LOVE',
+    subtitle: 'Every product selected and presented with care.',
+    icon: '/assets/feature-icon-made-with-love.png'
+  },
+  {
+    id: 'feat-4',
+    title: 'PREMIUM QUALITY',
+    subtitle: 'Quality-focused beauty essentials for your routine.',
+    icon: '/assets/feature-icon-premium-quality.png'
+  }
+];
 
 export const BenefitsBar: React.FC = () => {
-  const { cms } = useStore();
-
-  // Grand 4 Pillars (Dedicated Support removed as per image copy 16.png)
-  const pillars = [
-    {
-      id: 'p-1',
-      title: '100% Natural Ingredients',
-      subtitle: 'Pure botanical extracts, unrefined oils & cold-pressed goodness with zero harmful synthetics.',
-      icon: Leaf,
-      color: 'text-[#78844B]',
-      bg: 'bg-[#78844B]/10',
-      badge: 'Earth Pure'
-    },
-    {
-      id: 'p-2',
-      title: 'Cruelty-Free Beauty',
-      subtitle: 'We love animals and never test on them. 100% compassionate and ethically formulated.',
-      icon: Heart,
-      color: 'text-[#A82F4D]',
-      bg: 'bg-[#A82F4D]/10',
-      badge: 'Ethical'
-    },
-    {
-      id: 'p-3',
-      title: 'Premium Quality Products',
-      subtitle: 'Artisanal gold-standard formulations that nourish deeply, feel luxurious and deliver visible radiance.',
-      icon: Diamond,
-      color: 'text-[#A82F4D]',
-      bg: 'bg-[#E98B9B]/15',
-      badge: 'Certified'
-    },
-    {
-      id: 'p-4',
-      title: 'Made With Love',
-      subtitle: 'Handcrafted in fresh micro-batches to preserve optimal herbal potency and natural freshness.',
-      icon: HeartHandshake,
-      color: 'text-[#A82F4D]',
-      bg: 'bg-[#FF647F]/10',
-      badge: 'Small Batch'
-    }
-  ];
-
   return (
-    <section className="w-full bg-gradient-to-b from-[#FFFDF9] via-[#FFF9EF] to-[#FFFDF9] border-b border-[#F8C6CF]/50 py-12 sm:py-16 relative overflow-hidden">
-      
-      {/* Background Soft Glows */}
-      <div className="absolute -top-12 left-1/4 w-72 h-72 bg-[#F8C6CF]/25 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-12 right-1/4 w-72 h-72 bg-[#78844B]/15 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="w-full bg-white border-b border-[#FCE8EF] py-8 sm:py-10 relative overflow-hidden select-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Grand Intro */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FCE5E8] border border-[#F8C6CF] mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-[#A82F4D]" />
-            <span className="text-[11px] uppercase tracking-widest font-bold text-[#A82F4D]">
-              Our Promise to You
-            </span>
-          </div>
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#40251D]">
-            Crafted with Pure Conscience & Love
-          </h2>
-        </div>
-
-        {/* 4 Grand Pillar Cards (image copy 4.png) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {pillars.map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <div 
-                key={item.id}
-                className="group relative p-6 sm:p-7 rounded-3xl bg-white/80 backdrop-blur-xs border border-[#F8C6CF]/60 shadow-xs hover:shadow-xl hover:bg-white transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between"
-              >
-                <div>
-                  {/* Badge & Icon Header */}
-                  <div className="flex items-center justify-between mb-5">
-                    <div className={`w-14 h-14 rounded-2xl ${item.bg} flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-xs`}>
-                      <Icon className={`w-7 h-7 ${item.color}`} />
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#FDF1F4] text-[#A82F4D] border border-[#F8C6CF]/40">
-                      {item.badge}
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-serif text-lg sm:text-xl font-bold text-[#40251D] group-hover:text-[#A82F4D] transition-colors mb-2">
-                    {item.title}
-                  </h3>
-
-                  {/* Detailed Description */}
-                  <p className="text-xs sm:text-sm text-[#40251D]/75 leading-relaxed font-normal">
-                    {item.subtitle}
-                  </p>
-                </div>
-
-                <div className="mt-5 pt-4 border-t border-[#F8C6CF]/30 flex items-center gap-1.5 text-[11px] font-semibold text-[#78844B]">
-                  <span>100% Genuine Care</span>
-                  <span>•</span>
-                  <span>Safe Always</span>
-                </div>
+        {/* 4 Feature Cards Row - Exact Match to image copy 40.png */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {FEATURE_CARDS.map((card, idx) => (
+            <div
+              key={card.id}
+              className="group flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-[#FFF5F7] hover:bg-[#FCE8EF] border border-[#F8C6CF]/80 shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
+            >
+              {/* Feature Icon Image from reference image copy 40.png */}
+              <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 flex items-center justify-center p-1 rounded-xl bg-white/80 shadow-2xs group-hover:scale-105 transition-transform duration-300">
+                <img
+                  src={card.icon}
+                  alt={card.title}
+                  className="w-full h-full object-contain filter drop-shadow-xs"
+                />
               </div>
-            );
-          })}
+
+              {/* Text Info */}
+              <div className="min-w-0 flex-1">
+                <h4 className="font-sans text-xs sm:text-sm font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors leading-tight mb-1">
+                  {card.title}
+                </h4>
+                <p className="text-[11px] sm:text-xs text-[#777078] leading-snug line-clamp-2">
+                  {card.subtitle}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
       </div>

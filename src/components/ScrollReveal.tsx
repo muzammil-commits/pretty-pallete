@@ -54,3 +54,4 @@ export const ScrollReveal: React.FC = () => {
 
   return null;
 };
+

@@ -132,14 +132,21 @@ export const Hero: React.FC = () => {
               {activeSlide.subtitle}
             </p>
 
-            {/* CTA Button ("Shop Now ➔") */}
-            <div className="flex items-center gap-4">
+            {/* CTA Buttons: SHOP NOW & EXPLORE COLLECTION (master prompt) */}
+            <div className="flex flex-wrap items-center gap-3.5 sm:gap-4">
               <Link
                 to={activeSlide.ctaLink}
-                className="inline-flex items-center gap-3 bg-[#4C542C] hover:bg-[#3B4222] text-[#FFF9EF] px-8 sm:px-9 py-3.5 sm:py-4 rounded-full font-semibold text-base sm:text-lg tracking-wide shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                className="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#A82F4D] to-[#C75C83] hover:opacity-95 text-white px-7 sm:px-9 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base tracking-wider uppercase shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer active:scale-98"
               >
-                <span>{activeSlide.ctaText}</span>
-                <ArrowRight className="w-5 h-5 text-[#FFF9EF]" />
+                <span>{activeSlide.ctaText || 'Shop Now'}</span>
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              </Link>
+
+              <Link
+                to="/shop"
+                className="inline-flex items-center gap-2 bg-white/95 hover:bg-white text-[#292329] hover:text-[#A82F4D] border-2 border-[#E88BAA] px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base tracking-wider uppercase shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 cursor-pointer active:scale-98"
+              >
+                <span>Explore Collection</span>
               </Link>
             </div>
           </div>

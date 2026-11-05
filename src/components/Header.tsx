@@ -62,20 +62,20 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="relative z-40 w-full max-w-full overflow-x-clip bg-[#FDF1F4] select-none border-b border-[#F8C6CF]/40">
+    <header className="relative z-40 w-full max-w-full overflow-x-clip bg-white select-none border-b border-[#FCE8EF] shadow-2xs">
       
-      {/* 1. Announcement Bar - Smooth Auto-Scrolling Marquee (image copy 14.png) */}
+      {/* 1. Announcement Bar - High Impact Marquee with Increased Font Size (image copy 38.png) */}
       {cms.announcementBar.enabled && (
-        <div className="bg-[#78844B] text-[#FFF9EF] py-2 overflow-hidden relative border-b border-[#4C542C]/40 shadow-xs w-full max-w-full">
-          <div className="animate-marquee flex items-center gap-10 whitespace-nowrap text-xs sm:text-sm font-medium tracking-wide">
+        <div className="bg-gradient-to-r from-[#A82F4D] via-[#C75C83] to-[#A82F4D] text-[#FFF9EF] py-2.5 sm:py-3 overflow-hidden relative border-b border-[#8D253F] shadow-xs w-full max-w-full">
+          <div className="animate-marquee flex items-center gap-12 whitespace-nowrap text-xs sm:text-sm md:text-base font-semibold tracking-wide">
             {/* Set 1 */}
             {marqueeItems.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={`m1-${i}`} className="inline-flex items-center gap-2 px-3">
-                  <Icon className="w-3.5 h-3.5 text-amber-200 shrink-0" />
+                <div key={`m1-${i}`} className="inline-flex items-center gap-2.5 px-4">
+                  <Icon className="w-4 h-4 text-amber-200 shrink-0" />
                   <span>{item.text}</span>
-                  <span className="text-amber-200/60 ml-4">•</span>
+                  <span className="text-amber-200/60 ml-4 font-normal">•</span>
                 </div>
               );
             })}
@@ -83,10 +83,10 @@ export const Header: React.FC = () => {
             {marqueeItems.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={`m2-${i}`} className="inline-flex items-center gap-2 px-3">
-                  <Icon className="w-3.5 h-3.5 text-amber-200 shrink-0" />
+                <div key={`m2-${i}`} className="inline-flex items-center gap-2.5 px-4">
+                  <Icon className="w-4 h-4 text-amber-200 shrink-0" />
                   <span>{item.text}</span>
-                  <span className="text-amber-200/60 ml-4">•</span>
+                  <span className="text-amber-200/60 ml-4 font-normal">•</span>
                 </div>
               );
             })}
@@ -94,12 +94,12 @@ export const Header: React.FC = () => {
         </div>
       )}
 
-      {/* 2. Top Utility Bar with About Us & Contact Us (image copy 13.png) */}
-      <div className="bg-[#FCE5E8]/60 border-b border-[#F8C6CF]/40 py-1 px-4 sm:px-8 hidden md:block text-[11px] text-[#40251D]">
+      {/* 2. Top Utility Bar with Increased Font Size */}
+      <div className="bg-[#FFF4F7] border-b border-[#FCE8EF] py-1.5 px-4 sm:px-8 hidden md:block text-xs sm:text-[13px] text-[#292329]">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4 text-stone-600">
-            <span className="flex items-center gap-1 text-[#78844B] font-semibold">
-              <Sparkles className="w-3 h-3 text-[#78844B]" /> Authentic Artisanal Formulations
+            <span className="flex items-center gap-1.5 text-[#78844B] font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-[#78844B]" /> Authentic Artisanal Formulations
             </span>
             <span>•</span>
             <span className="hover:text-[#A82F4D] transition-colors">
@@ -107,8 +107,8 @@ export const Header: React.FC = () => {
             </span>
           </div>
 
-          {/* About Us & Contact Us prominently placed in top section */}
-          <div className="flex items-center space-x-4 font-semibold">
+          {/* About Us & Contact Us in top utility section */}
+          <div className="flex items-center space-x-5 font-semibold">
             <Link 
               to="/about-us" 
               className={`hover:text-[#A82F4D] transition-colors ${isActive('/about-us') ? 'text-[#A82F4D] font-bold' : 'text-stone-700'}`}
@@ -133,106 +133,98 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Main Header - Clean Layout (image copy 19.png & 21.png) */}
-      <div className="border-b border-[#F8C6CF]/50 bg-[#FDF1F4] py-2 sm:py-3 shadow-xs">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-2">
+      {/* 3. Main Header - Clean Layout with Significantly Larger Logo & Removed Text (image copy 38.png) */}
+      <div className="bg-white py-3 sm:py-4 md:py-5 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4">
             
-            {/* Grand Logo Section - Pure Brand Name Without Subtitles (image copy 21.png) */}
+            {/* Grand Logo Section - Text Beside Logo Removed, Logo Size Increased Significantly (image copy 38.png) */}
             <Link 
               to="/" 
-              className="flex items-center gap-2 sm:gap-3 group shrink-0 focus:outline-none min-w-0"
+              className="flex items-center group shrink-0 focus:outline-none"
               title="Pretty Palette Home"
             >
-              {/* Responsive Logo Size for Mobile & Desktop */}
-              <div className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0">
                 <img 
                   src="/assets/logo.png" 
                   alt="Pretty Palette Official Logo" 
-                  className="w-full h-full object-contain filter drop-shadow-md"
+                  className="w-full h-full object-contain filter drop-shadow-sm"
                 />
-              </div>
-
-              <div className="flex flex-col min-w-0">
-                <span className="font-script text-xl sm:text-3xl md:text-4xl font-bold text-[#A82F4D] tracking-wide leading-tight group-hover:text-[#FF647F] transition-colors drop-shadow-xs truncate">
-                  Pretty Palette
-                </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation Links - Shop All removed per image copy 21.png */}
-            <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+            {/* Desktop Navigation Links - Increased Font Size & Spacing */}
+            <nav className="hidden lg:flex items-center space-x-2 xl:space-x-3">
               <Link
                 to="/"
-                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-[15px] sm:text-base font-semibold transition-all ${
                   isActive('/') 
-                    ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
-                    : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
+                    ? 'bg-[#FCE8EF] text-[#A82F4D] shadow-xs' 
+                    : 'text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7]'
                 }`}
               >
                 Home
               </Link>
               <Link
                 to="/cosmetics"
-                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-[15px] sm:text-base font-semibold transition-all ${
                   isActive('/cosmetics') 
-                    ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
-                    : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
+                    ? 'bg-[#FCE8EF] text-[#A82F4D] shadow-xs' 
+                    : 'text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7]'
                 }`}
               >
                 Cosmetics
               </Link>
               <Link
                 to="/skin-care"
-                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-[15px] sm:text-base font-semibold transition-all ${
                   isActive('/skin-care') 
-                    ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
-                    : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
+                    ? 'bg-[#FCE8EF] text-[#A82F4D] shadow-xs' 
+                    : 'text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7]'
                 }`}
               >
                 Skin Care
               </Link>
               <Link
                 to="/hair-care"
-                className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`relative px-4 py-2 rounded-full text-[15px] sm:text-base font-semibold transition-all ${
                   isActive('/hair-care') 
-                    ? 'bg-[#F8C6CF] text-[#A82F4D] shadow-sm' 
-                    : 'text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8]/60'
+                    ? 'bg-[#FCE8EF] text-[#A82F4D] shadow-xs' 
+                    : 'text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7]'
                 }`}
               >
                 Hair Care
               </Link>
+              <Link
+                to="/about-us"
+                className={`relative px-4 py-2 rounded-full text-[15px] sm:text-base font-semibold transition-all ${
+                  isActive('/about-us') 
+                    ? 'bg-[#FCE8EF] text-[#A82F4D] shadow-xs' 
+                    : 'text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7]'
+                }`}
+              >
+                About Us
+              </Link>
+              <Link
+                to="/contact-us"
+                className={`relative px-4 py-2 rounded-full text-[15px] sm:text-base font-semibold transition-all ${
+                  isActive('/contact-us') 
+                    ? 'bg-[#FCE8EF] text-[#A82F4D] shadow-xs' 
+                    : 'text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7]'
+                }`}
+              >
+                Contact
+              </Link>
             </nav>
 
-            {/* Header Right Actions */}
-            <div className="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
+            {/* Header Right Actions - Subscribe Removed, Redesigned Premium Cart Button */}
+            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
               
-              {/* Header Email Subscribe Field */}
-              <form 
-                onSubmit={handleHeaderSubscribe} 
-                className="hidden xl:flex items-center bg-white rounded-full p-1 pl-4 border border-[#F8C6CF] shadow-xs focus-within:border-[#A82F4D]"
-              >
-                <Mail className="w-3.5 h-3.5 text-[#E98B9B] mr-2 shrink-0" />
-                <input
-                  type="email"
-                  value={headerEmail}
-                  onChange={(e) => setHeaderEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  className="bg-transparent text-xs text-[#40251D] placeholder:text-[#A82F4D]/50 focus:outline-none w-40"
-                />
-                <button
-                  type="submit"
-                  className="bg-[#FF647F] hover:bg-[#A82F4D] text-white text-xs font-semibold px-4 py-1.5 rounded-full transition-colors cursor-pointer"
-                >
-                  Subscribe
-                </button>
-              </form>
-
               {/* Search Trigger */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative cursor-pointer"
+                className="p-2.5 text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7] rounded-full transition-colors relative cursor-pointer"
                 title="Search products"
                 aria-label="Search products"
               >
@@ -242,7 +234,7 @@ export const Header: React.FC = () => {
               {/* Wishlist Link */}
               <Link
                 to="/wishlist"
-                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative"
+                className="p-2.5 text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7] rounded-full transition-colors relative"
                 title="Wishlist"
                 aria-label="View Wishlist"
               >
@@ -257,34 +249,39 @@ export const Header: React.FC = () => {
               {/* Account Link */}
               <Link
                 to="/account"
-                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors hidden sm:block"
+                className="p-2.5 text-[#292329] hover:text-[#A82F4D] hover:bg-[#FFF4F7] rounded-full transition-colors hidden sm:block"
                 title="My Account"
                 aria-label="My Account"
               >
                 <User className="w-5 h-5" />
               </Link>
 
-              {/* Cart Drawer Trigger */}
+              {/* Premium Redesigned Cart Button (image copy 38.png & master prompt) */}
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="p-2 sm:p-2.5 text-[#40251D] hover:text-[#A82F4D] hover:bg-[#FCE5E8] rounded-full transition-colors relative cursor-pointer"
+                className="relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-[#FFF4F7] hover:bg-[#FCE8EF] border border-[#E88BAA]/50 text-[#C75C83] hover:text-[#A82F4D] shadow-xs hover:shadow-md transition-all cursor-pointer group"
                 title="Shopping Bag"
                 aria-label="Shopping Bag"
               >
-                <ShoppingBag className="w-5 h-5" />
-                {cartCount > 0 && (
-                  <span className="absolute top-1 right-1 w-4 h-4 bg-[#A82F4D] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
-                    {cartCount}
-                  </span>
-                )}
+                <div className="relative">
+                  <ShoppingBag className="w-5 h-5 text-[#C75C83] group-hover:scale-110 transition-transform" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 bg-[#A82F4D] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+                <span className="hidden sm:inline font-semibold text-xs sm:text-sm text-[#292329]">
+                  Bag {cartCount > 0 ? `(${cartCount})` : ''}
+                </span>
               </button>
 
               {/* Mobile Hamburger Button */}
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="p-2 text-[#40251D] hover:text-[#A82F4D] rounded-lg lg:hidden"
+                className="p-2 text-[#292329] hover:text-[#A82F4D] rounded-lg lg:hidden"
                 aria-label="Open navigation menu"
               >
                 <Menu className="w-6 h-6" />
@@ -306,8 +303,7 @@ export const Header: React.FC = () => {
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-[#F8C6CF]">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/logo.png" alt="Pretty Palette Logo" className="w-12 h-12 object-contain" />
-                  <span className="font-script text-2xl font-bold text-[#A82F4D]">Pretty Palette</span>
+                  <img src="/assets/logo.png" alt="Pretty Palette Logo" className="w-16 h-16 object-contain" />
                 </div>
                 <button
                   type="button"

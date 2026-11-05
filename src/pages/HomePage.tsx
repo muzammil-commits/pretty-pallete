@@ -3,7 +3,6 @@ import { Hero } from '../components/Hero';
 import { BenefitsBar } from '../components/BenefitsBar';
 import { CategoryCards } from '../components/CategoryCards';
 import { AboutSection } from '../components/AboutSection';
-import { BotanicalIngredients } from '../components/BotanicalIngredients';
 import { WhyChooseSection } from '../components/WhyChooseSection';
 import { BestSellers } from '../components/BestSellers';
 import { DailyRitualSection } from '../components/DailyRitualSection';
@@ -32,12 +31,7 @@ export const HomePage: React.FC = () => {
         <AboutSection />
       </div>
 
-      {/* 5. Nature's Pure Botanical Alchemy & Ingredients Showcase */}
-      <div className="reveal-init">
-        <BotanicalIngredients />
-      </div>
-
-      {/* 6. Why Choose Pretty Palette with Interactive Popups */}
+      {/* 5. Why Choose Pretty Palette with Interactive Popups (image copy 43.png) */}
       <div className="reveal-init">
         <WhyChooseSection />
       </div>

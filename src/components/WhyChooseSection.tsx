@@ -88,50 +88,45 @@ const WHY_CHOOSE_DETAILS: Record<string, PopupDetail> = {
   }
 };
 
+interface WhyCardData {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
+}
+
+const WHY_CARDS: WhyCardData[] = [
+  {
+    id: 'HANDMADE',
+    title: 'HANDMADE',
+    subtitle: 'Made in small batches with love and care.',
+    image: '/assets/why-choose-handmade.png'
+  },
+  {
+    id: 'SKIN SAFE',
+    title: 'SKIN SAFE',
+    subtitle: 'Gentle formulations and carefully selected ingredients.',
+    image: '/assets/why-choose-skinsafe.png'
+  },
+  {
+    id: 'CRUELTY FREE',
+    title: 'CRUELTY FREE',
+    subtitle: 'We do not test our products on animals.',
+    image: '/assets/why-choose-crueltyfree.png'
+  },
+  {
+    id: 'SULPHATE FREE',
+    title: 'SULPHATE FREE',
+    subtitle: 'Carefully selected formulations without sulphates.',
+    image: '/assets/why-choose-sulphatefree.png'
+  }
+];
+
 export const WhyChooseSection: React.FC = () => {
   const { cms } = useStore();
   const why = cms.whyChoose;
 
   const [activePopup, setActivePopup] = useState<PopupDetail | null>(null);
-
-  const getIllustration = (idx: number) => {
-    switch (idx) {
-      case 0:
-        return (
-          <div className="w-16 h-16 rounded-full bg-[#FFF9EF] border border-[#78844B]/30 flex items-center justify-center text-[#78844B] shadow-inner mb-4 group-hover:scale-110 transition-transform">
-            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 4l-4 5" />
-              <path d="M3 11c0 5 4 9 9 9s9-4 9-9H3z" />
-              <path d="M7 11c0-1.5 2-2.5 5-2.5s5 1 5 2.5" />
-            </svg>
-          </div>
-        );
-      case 1:
-        return (
-          <div className="w-16 h-16 rounded-full bg-[#FFF9EF] border border-[#78844B]/30 flex items-center justify-center text-[#78844B] shadow-inner mb-4 group-hover:scale-110 transition-transform">
-            <ShieldCheck className="w-8 h-8" />
-          </div>
-        );
-      case 2:
-        return (
-          <div className="w-16 h-16 rounded-full bg-[#FFF9EF] border border-[#78844B]/30 flex items-center justify-center text-[#A82F4D] shadow-inner mb-4 group-hover:scale-110 transition-transform">
-            <Heart className="w-8 h-8" />
-          </div>
-        );
-      case 3:
-        return (
-          <div className="w-16 h-16 rounded-full bg-[#FFF9EF] border border-[#78844B]/30 flex items-center justify-center text-[#78844B] shadow-inner mb-4 group-hover:scale-110 transition-transform">
-            <Droplets className="w-8 h-8" />
-          </div>
-        );
-      default:
-        return (
-          <div className="w-16 h-16 rounded-full bg-[#FFF9EF] border border-[#78844B]/30 flex items-center justify-center text-[#78844B] shadow-inner mb-4 group-hover:scale-110 transition-transform">
-            <Sparkles className="w-8 h-8" />
-          </div>
-        );
-    }
-  };
 
   const handleCardClick = (title: string) => {
     const key = title.toUpperCase().trim();
@@ -140,51 +135,73 @@ export const WhyChooseSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-20 sm:py-28 bg-[#FDF8EE]/90 relative overflow-hidden">
+    <section className="w-full py-16 sm:py-24 bg-white border-b border-[#FCE8EF] relative overflow-hidden select-none">
       
+      {/* Decorative background glows */}
+      <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#FCE8EF]/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-[#E88BAA]/10 rounded-full blur-3xl pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         
         {/* Headings */}
-        <div className="max-w-3xl mx-auto mb-14">
+        <div className="max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="h-[1px] w-12 sm:w-24 bg-[#E98B9B]/60" />
-            <span className="text-xs sm:text-sm uppercase tracking-widest text-[#40251D] font-bold">
-              {why.heading || 'WHY CHOOSE'}
+            <div className="h-[1px] w-12 sm:w-20 bg-[#E88BAA]/60" />
+            <span className="text-xs sm:text-sm uppercase tracking-widest text-[#292329] font-bold">
+              WHY CHOOSE
             </span>
-            <div className="h-[1px] w-12 sm:w-24 bg-[#E98B9B]/60" />
+            <div className="h-[1px] w-12 sm:w-20 bg-[#E88BAA]/60" />
           </div>
 
-          <h2 className="font-script text-4xl sm:text-5xl md:text-6xl text-[#A82F4D] font-bold mb-4 drop-shadow-xs">
-            {why.scriptHeading || 'Pretty Palette? ♡'}
+          <h2 className="font-script text-4xl sm:text-5xl md:text-6xl text-[#A82F4D] font-bold mb-3 drop-shadow-xs">
+            Pretty Palette? ♡
           </h2>
 
-          <p className="text-sm sm:text-base text-[#40251D]/80 leading-relaxed max-w-2xl mx-auto font-normal">
-            {why.description}
+          <p className="text-sm sm:text-base text-[#777078] leading-relaxed max-w-2xl mx-auto font-normal">
+            Pure botanical formulations, traditional artisanal craftsmanship, and cruelty-free care you can always trust.
           </p>
-          <span className="text-xs text-[#78844B] font-semibold mt-2 inline-block">
-            ✨ Click on any card below to explore our detailed formulation standards
+          <span className="text-xs text-[#A82F4D] font-semibold mt-2 inline-block">
+            ✨ Click on any card below to explore our formulation standards & certifications
           </span>
         </div>
 
-        {/* 4 Feature Columns with Clickable Popups (image copy 17.png) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {why.items.map((item, idx) => (
+        {/* 4 Cards matching image copy 43.png */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
+          {WHY_CARDS.map((item, idx) => (
             <div
-              key={item.id || idx}
+              key={item.id}
               onClick={() => handleCardClick(item.title)}
-              className="group cursor-pointer flex flex-col items-center text-center p-7 sm:p-8 rounded-3xl bg-white/85 border border-[#F8C6CF]/60 shadow-xs hover:shadow-2xl hover:bg-white hover:border-[#A82F4D]/50 transition-all duration-300 transform hover:-translate-y-2 select-none"
+              className="group cursor-pointer flex flex-col rounded-3xl bg-[#FFFDF9] hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-xs hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-3 sm:p-4 text-left"
             >
-              {getIllustration(idx)}
-              <h3 className="font-serif text-xl font-bold uppercase tracking-wider text-[#40251D] group-hover:text-[#A82F4D] transition-colors mb-2">
-                {item.title}
-              </h3>
-              <p className="text-xs sm:text-sm text-[#40251D]/75 leading-relaxed font-normal mb-4">
-                {item.description}
-              </p>
-              
-              <div className="mt-auto inline-flex items-center gap-1.5 text-xs font-bold text-[#A82F4D] group-hover:underline">
-                <span>Learn Details</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              {/* Card Photo from reference image copy 43.png */}
+              <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden bg-[#FCE8EF] mb-4">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                />
+                
+                {/* Floating pill badge */}
+                <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-xs text-[#A82F4D] text-[10px] font-bold px-2.5 py-1 rounded-full shadow-2xs">
+                  0{idx + 1} Benefit
+                </span>
+              </div>
+
+              {/* Title & Description */}
+              <div className="px-2 pb-2 flex-grow flex flex-col justify-between">
+                <div>
+                  <h3 className="font-serif text-lg sm:text-xl font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors mb-1.5">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs sm:text-[13px] text-[#777078] leading-relaxed mb-4">
+                    {item.subtitle}
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A82F4D] group-hover:underline">
+                  <span>Explore Standard</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
           ))}

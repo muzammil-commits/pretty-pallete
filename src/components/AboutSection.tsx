@@ -124,11 +124,11 @@ export const AboutSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-16 sm:py-24 bg-white border-y border-[#F8C6CF]/50 relative overflow-hidden">
+    <section className="w-full py-16 sm:py-24 bg-gradient-to-b from-[#FFF4F7] via-[#FCE8EF]/40 to-[#FFF4F7] border-y border-[#FCE8EF] relative overflow-hidden">
       
       {/* Decorative floral background glows with breathing animation */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-[#F8C6CF]/25 rounded-full blur-3xl pointer-events-none animate-pulse" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#78844B]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
+      <div className="absolute top-0 right-0 w-80 h-80 bg-[#E88BAA]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FCE8EF]/70 rounded-full blur-3xl pointer-events-none animate-pulse" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
@@ -192,20 +192,20 @@ export const AboutSection: React.FC = () => {
               {/* 1. Vision Card (Interactive Popup Trigger) */}
               <div 
                 onClick={() => openPillarModal('vision')}
-                className="group cursor-pointer p-4 rounded-2xl bg-[#FDF1F4] hover:bg-[#FCE5E8] border border-[#F8C6CF]/60 hover:border-[#E98B9B] shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-100"
+                className="group cursor-pointer p-4 rounded-2xl bg-white/90 hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-100"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#E98B9B]/20 group-hover:bg-[#E98B9B]/35 flex items-center justify-center text-[#A82F4D] transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-[#FCE8EF] group-hover:bg-[#F8C6CF] flex items-center justify-center text-[#A82F4D] transition-colors">
                     <Eye className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] font-bold text-[#A82F4D] bg-white/90 px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
+                  <span className="text-[10px] font-bold text-[#A82F4D] bg-[#FFF4F7] px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
                     Explore ↗
                   </span>
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#40251D] group-hover:text-[#A82F4D] transition-colors">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors">
                   Our Vision
                 </h4>
-                <p className="text-xs text-[#40251D]/75 leading-relaxed">
+                <p className="text-xs text-[#777078] leading-relaxed">
                   {about.vision}
                 </p>
                 <span className="block text-[10px] font-semibold text-[#A82F4D] pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -216,20 +216,20 @@ export const AboutSection: React.FC = () => {
               {/* 2. Mission Card (Interactive Popup Trigger) */}
               <div 
                 onClick={() => openPillarModal('mission')}
-                className="group cursor-pointer p-4 rounded-2xl bg-[#FDF1F4] hover:bg-[#FCE5E8] border border-[#F8C6CF]/60 hover:border-[#E98B9B] shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-200"
+                className="group cursor-pointer p-4 rounded-2xl bg-white/90 hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-200"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#E98B9B]/20 group-hover:bg-[#E98B9B]/35 flex items-center justify-center text-[#A82F4D] transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-[#FCE8EF] group-hover:bg-[#F8C6CF] flex items-center justify-center text-[#A82F4D] transition-colors">
                     <Target className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] font-bold text-[#A82F4D] bg-white/90 px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
+                  <span className="text-[10px] font-bold text-[#A82F4D] bg-[#FFF4F7] px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
                     Explore ↗
                   </span>
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#40251D] group-hover:text-[#A82F4D] transition-colors">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors">
                   Our Mission
                 </h4>
-                <p className="text-xs text-[#40251D]/75 leading-relaxed">
+                <p className="text-xs text-[#777078] leading-relaxed">
                   {about.mission}
                 </p>
                 <span className="block text-[10px] font-semibold text-[#A82F4D] pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -240,36 +240,36 @@ export const AboutSection: React.FC = () => {
               {/* 3. Values Card (Interactive Popup Trigger) */}
               <div 
                 onClick={() => openPillarModal('values')}
-                className="group cursor-pointer p-4 rounded-2xl bg-[#FDF8EE] hover:bg-[#F6F2E2] border border-[#78844B]/30 hover:border-[#78844B]/60 shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-300"
+                className="group cursor-pointer p-4 rounded-2xl bg-white/90 hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-2xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 space-y-1 relative reveal-init delay-300"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#78844B]/20 group-hover:bg-[#78844B]/35 flex items-center justify-center text-[#78844B] transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-[#FCE8EF] group-hover:bg-[#F8C6CF] flex items-center justify-center text-[#A82F4D] transition-colors">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] font-bold text-[#78844B] bg-white/90 px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#78844B] group-hover:text-white transition-all">
+                  <span className="text-[10px] font-bold text-[#A82F4D] bg-[#FFF4F7] px-2 py-0.5 rounded-full shadow-2xs group-hover:bg-[#A82F4D] group-hover:text-white transition-all">
                     Explore ↗
                   </span>
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#40251D] group-hover:text-[#78844B] transition-colors">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors">
                   Our Values
                 </h4>
-                <p className="text-xs text-[#40251D]/75 leading-relaxed">
+                <p className="text-xs text-[#777078] leading-relaxed">
                   {about.values}
                 </p>
-                <span className="block text-[10px] font-semibold text-[#78844B] pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="block text-[10px] font-semibold text-[#A82F4D] pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   Click for core values popup ♡
                 </span>
               </div>
 
             </div>
 
-            {/* Read Full Story Button */}
+            {/* Read More About Us Button (master prompt & image copy 40) */}
             <div className="pt-2 reveal-init delay-400">
               <Link
                 to="/about-us"
-                className="inline-flex items-center gap-2.5 bg-[#4C542C] hover:bg-[#3B4222] text-[#FFF9EF] px-7 py-3.5 rounded-full text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer active:scale-98"
+                className="inline-flex items-center gap-2.5 bg-gradient-to-r from-[#A82F4D] to-[#C75C83] hover:opacity-95 text-white px-8 py-3.5 rounded-full text-sm font-bold tracking-wide shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer active:scale-98"
               >
-                <span>Read Our Full Story</span>
+                <span>Read More About Us</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
