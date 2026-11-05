@@ -11,6 +11,7 @@ import { PromoTriggerPill } from './components/PromoTriggerPill';
 import { ExitIntentModal } from './components/ExitIntentModal';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ScrollReveal } from './components/ScrollReveal';
+import { FloralBackground } from './components/FloralBackground';
 import { Toast } from './components/Toast';
 import { ScrollToTop } from './components/ScrollToTop';
 
@@ -37,6 +38,7 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <ScrollProgressBar />
         <ScrollReveal />
+        <FloralBackground />
         <ScrollToTop />
         <div className="flex flex-col min-h-screen relative w-full max-w-full overflow-x-hidden selection:bg-[#F8C6CF] selection:text-[#A82F4D]">
           

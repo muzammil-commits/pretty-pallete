@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Sparkles, ShieldCheck, Heart, Droplets, X, CheckCircle2, Leaf, ArrowRight } from 'lucide-react';
-import { useStore } from '../context/StoreContext';
+import { Link } from 'react-router-dom';
+import { Heart, X, CheckCircle2, ArrowRight } from 'lucide-react';
 
 interface PopupDetail {
   id: string;
   title: string;
   subtitle: string;
   tagline: string;
-  icon: string;
   content: string[];
   keyHighlights: string[];
   promise: string;
@@ -19,7 +18,6 @@ const WHY_CHOOSE_DETAILS: Record<string, PopupDetail> = {
     title: 'Artisanal Small-Batch Craftsmanship',
     subtitle: 'Handmade with love, attention, and pure botanical integrity.',
     tagline: 'Freshly Prepared in Guntur, Andhra Pradesh',
-    icon: 'Sparkles',
     content: [
       'Unlike massive industrial factories where products sit in warehouses for years, our formulations are handcrafted in micro-batches every single month.',
       'This artisanal process guarantees peak botanical enzyme potency, retains active antioxidant vitamins, and ensures you receive the freshest possible beauty jar.',
@@ -35,9 +33,8 @@ const WHY_CHOOSE_DETAILS: Record<string, PopupDetail> = {
   'SKIN SAFE': {
     id: 'SKIN SAFE',
     title: '100% Skin-Safe & Hypoallergenic',
-    subtitle: 'Gentle, pH-balanced, non-toxic & suitable for even sensitive skin.',
+    subtitle: 'Gentle, pH-balanced, non-toxic & suitable for all skin types.',
     tagline: 'Dermatologically Thoughtful Formulations',
-    icon: 'ShieldCheck',
     content: [
       'Your skin absorbs over 60% of what is placed upon it. That is why our products undergo meticulous skin-compatibility evaluations.',
       'We formulate at physiological pH levels (5.2 - 5.8) to safeguard your cutaneous acid mantle and reinforce natural skin barrier resilience.',
@@ -55,7 +52,6 @@ const WHY_CHOOSE_DETAILS: Record<string, PopupDetail> = {
     title: '100% Cruelty-Free & Compassionate',
     subtitle: 'We deeply love animals and pledge never to test any product on them.',
     tagline: 'Compassionate Beauty For Kind Souls',
-    icon: 'Heart',
     content: [
       'True beauty should never come at the cost of innocent living creatures. We refuse to conduct or commission any animal testing on raw materials or finished products.',
       'We only partner with ethical farmers and certified cruelty-free botanical suppliers who share our values.',
@@ -73,10 +69,9 @@ const WHY_CHOOSE_DETAILS: Record<string, PopupDetail> = {
     title: 'Zero Sulphates, Parabens or Toxins',
     subtitle: 'Only clean, bio-compatible green beauty that respects your body.',
     tagline: 'Radical Ingredient Transparency',
-    icon: 'Droplets',
     content: [
       'Commercial cosmetics commonly use cheap SLS/SLES sulphates to create artificial bubbles that strip your hair of moisture and irritate your scalp.',
-      'Pretty Palette replaces harsh detergents with gentle coconut-derived glucosides and Ayurvedic soapnuts (reetha) that clean effectively without disrupting your natural oils.',
+      'Pretty Palette replaces harsh detergents with gentle coconut-derived glucosides and Ayurvedic soapnuts that clean effectively without disrupting your natural oils.',
       'Our blacklist bans over 1,500 toxic compounds including parabens, phthalates, mineral oils, silicones, and synthetic preservatives.'
     ],
     keyHighlights: [
@@ -88,44 +83,46 @@ const WHY_CHOOSE_DETAILS: Record<string, PopupDetail> = {
   }
 };
 
-interface WhyCardData {
+interface BenefitItem {
   id: string;
   title: string;
-  subtitle: string;
-  image: string;
+  description: string;
+  icon: string;
+  alt: string;
 }
 
-const WHY_CARDS: WhyCardData[] = [
+const BENEFIT_ITEMS: BenefitItem[] = [
   {
     id: 'HANDMADE',
     title: 'HANDMADE',
-    subtitle: 'Made in small batches with love and care.',
-    image: '/assets/why-choose-handmade.png'
+    description: 'Made in small batches with love and care.',
+    icon: '/assets/why-art-handmade.png',
+    alt: 'Handmade mixing bowl illustration'
   },
   {
     id: 'SKIN SAFE',
     title: 'SKIN SAFE',
-    subtitle: 'Gentle formulations and carefully selected ingredients.',
-    image: '/assets/why-choose-skinsafe.png'
+    description: 'Gentle, non-toxic & suitable for all skin types.',
+    icon: '/assets/why-art-skinsafe.png',
+    alt: 'Botanical leaf illustration'
   },
   {
     id: 'CRUELTY FREE',
     title: 'CRUELTY FREE',
-    subtitle: 'We do not test our products on animals.',
-    image: '/assets/why-choose-crueltyfree.png'
+    description: 'We never test on animals.',
+    icon: '/assets/why-art-crueltyfree.png',
+    alt: 'Cruelty free rabbit illustration'
   },
   {
     id: 'SULPHATE FREE',
     title: 'SULPHATE FREE',
-    subtitle: 'Carefully selected formulations without sulphates.',
-    image: '/assets/why-choose-sulphatefree.png'
+    description: 'No harmful chemicals, only clean beauty.',
+    icon: '/assets/why-art-sulphatefree.png',
+    alt: 'Laboratory flask illustration'
   }
 ];
 
 export const WhyChooseSection: React.FC = () => {
-  const { cms } = useStore();
-  const why = cms.whyChoose;
-
   const [activePopup, setActivePopup] = useState<PopupDetail | null>(null);
 
   const handleCardClick = (title: string) => {
@@ -135,92 +132,108 @@ export const WhyChooseSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-16 sm:py-24 bg-white border-b border-[#FCE8EF] relative overflow-hidden select-none">
-      
-      {/* Decorative background glows */}
-      <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#FCE8EF]/60 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-[#E88BAA]/10 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <section className="w-full py-8 sm:py-12 bg-transparent relative overflow-hidden select-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Headings */}
-        <div className="max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="h-[1px] w-12 sm:w-20 bg-[#E88BAA]/60" />
-            <span className="text-xs sm:text-sm uppercase tracking-widest text-[#292329] font-bold">
-              WHY CHOOSE
-            </span>
-            <div className="h-[1px] w-12 sm:w-20 bg-[#E88BAA]/60" />
-          </div>
+        {/* Single Wide Banner matching image copy 47.png */}
+        <div className="relative w-full rounded-3xl overflow-hidden shadow-sm border border-[#EADBCC] bg-[#F9F6EE]">
+          
+          {/* Authentic Watercolor and Floral Background Texture from image copy 47.png */}
+          <div 
+            className="absolute inset-0 w-full h-full bg-cover bg-center opacity-90 pointer-events-none"
+            style={{ backgroundImage: `url('/assets/why-choose-banner.png')` }}
+          />
 
-          <h2 className="font-script text-4xl sm:text-5xl md:text-6xl text-[#A82F4D] font-bold mb-3 drop-shadow-xs">
-            Pretty Palette? ♡
-          </h2>
+          {/* Soft Gradient Overlay to ensure perfect text readability */}
+          <div className="absolute inset-0 bg-[#F9F6EE]/60 sm:bg-transparent pointer-events-none" />
 
-          <p className="text-sm sm:text-base text-[#777078] leading-relaxed max-w-2xl mx-auto font-normal">
-            Pure botanical formulations, traditional artisanal craftsmanship, and cruelty-free care you can always trust.
-          </p>
-          <span className="text-xs text-[#A82F4D] font-semibold mt-2 inline-block">
-            ✨ Click on any card below to explore our formulation standards & certifications
-          </span>
-        </div>
-
-        {/* 4 Cards matching image copy 43.png */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
-          {WHY_CARDS.map((item, idx) => (
-            <div
-              key={item.id}
-              onClick={() => handleCardClick(item.title)}
-              className="group cursor-pointer flex flex-col rounded-3xl bg-[#FFFDF9] hover:bg-white border border-[#F8C6CF] hover:border-[#E88BAA] shadow-xs hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-3 sm:p-4 text-left"
-            >
-              {/* Card Photo from reference image copy 43.png */}
-              <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden bg-[#FCE8EF] mb-4">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
-                
-                {/* Floating pill badge */}
-                <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-xs text-[#A82F4D] text-[10px] font-bold px-2.5 py-1 rounded-full shadow-2xs">
-                  0{idx + 1} Benefit
+          {/* Inner Content Grid: Left (~32%) and Right (~68%) */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center p-6 sm:p-10 lg:p-12 min-h-[380px] lg:min-h-[420px]">
+            
+            {/* LEFT SIDE: Brand Heading, Intro, Description, Read More Button (~32% -> col-span-4) */}
+            <div className="lg:col-span-4 flex flex-col justify-center space-y-3.5 sm:space-y-4 text-left pr-0 lg:pr-4">
+              <div>
+                <h3 className="font-serif text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#2A2421] tracking-tight uppercase leading-tight">
+                  WHY CHOOSE
+                </h3>
+                <span className="font-script text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#C75C83] block leading-tight mt-0.5">
+                  Pretty Palette?
                 </span>
+                
+                {/* Thin Decorative Horizontal Line with Centered Pink Heart */}
+                <div className="flex items-center gap-2 mt-2 w-full max-w-[220px]">
+                  <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
+                  <Heart className="w-3.5 h-3.5 fill-[#C75C83] text-[#C75C83] shrink-0" />
+                  <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
+                </div>
               </div>
 
-              {/* Title & Description */}
-              <div className="px-2 pb-2 flex-grow flex flex-col justify-between">
-                <div>
-                  <h3 className="font-serif text-lg sm:text-xl font-bold uppercase tracking-wider text-[#292329] group-hover:text-[#A82F4D] transition-colors mb-1.5">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-[13px] text-[#777078] leading-relaxed mb-4">
-                    {item.subtitle}
-                  </p>
-                </div>
+              {/* Description */}
+              <p className="text-xs sm:text-[13px] text-[#554E4B] leading-relaxed max-w-sm font-normal">
+                We believe in the power of nature and the goodness of safe ingredients. Each product is thoughtfully handmade to bring out the best in you because you deserve beauty that cares.
+              </p>
 
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A82F4D] group-hover:underline">
-                  <span>Explore Standard</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </div>
+              {/* Muted Natural Sage-Green Button */}
+              <div className="pt-1">
+                <Link
+                  to="/about-us"
+                  className="inline-block bg-[#5B6734] hover:bg-[#4A542A] text-white px-5 sm:px-6 py-2.5 rounded-lg font-bold text-xs sm:text-[13px] tracking-wide shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                >
+                  Read More About Us
+                </Link>
               </div>
             </div>
-          ))}
+
+            {/* RIGHT SIDE: Four Benefit Columns Arranged Horizontally (~68% -> col-span-8) */}
+            <div className="lg:col-span-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
+                {BENEFIT_ITEMS.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => handleCardClick(item.title)}
+                    className="group cursor-pointer flex flex-col items-center justify-between p-2 sm:p-3 rounded-2xl hover:bg-white/40 transition-all duration-300 transform hover:-translate-y-1"
+                    title={`Click to view ${item.title} certification standard`}
+                  >
+                    {/* Elegant Brown Line-Art Illustration */}
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex items-center justify-center mb-2 shrink-0">
+                      <img
+                        src={item.icon}
+                        alt={item.alt}
+                        className="w-full h-full object-contain filter group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+
+                    {/* Benefit Heading */}
+                    <h4 className="font-sans text-xs sm:text-sm font-bold uppercase tracking-wider text-[#2A2421] group-hover:text-[#A82F4D] transition-colors mb-1.5 leading-tight">
+                      {item.title}
+                    </h4>
+
+                    {/* Description */}
+                    <p className="text-[11px] sm:text-xs text-[#554E4B] leading-snug font-normal max-w-[150px]">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
 
-      {/* Interactive Modal Popup for Why Choose Cards (image copy 17.png) */}
+      {/* Interactive Formulation Detail Modal Popup */}
       {activePopup && (
-        <div className="fixed inset-0 z-50 overflow-y-auto p-4 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 overflow-y-auto p-4 flex items-center justify-center animate-fade-in">
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-fade-in"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setActivePopup(null)}
           />
 
           {/* Modal Container */}
-          <div className="relative max-w-lg w-full bg-[#FFFDF9] rounded-3xl shadow-2xl p-6 sm:p-8 border border-[#F8C6CF] z-10 animate-zoom-in text-left">
-            
+          <div className="relative max-w-lg w-full bg-[#FFFDF9] rounded-3xl shadow-2xl p-6 sm:p-8 border-2 border-[#F8C6CF] z-10 animate-zoom-in text-left">
             <button
               type="button"
               onClick={() => setActivePopup(null)}
@@ -235,47 +248,63 @@ export const WhyChooseSection: React.FC = () => {
               <span className="text-[11px] uppercase tracking-widest font-bold text-[#78844B] block mb-1">
                 {activePopup.tagline}
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#40251D]">
+              <h3 className="font-serif text-2xl font-bold text-[#40251D] mb-1">
                 {activePopup.title}
               </h3>
-              <p className="font-serif italic text-sm text-[#A82F4D] font-medium mt-1">
+              <p className="font-serif italic text-sm text-[#A82F4D]">
                 "{activePopup.subtitle}"
               </p>
             </div>
 
-            {/* Description Body */}
-            <div className="space-y-3 text-xs sm:text-sm text-stone-700 leading-relaxed mb-6">
-              {activePopup.content.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
+            {/* Modal Body */}
+            <div className="space-y-3 mb-6">
+              {activePopup.content.map((paragraph, idx) => (
+                <p key={idx} className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
+                  {paragraph}
+                </p>
               ))}
             </div>
 
             {/* Key Highlights */}
-            <div className="bg-[#FDF1F4] rounded-2xl p-4 border border-[#F8C6CF]/60 mb-6 space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#A82F4D]">
-                Key Standards & Commitments:
+            <div className="bg-[#FFF9EF] rounded-2xl p-4 border border-[#F8C6CF]/60 mb-6">
+              <h4 className="text-xs uppercase font-bold text-[#40251D] tracking-wider mb-2.5">
+                Our Guaranteed Standards
               </h4>
-              {activePopup.keyHighlights.map((hl, i) => (
-                <div key={i} className="flex items-start gap-2 text-xs text-stone-700">
-                  <CheckCircle2 className="w-4 h-4 text-[#78844B] shrink-0 mt-0.5" />
-                  <span>{hl}</span>
-                </div>
-              ))}
+              <div className="space-y-2">
+                {activePopup.keyHighlights.map((highlight, idx) => (
+                  <div key={idx} className="flex items-start gap-2 text-xs text-stone-700">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#78844B] shrink-0 mt-0.5" />
+                    <span>{highlight}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Brand Promise Footer */}
-            <div className="p-3.5 rounded-xl bg-[#FFF9EF] border border-[#78844B]/20 text-xs text-stone-600 mb-6">
-              <span className="font-bold text-[#40251D]">Pretty Palette Promise: </span>
-              {activePopup.promise}
+            {/* Promise Box */}
+            <div className="border-l-2 border-[#A82F4D] pl-3 py-1 mb-6">
+              <p className="text-xs text-[#A82F4D] font-semibold italic">
+                {activePopup.promise}
+              </p>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setActivePopup(null)}
-              className="w-full bg-[#A82F4D] hover:bg-[#8D253F] text-white py-3 rounded-full text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
-            >
-              Understood & Close
-            </button>
+            {/* Modal Footer CTA */}
+            <div className="flex items-center justify-between pt-2 border-t border-[#F8C6CF]/50">
+              <Link
+                to="/shop"
+                onClick={() => setActivePopup(null)}
+                className="text-xs font-bold text-[#A82F4D] hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <span>Shop Safe Formulations</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <button
+                type="button"
+                onClick={() => setActivePopup(null)}
+                className="bg-[#A82F4D] hover:bg-[#8D253F] text-white px-5 py-2 rounded-full text-xs font-bold shadow-xs transition-colors cursor-pointer"
+              >
+                Got It ♡
+              </button>
+            </div>
 
           </div>
         </div>

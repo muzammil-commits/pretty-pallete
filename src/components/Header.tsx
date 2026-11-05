@@ -94,57 +94,18 @@ export const Header: React.FC = () => {
         </div>
       )}
 
-      {/* 2. Top Utility Bar with Increased Font Size */}
-      <div className="bg-[#FFF4F7] border-b border-[#FCE8EF] py-1.5 px-4 sm:px-8 hidden md:block text-xs sm:text-[13px] text-[#292329]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4 text-stone-600">
-            <span className="flex items-center gap-1.5 text-[#78844B] font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-[#78844B]" /> Authentic Artisanal Formulations
-            </span>
-            <span>•</span>
-            <span className="hover:text-[#A82F4D] transition-colors">
-              Helpline: +91 7569399887
-            </span>
-          </div>
-
-          {/* About Us & Contact Us in top utility section */}
-          <div className="flex items-center space-x-5 font-semibold">
-            <Link 
-              to="/about-us" 
-              className={`hover:text-[#A82F4D] transition-colors ${isActive('/about-us') ? 'text-[#A82F4D] font-bold' : 'text-stone-700'}`}
-            >
-              About Us
-            </Link>
-            <span className="text-stone-300">|</span>
-            <Link 
-              to="/contact-us" 
-              className={`hover:text-[#A82F4D] transition-colors ${isActive('/contact-us') ? 'text-[#A82F4D] font-bold' : 'text-stone-700'}`}
-            >
-              Contact Us
-            </Link>
-            <span className="text-stone-300">|</span>
-            <Link 
-              to="/track-order" 
-              className="text-[#78844B] hover:text-[#4C542C] transition-colors"
-            >
-              Track Order
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Main Header - Clean Layout with Significantly Larger Logo & Removed Text (image copy 38.png) */}
-      <div className="bg-white py-3 sm:py-4 md:py-5 shadow-xs">
+      {/* 2. Main Header - Clean Layout with Grand Enlarged Logo (image copy 48.png removed utility bar, image copy 49.png increased logo) */}
+      <div className="bg-white py-2 sm:py-3 md:py-4 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
             
-            {/* Grand Logo Section - Text Beside Logo Removed, Logo Size Increased Significantly (image copy 38.png) */}
+            {/* Grand Logo Section - Significantly Enlarged Official Logo (image copy 49.png) */}
             <Link 
               to="/" 
               className="flex items-center group shrink-0 focus:outline-none"
               title="Pretty Palette Home"
             >
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0">
+              <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0">
                 <img 
                   src="/assets/logo.png" 
                   alt="Pretty Palette Official Logo" 
