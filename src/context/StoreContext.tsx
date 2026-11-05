@@ -80,11 +80,28 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
+const CANONICAL_BESTSELLER_IMAGES: Record<string, string> = {
+  'prod-1': '/assets/bestseller-lipstick.png',
+  'prod-2': '/assets/bestseller-facecream.png',
+  'prod-3': '/assets/bestseller-hairoil.png',
+  'prod-4': '/assets/bestseller-kajal.png',
+};
+
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Products
+  // Products - always enforce canonical bestseller photos (image copy 29, 30, 31, 32)
   const [products, setProducts] = useState<Product[]>(() => {
     const saved = localStorage.getItem('pp_products');
-    return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+    const loadedList: Product[] = saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+    return loadedList.map(p => {
+      if (CANONICAL_BESTSELLER_IMAGES[p.id]) {
+        return {
+          ...p,
+          image: CANONICAL_BESTSELLER_IMAGES[p.id],
+          gallery: [CANONICAL_BESTSELLER_IMAGES[p.id], ...(p.gallery?.slice(1) || [])]
+        };
+      }
+      return p;
+    });
   });
 
   // CMS

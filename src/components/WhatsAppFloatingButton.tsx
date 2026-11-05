@@ -21,9 +21,9 @@ export const WhatsAppFloatingButton: React.FC = () => {
       },
       {
         root: null,
-        // Trigger as soon as Why Choose enters top or bottom of viewport
-        rootMargin: '40px 0px 40px 0px',
-        threshold: 0.05
+        // Trigger as soon as Why Choose approaches viewport top or bottom
+        rootMargin: '120px 0px 120px 0px',
+        threshold: 0
       }
     );
 

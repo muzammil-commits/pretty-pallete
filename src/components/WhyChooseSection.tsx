@@ -174,8 +174,8 @@ export const WhyChooseSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* DESKTOP & TABLET: Exact Banner from image copy 51.png with interactive hotspots */}
-        <div className="hidden sm:block relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-[#EADBCC] bg-[#F9F6EE]">
+        {/* Exact Banner from image copy 51.png with interactive hotspots (used for both desktop and mobile as requested) */}
+        <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-[#EADBCC] bg-[#F9F6EE]">
           <img
             src="/assets/why-choose-banner-clean.png"
             alt="Why Choose Pretty Palette"
@@ -242,68 +242,6 @@ export const WhyChooseSection: React.FC = () => {
               View Standards ↗
             </span>
           </button>
-        </div>
-
-        {/* MOBILE VIEW: Clean Responsive 2x2 Layout with Same Brown Botanical Art & Watercolor Background */}
-        <div className="block sm:hidden rounded-2xl overflow-hidden shadow-sm border border-[#EADBCC] bg-[#F9F6EE] p-5 relative">
-          
-          {/* Header Area */}
-          <div className="text-center mb-6">
-            <h3 className="font-serif text-2xl font-bold text-[#2A2421] tracking-tight uppercase leading-tight">
-              WHY CHOOSE
-            </h3>
-            <span className="font-script text-3xl font-bold text-[#C75C83] block leading-tight mt-0.5">
-              Pretty Palette?
-            </span>
-            
-            <div className="flex items-center justify-center gap-2 my-2.5 mx-auto max-w-[180px]">
-              <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
-              <Heart className="w-3.5 h-3.5 fill-[#C75C83] text-[#C75C83] shrink-0" />
-              <div className="h-[1px] flex-1 bg-[#E88BAA]/60" />
-            </div>
-
-            <p className="text-xs text-[#554E4B] leading-relaxed font-normal mb-3">
-              We believe in the power of nature and the goodness of safe ingredients. Each product is thoughtfully handmade to bring out the best in you because you deserve beauty that cares.
-            </p>
-
-            <Link
-              to="/about-us"
-              className="inline-block bg-[#5B6734] hover:bg-[#4A542A] text-white px-5 py-2 rounded-lg font-bold text-xs tracking-wide shadow-sm"
-            >
-              Read More About Us
-            </Link>
-          </div>
-
-          {/* 4 Benefits in 2x2 Grid - Fully Clickable */}
-          <div className="grid grid-cols-2 gap-3 text-center pt-2 border-t border-[#E8D1C7]">
-            {BENEFIT_ITEMS.map((item) => (
-              <button
-                type="button"
-                key={item.id}
-                onClick={() => handleCardClick(item.title)}
-                className="flex flex-col items-center p-3 rounded-xl bg-white/50 active:bg-white/90 border border-[#F8C6CF]/40 active:border-[#A82F4D] shadow-2xs hover:shadow-sm transition-all text-center cursor-pointer"
-                title={`Click to read ${item.title} standards`}
-              >
-                <div className="w-16 h-16 flex items-center justify-center mb-1.5">
-                  <img
-                    src={item.icon}
-                    alt={item.alt}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-[#2A2421] mb-1">
-                  {item.title}
-                </h4>
-                <p className="text-[10px] text-[#554E4B] leading-tight mb-2">
-                  {item.description}
-                </p>
-                <span className="text-[9px] font-bold text-[#A82F4D] bg-[#FFF0F3] px-2 py-0.5 rounded-full border border-[#F8C6CF]">
-                  Tap for Details ↗
-                </span>
-              </button>
-            ))}
-          </div>
-
         </div>
 
       </div>

@@ -3,13 +3,15 @@
 @tailwind utilities;
 
 @layer base {
-  html, body {
-    background-color: #FFF9FB;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(252, 232, 239, 0.45) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(254, 240, 235, 0.5) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(252, 232, 239, 0.4) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(255, 244, 247, 0.45) 0px, transparent 50%);
+  body {
+    /* Soft pink background color */
+    background-color: #FCE4EC; 
+    
+    /* Sides par flower graphics lagane ke liye */
+    background-image: url('../images/side-flowers.png');
+    background-repeat: no-repeat;
+    background-position: left top, right bottom;
+    background-size: 250px auto;
     background-attachment: fixed;
     color: #292329;
     font-family: 'Poppins', sans-serif;
