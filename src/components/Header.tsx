@@ -69,11 +69,14 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="relative z-40 w-full max-w-full overflow-x-clip bg-white select-none border-b border-[#FCE8EF] shadow-2xs">
+    <header 
+      className="relative z-40 w-full max-w-full overflow-x-clip select-none border-b border-[#F8C6CF]/40 shadow-xs bg-cover bg-center"
+      style={{ backgroundImage: "url('/assets/header-footer-bg.webp')" }}
+    >
       
       {/* 1. Announcement Bar - High Impact Marquee with Increased Font Size (image copy 38.png) */}
       {cms.announcementBar.enabled && (
-        <div className="bg-gradient-to-r from-[#A82F4D] via-[#C75C83] to-[#A82F4D] text-[#FFF9EF] py-2.5 sm:py-3 overflow-hidden relative border-b border-[#8D253F] shadow-xs w-full max-w-full">
+        <div className="bg-gradient-to-r from-[#A82F4D] via-[#C75C83] to-[#A82F4D] text-[#FFF9EF] py-2 sm:py-2.5 overflow-hidden relative border-b border-[#8D253F] shadow-xs w-full max-w-full">
           <div className="animate-marquee flex items-center gap-12 whitespace-nowrap text-xs sm:text-sm md:text-base font-semibold tracking-wide">
             {/* Set 1 */}
             {marqueeItems.map((item, i) => {
@@ -101,18 +104,18 @@ export const Header: React.FC = () => {
         </div>
       )}
 
-      {/* 2. Main Header - Clean Layout with Grand Enlarged Logo (image copy 48.png removed utility bar, image copy 49.png increased logo) */}
-      <div className="bg-white py-2 sm:py-3 md:py-4 shadow-xs">
+      {/* 2. Main Header - Clean Layout with Compact Spacing & Grand Logo (image copy 60.png tightened white space, image copy 66.png pink wavy bg) */}
+      <div className="bg-transparent py-1 sm:py-1.5 md:py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
             
-            {/* Grand Logo Section - Significantly Enlarged Official Logo (image copy 49.png) */}
+            {/* Grand Logo Section - Tightened Vertical Padding to Eliminate Empty Space (image copy 60.png) */}
             <Link 
               to="/" 
               className="flex items-center group shrink-0 focus:outline-none"
               title="Pretty Palette Home"
             >
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex items-center justify-center transition-all duration-300 group-hover:scale-105 shrink-0">
                 <img 
                   src="/assets/logo.png" 
                   alt="Pretty Palette Official Logo" 

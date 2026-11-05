@@ -8,7 +8,10 @@ export const Footer: React.FC = () => {
   const settings = cms.settings;
 
   return (
-    <footer className="w-full bg-[#FFFDF9] border-t border-[#F8C6CF] relative overflow-hidden text-[#40251D]">
+    <footer 
+      className="w-full border-t border-[#F8C6CF] relative overflow-hidden text-[#40251D] bg-cover bg-center"
+      style={{ backgroundImage: "url('/assets/header-footer-bg.webp')" }}
+    >
       
       {/* Upper Footer Columns */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">

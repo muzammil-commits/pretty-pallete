@@ -17,10 +17,7 @@ export const FloralBackground: React.FC = () => {
         />
       </picture>
 
-      {/* 2. Soft Center Luminance Mask ensuring 100% text and product readability */}
-      <div 
-        className="absolute inset-0 bg-gradient-to-b from-[#FFF5F8]/30 via-[#FFF9FA]/20 to-[#FFF2F5]/30 pointer-events-none" 
-      />
+      {/* 2. Zero white overlay mask so pink floral background extends completely unbroken to footer (image copy 61.png) */}
 
       {/* 3. Subtle Animated Floating Petals (Pure CSS, GPU-accelerated, zero lag) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">

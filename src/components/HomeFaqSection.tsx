@@ -33,7 +33,7 @@ export const HomeFaqSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full py-20 sm:py-28 bg-[#FFFDF9] border-b border-[#F8C6CF]/50 relative overflow-hidden">
+    <section className="w-full py-20 sm:py-28 bg-transparent border-b border-[#F8C6CF]/50 relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}

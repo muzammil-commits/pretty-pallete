@@ -56,7 +56,7 @@ export const CategoryPage: React.FC = () => {
   }, [products, config.category, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] py-8 sm:py-14">
+    <div className="min-h-screen bg-transparent py-8 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumbs */}
@@ -68,8 +68,11 @@ export const CategoryPage: React.FC = () => {
           <span className="font-semibold text-[#A82F4D] capitalize">{config.title}</span>
         </div>
 
-        {/* Unique Category Banner (with image copy 6, 7, 8) */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#FDF1F4] via-[#FCE5E8] to-[#FFF9EF] p-8 sm:p-12 mb-12 border border-[#F8C6CF] shadow-xs">
+        {/* Unique Category Banner with image copy 63.png floral watercolor background */}
+        <div 
+          className="relative rounded-3xl overflow-hidden p-8 sm:p-12 mb-12 border border-[#F8C6CF] shadow-sm bg-cover bg-center"
+          style={{ backgroundImage: "url('/assets/category-banner-bg.webp')" }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             
             <div className="md:col-span-7">

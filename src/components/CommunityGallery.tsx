@@ -42,7 +42,7 @@ const GALLERY: GalleryItem[] = [
 
 export const CommunityGallery: React.FC = () => {
   return (
-    <section className="w-full py-20 sm:py-24 bg-[#FFF9EF]/60 border-b border-[#F8C6CF]/50 relative overflow-hidden">
+    <section className="w-full py-20 sm:py-24 bg-transparent border-b border-[#F8C6CF]/50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
