@@ -14,6 +14,7 @@ import { ScrollReveal } from './components/ScrollReveal';
 import { FloralBackground } from './components/FloralBackground';
 import { Toast } from './components/Toast';
 import { ScrollToTop } from './components/ScrollToTop';
+import { WhatsAppFloatingButton } from './components/WhatsAppFloatingButton';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -79,6 +80,7 @@ export const App: React.FC = () => {
           <WelcomePopup />
           <PromoTriggerPill />
           <ExitIntentModal />
+          <WhatsAppFloatingButton />
           <Toast />
         </div>
       </BrowserRouter>
