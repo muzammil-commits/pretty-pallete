@@ -13,6 +13,28 @@ export const Footer: React.FC = () => {
       style={{ backgroundImage: "url('/assets/header-footer-bg.webp')" }}
     >
       
+      {/* Decorative Patchwork Color-Mix Divider Above Footer */}
+      <div className="w-full overflow-hidden leading-none relative -mt-px pointer-events-none">
+        <svg 
+          className="relative block w-full h-6 sm:h-10 md:h-12 text-[#FCE4EC]" 
+          viewBox="0 0 1440 80" 
+          preserveAspectRatio="none"
+        >
+          {/* Layer 1: Body Deep Pink Background flow */}
+          <path 
+            d="M0,0L48,10.7C96,21,192,43,288,46C384,49,480,35,576,28C672,21,768,21,864,32C960,43,1056,64,1152,64C1248,64,1344,43,1392,32L1440,21.3L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" 
+            fill="#FCE4EC" 
+            opacity="0.95"
+          />
+          {/* Layer 2: Soft Rose Blend Accent */}
+          <path 
+            d="M0,0L48,7C96,14,192,28,288,32C384,35,480,28,576,21C672,14,768,7,864,14C960,21,1056,43,1152,46C1248,49,1344,35,1392,28L1440,21.3L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" 
+            fill="#FAD0DA" 
+            opacity="0.5"
+          />
+        </svg>
+      </div>
+      
       {/* Upper Footer Columns */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">

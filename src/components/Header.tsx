@@ -260,6 +260,26 @@ export const Header: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* 3. Decorative Patchwork Color-Mix Divider Below Header to Blend Sections */}
+        <div className="w-full overflow-hidden leading-none relative -mb-1 pointer-events-none">
+          <svg 
+            className="relative block w-full h-3 sm:h-4 md:h-5 text-[#FDF1F4]" 
+            viewBox="0 0 1440 48" 
+            preserveAspectRatio="none"
+          >
+            <path 
+              d="M0,0L48,6C96,12,192,24,288,26C384,28,480,20,576,16C672,12,768,12,864,18C960,24,1056,36,1152,36C1248,36,1344,24,1392,18L1440,12L1440,48L1392,48C1344,48,1248,48,1152,48C1056,48,960,48,864,48C768,48,672,48,576,48C480,48,384,48,288,48C192,48,96,48,48,48L0,48Z" 
+              fill="#FDF1F4" 
+              opacity="0.6"
+            />
+            <path 
+              d="M0,0L48,4C96,8,192,16,288,18C384,20,480,16,576,12C672,8,768,4,864,8C960,12,1056,24,1152,26C1248,28,1344,20,1392,16L1440,12L1440,48L1392,48C1344,48,1248,48,1152,48C1056,48,960,48,864,48C768,48,672,48,576,48C480,48,384,48,288,48C192,48,96,48,48,48L0,48Z" 
+              fill="#FCE4EC" 
+              opacity="0.9"
+            />
+          </svg>
+        </div>
       </div>
 
       {/* 4. Mobile Side Navigation Drawer */}

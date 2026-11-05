@@ -175,8 +175,8 @@ export const Hero: React.FC = () => {
               <ChevronRight className="w-6 h-6" />
             </button>
 
-            {/* Pagination Indicators */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center space-x-2">
+            {/* Pagination Indicators - Positioned Comfortably Above Bottom Wave */}
+            <div className="absolute bottom-10 sm:bottom-14 left-1/2 -translate-x-1/2 z-30 flex items-center space-x-2">
               {slides.map((_, index) => (
                 <button
                   key={index}
@@ -192,6 +192,33 @@ export const Hero: React.FC = () => {
             </div>
           </>
         )}
+      </div>
+
+      {/* Decorative Patchwork Color-Mix Divider Below Hero Section */}
+      <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+        <svg 
+          className="relative block w-full h-8 sm:h-12 md:h-16 text-[#FCE4EC]" 
+          viewBox="0 0 1440 120" 
+          preserveAspectRatio="none"
+        >
+          {/* Layer 1: Soft Blush Pink Accent */}
+          <path 
+            d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,48C672,43,768,53,864,69.3C960,85,1056,107,1152,101.3C1248,96,1344,64,1392,48L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" 
+            fill="#FAD0DA" 
+            opacity="0.5"
+          />
+          {/* Layer 2: Warm Rosy Tint */}
+          <path 
+            d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,58.7C672,64,768,96,864,101.3C960,107,1056,85,1152,74.7C1248,64,1344,64,1392,64L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" 
+            fill="#FCE4EC" 
+            opacity="0.8"
+          />
+          {/* Layer 3: Body Deep Pink Fill */}
+          <path 
+            d="M0,80L48,85.3C96,91,192,101,288,96C384,91,480,69,576,74.7C672,80,768,112,864,112C960,112,1056,80,1152,74.7C1248,69,1344,91,1392,101.3L1440,112L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" 
+            fill="#FCE4EC"
+          />
+        </svg>
       </div>
 
       <style>{`
