@@ -5,50 +5,37 @@ export const ScrollReveal: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Select all elements marked for reveal
-    const revealElements = document.querySelectorAll(
-      '.reveal-init, [data-reveal]'
-    );
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    const revealElements = document.querySelectorAll('.reveal-init, [data-reveal]');
+
+    // On mobile or reduced motion: show elements immediately for 60 FPS smooth scrolling
+    if (isMobile || prefersReducedMotion) {
+      revealElements.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    // On desktop: use lightweight single IntersectionObserver
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            // Unobserve once revealed for permanent smooth display
             observer.unobserve(entry.target);
           }
         });
       },
       {
-        rootMargin: '0px 0px -40px 0px',
-        threshold: 0.1,
+        rootMargin: '40px 0px 40px 0px',
+        threshold: 0.05,
       }
     );
 
     revealElements.forEach((el) => observer.observe(el));
 
-    // Handle dynamically rendered elements
-    const mutationObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (node instanceof HTMLElement) {
-            if (node.matches('.reveal-init, [data-reveal]')) {
-              observer.observe(node);
-            }
-            node.querySelectorAll?.('.reveal-init, [data-reveal]').forEach((child) => {
-              observer.observe(child);
-            });
-          }
-        });
-      });
-    });
-
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
-
     return () => {
       observer.disconnect();
-      mutationObserver.disconnect();
     };
   }, [location.pathname]);
 

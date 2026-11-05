@@ -33,8 +33,15 @@ export const Header: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 30);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
