@@ -14,40 +14,58 @@ import { HomeFaqSection } from '../components/HomeFaqSection';
 export const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden">
-      {/* 1. Hero Banner - Animated, Desktop (image copy 3) & Mobile (image copy 18) */}
+      {/* 1. Hero Banner - Animated, Desktop & Mobile */}
       <Hero />
 
-      {/* 2. Grand Brand Benefits Bar (4 Pillars, image copy 4 & 16) */}
-      <BenefitsBar />
+      {/* 2. Grand Brand Benefits Bar */}
+      <div className="reveal-init">
+        <BenefitsBar />
+      </div>
 
-      {/* 3. Main Shopping Categories (Cosmetics, Skin Care, Hair Care - image copy 5, 6, 7, 8) */}
-      <CategoryCards />
+      {/* 3. Main Shopping Categories (Cosmetics, Skin Care, Hair Care) */}
+      <div className="reveal-init">
+        <CategoryCards />
+      </div>
 
-      {/* 4. About Pretty Palette (image copy 9 & 10) */}
-      <AboutSection />
+      {/* 4. About Pretty Palette */}
+      <div className="reveal-init">
+        <AboutSection />
+      </div>
 
       {/* 5. Nature's Pure Botanical Alchemy & Ingredients Showcase */}
-      <BotanicalIngredients />
+      <div className="reveal-init">
+        <BotanicalIngredients />
+      </div>
 
-      {/* 6. Why Choose Pretty Palette with Interactive Popups (image copy 17) */}
-      <WhyChooseSection />
+      {/* 6. Why Choose Pretty Palette with Interactive Popups */}
+      <div className="reveal-init">
+        <WhyChooseSection />
+      </div>
 
-      {/* 7. Our Best Sellers Carousel with Full Uncropped Pictures (image copy 11) */}
-      <BestSellers />
+      {/* 7. Our Best Sellers Carousel & Mobile Grid matching desktop screenshot */}
+      <div className="reveal-init">
+        <BestSellers />
+      </div>
 
       {/* 8. The 4-Step Everyday Self-Care Glow Ritual */}
-      <DailyRitualSection />
+      <div className="reveal-init">
+        <DailyRitualSection />
+      </div>
 
       {/* 9. Verified Buyer Testimonials & Real Stories */}
-      <TestimonialsSection />
+      <div className="reveal-init">
+        <TestimonialsSection />
+      </div>
 
       {/* 10. #PrettyPaletteCommunity Instagram Gallery */}
-      <CommunityGallery />
+      <div className="reveal-init">
+        <CommunityGallery />
+      </div>
 
       {/* 11. Homepage FAQ Accordion */}
-      <HomeFaqSection />
-
-      {/* Note: Standalone Newsletter strip removed as requested in image copy 12.png */}
+      <div className="reveal-init">
+        <HomeFaqSection />
+      </div>
     </div>
   );
 };

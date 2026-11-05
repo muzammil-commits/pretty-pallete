@@ -39,6 +39,7 @@ interface StoreContextType {
   isAdminLoggedIn: boolean;
   isCartOpen: boolean;
   isSearchOpen: boolean;
+  isOfferPopupOpen: boolean;
   quickViewProduct: Product | null;
   toastMessage: string | null;
   
@@ -64,6 +65,7 @@ interface StoreContextType {
   logoutAdmin: () => void;
   setIsCartOpen: (open: boolean) => void;
   setIsSearchOpen: (open: boolean) => void;
+  setIsOfferPopupOpen: (open: boolean) => void;
   setQuickViewProduct: (product: Product | null) => void;
   showToast: (msg: string) => void;
   
@@ -136,6 +138,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // UI state
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isOfferPopupOpen, setIsOfferPopupOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -430,6 +433,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isAdminLoggedIn,
         isCartOpen,
         isSearchOpen,
+        isOfferPopupOpen,
         quickViewProduct,
         toastMessage,
         addToCart,
@@ -453,6 +457,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         logoutAdmin,
         setIsCartOpen,
         setIsSearchOpen,
+        setIsOfferPopupOpen,
         setQuickViewProduct,
         showToast,
         subtotal,

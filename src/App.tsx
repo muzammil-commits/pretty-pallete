@@ -7,6 +7,10 @@ import { CartDrawer } from './components/CartDrawer';
 import { SearchModal } from './components/SearchModal';
 import { QuickViewModal } from './components/QuickViewModal';
 import { WelcomePopup } from './components/WelcomePopup';
+import { PromoTriggerPill } from './components/PromoTriggerPill';
+import { ExitIntentModal } from './components/ExitIntentModal';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
+import { ScrollReveal } from './components/ScrollReveal';
 import { Toast } from './components/Toast';
 import { ScrollToTop } from './components/ScrollToTop';
 
@@ -31,6 +35,8 @@ export const App: React.FC = () => {
   return (
     <StoreProvider>
       <BrowserRouter>
+        <ScrollProgressBar />
+        <ScrollReveal />
         <ScrollToTop />
         <div className="flex flex-col min-h-screen relative w-full max-w-full overflow-x-hidden selection:bg-[#F8C6CF] selection:text-[#A82F4D]">
           
@@ -69,6 +75,8 @@ export const App: React.FC = () => {
           <SearchModal />
           <QuickViewModal />
           <WelcomePopup />
+          <PromoTriggerPill />
+          <ExitIntentModal />
           <Toast />
         </div>
       </BrowserRouter>

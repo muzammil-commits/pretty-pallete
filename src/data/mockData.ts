@@ -480,6 +480,14 @@ export const INITIAL_CMS: HomepageCMS = {
 
 export const INITIAL_COUPONS: Coupon[] = [
   {
+    code: 'PRETTYVIP',
+    discountType: 'percentage',
+    value: 15,
+    minOrderAmount: 399,
+    description: '15% VIP discount for mindful beauty lovers',
+    isActive: true
+  },
+  {
     code: 'WELCOME10',
     discountType: 'percentage',
     value: 10,

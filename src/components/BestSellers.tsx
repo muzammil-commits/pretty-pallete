@@ -70,29 +70,30 @@ export const BestSellers: React.FC = () => {
             </button>
           )}
 
-          {/* Product Grid - Full Pictures Filling Full Box (image copy 23.png) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
+          {/* Product Grid - 2 Columns on Mobile, 4 Columns on Desktop (matches desktop screenshot media_1793855182368_dce31f0b.jpg) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {visibleProducts.map((product: Product) => {
               const inWishlist = isInWishlist(product.id);
 
               return (
                 <div
                   key={product.id}
-                  className="group relative rounded-3xl bg-[#FFFDF9] border border-[#F8C6CF]/70 p-4 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between"
+                  className="group relative rounded-2xl sm:rounded-3xl bg-white border border-[#F8C6CF] p-3 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col justify-between"
                 >
-                  {/* Card Top: Full Picture Frame filling box (image copy 23.png) */}
-                  <div className="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden bg-[#FDF1F4] flex items-center justify-center mb-4 border border-[#F8C6CF]/40 shadow-inner">
+                  {/* Card Top: Full Picture Frame matching desktop screenshot clarity (aspect-[5/6] matches exact 167:198 aspect ratio) */}
+                  <div className="relative w-full aspect-[5/6] rounded-xl sm:rounded-2xl overflow-hidden bg-[#FDF1F4] flex items-center justify-center mb-3 sm:mb-4 border border-[#F8C6CF]/40 shadow-xs">
                     <Link to={`/product/${product.slug}`} className="w-full h-full block">
                       <img
                         src={product.image}
                         alt={product.name}
                         className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                        loading="lazy"
                       />
                     </Link>
 
                     {/* Discount Badge */}
                     {product.discount > 0 && (
-                      <span className="absolute top-3 left-3 bg-[#A82F4D] text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
+                      <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#A82F4D] text-white text-[10px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-xs">
                         {product.discount}% OFF
                       </span>
                     )}
@@ -101,22 +102,22 @@ export const BestSellers: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => toggleWishlist(product.id)}
-                      className={`absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 hover:bg-white text-stone-600 hover:text-[#FF647F] shadow-sm flex items-center justify-center transition-all cursor-pointer ${
+                      className={`absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/95 hover:bg-white text-stone-600 hover:text-[#FF647F] shadow-sm flex items-center justify-center transition-all cursor-pointer ${
                         inWishlist ? 'text-[#FF647F] scale-110' : ''
                       }`}
                       title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
                       aria-label="Wishlist"
                     >
                       <Heart 
-                        className={`w-4 h-4 ${inWishlist ? 'fill-[#FF647F] text-[#FF647F]' : ''}`} 
+                        className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${inWishlist ? 'fill-[#FF647F] text-[#FF647F]' : ''}`} 
                       />
                     </button>
 
-                    {/* Quick View Button on Hover */}
+                    {/* Quick View Button on Desktop Hover */}
                     <button
                       type="button"
                       onClick={() => setQuickViewProduct(product)}
-                      className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/95 hover:bg-white text-[#40251D] hover:text-[#A82F4D] text-xs font-bold px-4 py-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center gap-1.5 cursor-pointer transform group-hover:translate-y-0 translate-y-2"
+                      className="hidden sm:flex absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/95 hover:bg-white text-[#40251D] hover:text-[#A82F4D] text-xs font-bold px-4 py-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 items-center gap-1.5 cursor-pointer transform group-hover:translate-y-0 translate-y-2"
                       title="Quick View"
                     >
                       <Eye className="w-3.5 h-3.5" />
@@ -127,34 +128,34 @@ export const BestSellers: React.FC = () => {
                   {/* Card Body: Info */}
                   <div className="text-center flex-grow flex flex-col justify-between">
                     <div>
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-[#78844B] block mb-1">
+                      <span className="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-[#78844B] block mb-1">
                         {product.category.replace('-', ' ')}
                       </span>
                       <Link 
                         to={`/product/${product.slug}`}
-                        className="block font-serif text-lg sm:text-xl font-bold text-[#40251D] hover:text-[#A82F4D] transition-colors leading-snug mb-1.5 line-clamp-1"
+                        className="block font-serif text-sm sm:text-lg font-bold text-[#40251D] hover:text-[#A82F4D] transition-colors leading-snug mb-1 line-clamp-1"
                       >
                         {product.name}
                       </Link>
 
                       {/* Rating Stars & Count */}
-                      <div className="flex items-center justify-center gap-1 mb-2">
+                      <div className="flex items-center justify-center gap-1 mb-1.5 sm:mb-2">
                         <div className="flex items-center text-amber-400">
                           {[...Array(5)].map((_, i) => (
                             <Star 
                               key={i} 
-                              className={`w-3.5 h-3.5 ${i < Math.floor(product.rating) ? 'fill-amber-400' : 'text-stone-300'}`} 
+                              className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${i < Math.floor(product.rating) ? 'fill-amber-400' : 'text-stone-300'}`} 
                             />
                           ))}
                         </div>
-                        <span className="text-xs text-stone-600 font-medium">
+                        <span className="text-[11px] sm:text-xs text-stone-600 font-medium">
                           {product.rating} ({product.reviewCount > 1000 ? `${(product.reviewCount/1000).toFixed(1)}k` : product.reviewCount})
                         </span>
                       </div>
 
                       {/* Pricing */}
-                      <div className="flex items-center justify-center gap-2 mb-4">
-                        <span className="font-sans text-lg sm:text-xl font-bold text-[#40251D]">
+                      <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
+                        <span className="font-sans text-base sm:text-xl font-bold text-[#40251D]">
                           ₹{product.price}
                         </span>
                         {product.originalPrice > product.price && (
@@ -169,9 +170,9 @@ export const BestSellers: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => addToCart(product, 1, product.variants?.[0])}
-                      className="w-full bg-[#F8C6CF] hover:bg-[#FF647F] hover:text-white text-[#A82F4D] text-xs sm:text-sm font-bold py-3 px-4 rounded-full transition-all duration-200 shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                      className="w-full bg-[#F8C6CF] hover:bg-[#FF647F] hover:text-white text-[#A82F4D] text-xs sm:text-sm font-bold py-2.5 sm:py-3 px-3 sm:px-4 rounded-full transition-all duration-200 shadow-xs flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer active:scale-95"
                     >
-                      <ShoppingBag className="w-4 h-4" />
+                      <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       <span>Add to Bag</span>
                     </button>
                   </div>

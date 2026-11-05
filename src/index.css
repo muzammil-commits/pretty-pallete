@@ -134,6 +134,49 @@
   animation: petalSway 7s ease-in-out infinite;
 }
 
+/* Global Luxury Scroll Reveal System */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-init.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-init.reveal-left {
+  transform: translateX(-35px);
+}
+.reveal-init.reveal-left.is-visible {
+  transform: translateX(0);
+}
+
+.reveal-init.reveal-right {
+  transform: translateX(35px);
+}
+.reveal-init.reveal-right.is-visible {
+  transform: translateX(0);
+}
+
+.reveal-init.reveal-scale {
+  transform: scale(0.93);
+}
+.reveal-init.reveal-scale.is-visible {
+  transform: scale(1);
+}
+
+/* Stagger transition delays */
+.delay-100 { transition-delay: 100ms; }
+.delay-150 { transition-delay: 150ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-250 { transition-delay: 250ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
