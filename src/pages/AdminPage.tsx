@@ -142,17 +142,17 @@ export const AdminPage: React.FC = () => {
             e.preventDefault();
             const success = loginAdmin(password);
             if (!success) {
-              alert('Invalid access credentials. Default master key: prettypalette2026');
+              alert('Invalid access credentials. Please enter your valid admin key.');
             }
           }}>
-            <div className="mb-4 text-left">
+            <div className="mb-5 text-left">
               <label className="block text-xs font-semibold text-stone-600 mb-1">Admin Access Key</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password (prettypalette2026)"
+                placeholder="••••••••••••"
                 className="w-full px-4 py-3 text-sm border border-[#F8C6CF] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#A82F4D]/20 focus:border-[#A82F4D]"
               />
             </div>
@@ -164,10 +164,6 @@ export const AdminPage: React.FC = () => {
               Authenticate & Enter
             </button>
           </form>
-
-          <div className="mt-6 pt-5 border-t border-[#F8C6CF]/40 text-xs text-stone-400">
-            <span>Integrated with Supabase & Cloudinary 🌿</span>
-          </div>
         </div>
       </div>
     );
