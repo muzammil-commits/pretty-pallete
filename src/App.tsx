@@ -66,6 +66,7 @@ export const App: React.FC = () => {
               <Route path="/policies/:policy" element={<PolicyPage />} />
               <Route path="/faqs" element={<PolicyPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin/login" element={<AdminPage />} />
             </Routes>
           </main>
 

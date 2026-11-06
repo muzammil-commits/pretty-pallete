@@ -379,13 +379,6 @@ export const Header: React.FC = () => {
                   >
                     Track Order
                   </Link>
-                  <Link
-                    to="/admin"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-1.5 px-4 py-2 text-[#78844B] font-semibold hover:text-[#4C542C]"
-                  >
-                    <ShieldAlert className="w-4 h-4" /> Admin Portal
-                  </Link>
                 </div>
               </div>
             </div>

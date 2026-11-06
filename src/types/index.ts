@@ -32,6 +32,7 @@ export interface Product {
   variants?: ProductVariant[];
   size?: string;
   badge?: string;
+  sku?: string;
 }
 
 export interface CartItem {
