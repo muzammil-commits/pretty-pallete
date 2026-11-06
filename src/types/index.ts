@@ -100,6 +100,28 @@ export interface Review {
   comment: string;
   date: string;
   verifiedPurchase: boolean;
+  productName?: string;
+  isApproved?: boolean;
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  totalOrders: number;
+  totalSpent: number;
+  joinedDate: string;
+  status: 'active' | 'inactive';
+}
+
+export interface SEOSettings {
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string;
+  ogImage: string;
+  canonicalUrl: string;
+  robots: string;
 }
 
 export interface Coupon {
@@ -141,6 +163,7 @@ export interface HomepageCMS {
       ctaLink: string;
       taglineTopRight?: string;
       bgImage: string;
+      mobileBgImage?: string;
     }>;
   };
   benefits: Array<{
@@ -152,6 +175,9 @@ export interface HomepageCMS {
     id: string;
     name: string;
     tagline: string;
+    subtitle?: string;
+    description?: string;
+    badge?: string;
     image: string;
     link: string;
   }>;
@@ -179,7 +205,9 @@ export interface HomepageCMS {
     heading: string;
     description: string;
   };
+  seo?: SEOSettings;
   settings: {
+    brandName?: string;
     freeShippingThreshold: number;
     shippingFee: number;
     phone: string;

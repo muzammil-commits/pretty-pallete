@@ -8,7 +8,8 @@ import {
   HomepageCMS, 
   ProductVariant, 
   ShippingAddress,
-  OrderStatus
+  OrderStatus,
+  Customer
 } from '../types';
 import { 
   INITIAL_PRODUCTS, 
@@ -40,6 +41,49 @@ interface UserProfile {
   phone: string;
   addresses: ShippingAddress[];
 }
+
+export const INITIAL_CUSTOMERS: Customer[] = [
+  {
+    id: 'cust-1',
+    name: 'Ananya Reddy',
+    email: 'ananya.reddy@gmail.com',
+    phone: '+91 98490 12345',
+    totalOrders: 3,
+    totalSpent: 2197,
+    joinedDate: '2026-09-15',
+    status: 'active'
+  },
+  {
+    id: 'cust-2',
+    name: 'Priya Sharma',
+    email: 'priya.sharma@yahoo.com',
+    phone: '+91 98200 54321',
+    totalOrders: 2,
+    totalSpent: 1298,
+    joinedDate: '2026-10-02',
+    status: 'active'
+  },
+  {
+    id: 'cust-3',
+    name: 'Sneha Patel',
+    email: 'sneha.patel@outlook.com',
+    phone: '+91 97123 98765',
+    totalOrders: 1,
+    totalSpent: 798,
+    joinedDate: '2026-10-20',
+    status: 'active'
+  },
+  {
+    id: 'cust-4',
+    name: 'Dr. Kavitha Menon',
+    email: 'kavitha.menon@gmail.com',
+    phone: '+91 94440 67890',
+    totalOrders: 4,
+    totalSpent: 3890,
+    joinedDate: '2026-08-11',
+    status: 'active'
+  }
+];
 
 export const INITIAL_SERVICES: ServiceItem[] = [
   {
@@ -77,6 +121,7 @@ export interface StoreContextType {
   reviews: Review[];
   coupons: Coupon[];
   services: ServiceItem[];
+  customers: Customer[];
   activityLogs: ActivityLogItem[];
   appliedCoupon: Coupon | null;
   user: UserProfile | null;
@@ -100,10 +145,23 @@ export interface StoreContextType {
   createOrder: (orderData: Omit<Order, 'id' | 'orderNumber' | 'date' | 'createdAt'>) => Order;
   updateOrderStatus: (orderId: string, status: OrderStatus, trackingNumber?: string, courierName?: string) => void;
   addReview: (review: Omit<Review, 'id' | 'date'>) => void;
+  updateReview: (review: Review) => void;
+  deleteReview: (reviewId: string) => void;
+  toggleApproveReview: (reviewId: string) => void;
   updateProduct: (product: Product) => Promise<void>;
   addProduct: (product: Omit<Product, 'id' | 'slug'>) => Promise<Product>;
   deleteProduct: (productId: string) => Promise<void>;
   updateCMS: (cms: Partial<HomepageCMS>) => Promise<void>;
+  addCategory: (category: HomepageCMS['categories'][0]) => void;
+  updateCategory: (category: HomepageCMS['categories'][0]) => void;
+  deleteCategory: (categoryId: string) => void;
+  addCoupon: (coupon: Coupon) => void;
+  updateCoupon: (coupon: Coupon) => void;
+  deleteCoupon: (code: string) => void;
+  addCustomer: (cust: Omit<Customer, 'id' | 'joinedDate'>) => void;
+  updateCustomer: (cust: Customer) => void;
+  deleteCustomer: (id: string) => void;
+  clearActivityLogs: () => void;
   addService: (service: Omit<ServiceItem, 'id' | 'slug'>) => void;
   updateService: (service: ServiceItem) => void;
   deleteService: (serviceId: string) => void;
@@ -197,6 +255,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [coupons, setCoupons] = useState<Coupon[]>(() => {
     const saved = localStorage.getItem('pp_coupons');
     return saved ? JSON.parse(saved) : INITIAL_COUPONS;
+  });
+
+  // Customers
+  const [customers, setCustomers] = useState<Customer[]>(() => {
+    const saved = localStorage.getItem('pp_customers');
+    return saved ? JSON.parse(saved) : INITIAL_CUSTOMERS;
   });
 
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
@@ -325,6 +389,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     localStorage.setItem('pp_coupons', JSON.stringify(coupons));
   }, [coupons]);
+
+  useEffect(() => {
+    localStorage.setItem('pp_customers', JSON.stringify(customers));
+  }, [customers]);
 
   useEffect(() => {
     if (user) {
@@ -588,6 +656,129 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   // ---------------------------------------------------------------------------
+  // CATEGORIES MUTATIONS
+  // ---------------------------------------------------------------------------
+  const addCategory = (category: HomepageCMS['categories'][0]) => {
+    setCms(prev => {
+      const next = {
+        ...prev,
+        categories: [...prev.categories, category]
+      };
+      upsertDbCMS(next);
+      return next;
+    });
+    showToast(`Category "${category.name}" added successfully!`);
+    logAdminActivity('CREATE', 'CATEGORY', category.id, `Added category ${category.name}`);
+  };
+
+  const updateCategory = (category: HomepageCMS['categories'][0]) => {
+    setCms(prev => {
+      const next = {
+        ...prev,
+        categories: prev.categories.map(c => c.id === category.id ? category : c)
+      };
+      upsertDbCMS(next);
+      return next;
+    });
+    showToast(`Category "${category.name}" updated!`);
+    logAdminActivity('UPDATE', 'CATEGORY', category.id, `Updated category ${category.name}`);
+  };
+
+  const deleteCategory = (categoryId: string) => {
+    setCms(prev => {
+      const target = prev.categories.find(c => c.id === categoryId);
+      const next = {
+        ...prev,
+        categories: prev.categories.filter(c => c.id !== categoryId)
+      };
+      upsertDbCMS(next);
+      if (target) {
+        logAdminActivity('DELETE', 'CATEGORY', categoryId, `Deleted category ${target.name}`);
+      }
+      return next;
+    });
+    showToast('Category deleted.');
+  };
+
+  // ---------------------------------------------------------------------------
+  // CUSTOMER MUTATIONS
+  // ---------------------------------------------------------------------------
+  const addCustomer = (custData: Omit<Customer, 'id' | 'joinedDate'>) => {
+    const newCust: Customer = {
+      ...custData,
+      id: `cust-${Date.now()}`,
+      joinedDate: new Date().toISOString().split('T')[0]
+    };
+    setCustomers(prev => [newCust, ...prev]);
+    showToast(`Customer "${newCust.name}" added.`);
+    logAdminActivity('CREATE', 'CUSTOMER', newCust.id, `Added customer ${newCust.name}`);
+  };
+
+  const updateCustomer = (cust: Customer) => {
+    setCustomers(prev => prev.map(c => c.id === cust.id ? cust : c));
+    showToast(`Customer "${cust.name}" updated.`);
+    logAdminActivity('UPDATE', 'CUSTOMER', cust.id, `Updated customer ${cust.name}`);
+  };
+
+  const deleteCustomer = (id: string) => {
+    setCustomers(prev => prev.filter(c => c.id !== id));
+    showToast('Customer deleted.');
+    logAdminActivity('DELETE', 'CUSTOMER', id, `Deleted customer ${id}`);
+  };
+
+  // ---------------------------------------------------------------------------
+  // COUPON MUTATIONS
+  // ---------------------------------------------------------------------------
+  const addCoupon = (coupon: Coupon) => {
+    setCoupons(prev => [coupon, ...prev.filter(c => c.code !== coupon.code)]);
+    showToast(`Coupon "${coupon.code}" created!`);
+    logAdminActivity('CREATE', 'COUPON', coupon.code, `Created coupon ${coupon.code}`);
+  };
+
+  const updateCoupon = (coupon: Coupon) => {
+    setCoupons(prev => prev.map(c => c.code === coupon.code ? coupon : c));
+    showToast(`Coupon "${coupon.code}" updated!`);
+    logAdminActivity('UPDATE', 'COUPON', coupon.code, `Updated coupon ${coupon.code}`);
+  };
+
+  const deleteCoupon = (code: string) => {
+    setCoupons(prev => prev.filter(c => c.code !== code));
+    showToast(`Coupon "${code}" deleted.`);
+    logAdminActivity('DELETE', 'COUPON', code, `Deleted coupon ${code}`);
+  };
+
+  // ---------------------------------------------------------------------------
+  // REVIEW MUTATIONS
+  // ---------------------------------------------------------------------------
+  const updateReview = (review: Review) => {
+    setReviews(prev => prev.map(r => r.id === review.id ? review : r));
+    showToast('Review updated!');
+    logAdminActivity('UPDATE', 'REVIEW', review.id, `Updated review by ${review.authorName}`);
+  };
+
+  const deleteReview = (reviewId: string) => {
+    setReviews(prev => prev.filter(r => r.id !== reviewId));
+    showToast('Review deleted.');
+    logAdminActivity('DELETE', 'REVIEW', reviewId, `Deleted review ${reviewId}`);
+  };
+
+  const toggleApproveReview = (reviewId: string) => {
+    setReviews(prev => prev.map(r => {
+      if (r.id === reviewId) {
+        const nextApproved = !r.isApproved;
+        return { ...r, isApproved: nextApproved, verifiedPurchase: nextApproved ? true : r.verifiedPurchase };
+      }
+      return r;
+    }));
+    showToast('Review status updated.');
+  };
+
+  const clearActivityLogs = () => {
+    setActivityLogs([]);
+    showToast('Activity logs cleared.');
+  };
+
+  // ---------------------------------------------------------------------------
   // ONE-CLICK DATABASE SEEDER
   // ---------------------------------------------------------------------------
   const seedToSupabase = async (): Promise<{ success: boolean; count: number; error?: string }> => {
@@ -651,6 +842,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         reviews,
         coupons,
         services,
+        customers,
         activityLogs,
         appliedCoupon,
         user,
@@ -673,10 +865,23 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         createOrder,
         updateOrderStatus,
         addReview,
+        updateReview,
+        deleteReview,
+        toggleApproveReview,
         updateProduct,
         addProduct,
         deleteProduct,
         updateCMS,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+        addCoupon,
+        updateCoupon,
+        deleteCoupon,
+        addCustomer,
+        updateCustomer,
+        deleteCustomer,
+        clearActivityLogs,
         addService,
         updateService,
         deleteService,

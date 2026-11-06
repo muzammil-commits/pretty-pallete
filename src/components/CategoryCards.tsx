@@ -1,40 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useStore } from '../context/StoreContext';
+
+const DEFAULT_CATEGORIES = [
+  {
+    id: 'cosmetics',
+    name: 'Cosmetics',
+    tagline: 'Makeup essentials for every mood.',
+    subtitle: 'Artisanal lipsticks, herbal kajal, mineral blush & botanical beauty.',
+    image: '/assets/banner-cosmetics.png',
+    link: '/cosmetics',
+    badge: 'Bestselling Glamour',
+    color: 'from-[#FDF1F4] to-[#FCE5E8]'
+  },
+  {
+    id: 'skin-care',
+    name: 'Skin Care',
+    tagline: 'Nourish. Protect. Glow.',
+    subtitle: 'Kashmiri saffron, rosehip oil, day creams & hydrating serums.',
+    image: '/assets/banner-skincare.png',
+    link: '/skin-care',
+    badge: 'Natural Radiance',
+    color: 'from-[#FDF8EE] to-[#FFF9EF]'
+  },
+  {
+    id: 'hair-care',
+    name: 'Hair Care',
+    tagline: 'Stronger. Healthier. Happier Hair.',
+    subtitle: '18-herb Ayurvedic oils, sulphate-free shampoos & silk masks.',
+    image: '/assets/banner-haircare.png',
+    link: '/hair-care',
+    badge: 'Pure Scalp Therapy',
+    color: 'from-[#FCE5E8] to-[#FDF1F4]'
+  }
+];
 
 export const CategoryCards: React.FC = () => {
-  const categories = [
-    {
-      id: 'cosmetics',
-      name: 'Cosmetics',
-      tagline: 'Makeup essentials for every mood.',
-      subtitle: 'Artisanal lipsticks, herbal kajal, mineral blush & botanical beauty.',
-      image: '/assets/banner-cosmetics.png',
-      link: '/cosmetics',
-      badge: 'Bestselling Glamour',
-      color: 'from-[#FDF1F4] to-[#FCE5E8]'
-    },
-    {
-      id: 'skin-care',
-      name: 'Skin Care',
-      tagline: 'Nourish. Protect. Glow.',
-      subtitle: 'Kashmiri saffron, rosehip oil, day creams & hydrating serums.',
-      image: '/assets/banner-skincare.png',
-      link: '/skin-care',
-      badge: 'Natural Radiance',
-      color: 'from-[#FDF8EE] to-[#FFF9EF]'
-    },
-    {
-      id: 'hair-care',
-      name: 'Hair Care',
-      tagline: 'Stronger. Healthier. Happier Hair.',
-      subtitle: '18-herb Ayurvedic oils, sulphate-free shampoos & silk masks.',
-      image: '/assets/banner-haircare.png',
-      link: '/hair-care',
-      badge: 'Pure Scalp Therapy',
-      color: 'from-[#FCE5E8] to-[#FDF1F4]'
-    }
-  ];
+  const { cms } = useStore();
+  const categories = (cms.categories && cms.categories.length > 0) ? cms.categories : DEFAULT_CATEGORIES;
 
   return (
     <section className="w-full py-8 sm:py-12 bg-transparent relative overflow-hidden">

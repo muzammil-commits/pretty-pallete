@@ -61,9 +61,9 @@ export const Hero: React.FC = () => {
           ) : (
             <div className="relative w-full h-full">
               
-              {/* DESKTOP BACKGROUND: image copy 3.png (/assets/hero-bg.png) */}
+              {/* DESKTOP BACKGROUND: uses active slide bgImage with fallback to /assets/hero-bg.png */}
               <img 
-                src="/assets/hero-bg.png" 
+                src={activeSlide.bgImage || '/assets/hero-bg.png'} 
                 alt="Pretty Palette Natural Beauty Banner" 
                 className="hidden md:block w-full h-full object-cover object-right lg:object-center transform scale-100 hover:scale-102 transition-transform duration-1000 ease-out animate-pulse-soft"
                 style={{
@@ -71,9 +71,9 @@ export const Hero: React.FC = () => {
                 }}
               />
 
-              {/* MOBILE BACKGROUND: image copy 18.png ONLY (/assets/hero-mobile-bg.png) as requested */}
+              {/* MOBILE BACKGROUND: uses active slide mobileBgImage with fallback */}
               <img 
-                src="/assets/hero-mobile-bg.png" 
+                src={activeSlide.mobileBgImage || activeSlide.bgImage || '/assets/hero-mobile-bg.png'} 
                 alt="Pretty Palette Natural Beauty Mobile Banner" 
                 className="block md:hidden w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000 ease-out"
                 style={{
