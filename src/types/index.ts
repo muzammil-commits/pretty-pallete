@@ -145,6 +145,27 @@ export interface ContactEnquiry {
   status: 'new' | 'read' | 'replied';
 }
 
+export interface DailyRitualStep {
+  id: string;
+  number: string;
+  title: string;
+  action: string;
+  time: string;
+  description: string;
+  productName: string;
+  price: number;
+  image: string;
+  tips: string;
+  categoryLink?: string;
+}
+
+export interface DailyRitualCMS {
+  scriptHeading: string;
+  heading: string;
+  description: string;
+  steps: DailyRitualStep[];
+}
+
 export interface HomepageCMS {
   announcementBar: {
     text: string;
@@ -205,6 +226,7 @@ export interface HomepageCMS {
     heading: string;
     description: string;
   };
+  dailyRitual?: DailyRitualCMS;
   seo?: SEOSettings;
   settings: {
     brandName?: string;

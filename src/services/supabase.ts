@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
-import { Product, HomepageCMS, Order, Review, CategoryType } from '../types';
+import { Product, HomepageCMS, Order, Review, CategoryType, DailyRitualCMS } from '../types';
+import { INITIAL_DAILY_RITUAL } from '../data/mockData';
 
 // Supabase credentials provided by the user
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://qdafyowujujuqlwfmxwh.supabase.co';
@@ -148,6 +149,8 @@ export async function getDbCMS(): Promise<HomepageCMS | null> {
 
     if (error || !data) return null;
 
+    const dailyRitual = (data as any).daily_ritual || (data.about as any)?.dailyRitual || INITIAL_DAILY_RITUAL;
+
     return {
       announcementBar: data.announcement_bar,
       hero: data.hero,
@@ -156,6 +159,7 @@ export async function getDbCMS(): Promise<HomepageCMS | null> {
       about: data.about,
       whyChoose: data.why_choose,
       newsletter: data.newsletter,
+      dailyRitual,
       settings: {
         freeShippingThreshold: 999,
         shippingFee: 99,
@@ -181,17 +185,22 @@ export async function getDbCMS(): Promise<HomepageCMS | null> {
 
 export async function upsertDbCMS(cms: HomepageCMS): Promise<{ success: boolean; error?: string }> {
   try {
-    const { error } = await supabase.from('homepage_cms').upsert({
+    const payload: any = {
       id: 'master_cms',
       announcement_bar: cms.announcementBar,
       hero: cms.hero,
       benefits: cms.benefits,
       categories: cms.categories,
-      about: cms.about,
+      about: {
+        ...(cms.about || {}),
+        dailyRitual: cms.dailyRitual
+      },
       why_choose: cms.whyChoose,
       newsletter: cms.newsletter,
       updated_at: new Date().toISOString()
-    });
+    };
+
+    const { error } = await supabase.from('homepage_cms').upsert(payload);
 
     if (error) return { success: false, error: error.message };
     return { success: true };
@@ -210,30 +219,44 @@ export async function getDbOrders(): Promise<Order[] | null> {
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error || !data || data.length === 0) return null;
+    if (error) {
+      console.warn('[Supabase Orders Error]:', error.message);
+      return null;
+    }
+    if (!data) return [];
 
     return data.map((o: any) => ({
       id: o.id,
       orderNumber: o.order_number,
       date: o.date,
-      customer: o.customer,
-      shippingAddress: o.shipping_address,
-      items: o.items,
-      subtotal: Number(o.subtotal),
-      shippingFee: Number(o.shipping_fee),
-      discountAmount: Number(o.discount_amount),
-      couponCode: o.coupon_code,
-      total: Number(o.total),
+      customer: typeof o.customer === 'string' ? JSON.parse(o.customer) : o.customer,
+      shippingAddress: typeof o.shipping_address === 'string' ? JSON.parse(o.shipping_address) : o.shipping_address,
+      items: typeof o.items === 'string' ? JSON.parse(o.items) : (o.items || []),
+      subtotal: Number(o.subtotal || 0),
+      shippingFee: Number(o.shipping_fee || 0),
+      discountAmount: Number(o.discount_amount || 0),
+      couponCode: o.coupon_code || undefined,
+      total: Number(o.total || 0),
       paymentMethod: o.payment_method,
       paymentStatus: o.payment_status,
       orderStatus: o.order_status,
-      trackingNumber: o.tracking_number,
-      courierName: o.courier_name,
-      estimatedDelivery: o.estimated_delivery,
+      trackingNumber: o.tracking_number || undefined,
+      courierName: o.courier_name || undefined,
+      estimatedDelivery: o.estimated_delivery || undefined,
       createdAt: o.created_at
     }));
   } catch (err) {
     return null;
+  }
+}
+
+export async function deleteDbOrder(orderId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { error } = await supabase.from('orders').delete().eq('id', orderId);
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
   }
 }
 

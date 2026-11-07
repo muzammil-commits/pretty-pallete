@@ -35,12 +35,15 @@ import {
   Mail,
   MapPin,
   Percent,
-  X
+  X,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { Product, OrderStatus, CategoryType, HomepageCMS, Customer, Review, Coupon } from '../types';
+import { Product, OrderStatus, CategoryType, HomepageCMS, Customer, Review, Coupon, DailyRitualCMS, DailyRitualStep } from '../types';
 import { uploadImageToCloudinary } from '../services/cloudinary';
 import { ServiceItem } from '../services/supabase';
+import { INITIAL_DAILY_RITUAL } from '../data/mockData';
 
 type AdminTab = 
   | 'dashboard' 
@@ -91,6 +94,7 @@ export const AdminPage: React.FC = () => {
     addService,
     updateService,
     deleteService,
+    deleteOrder,
     syncWithSupabase,
     showToast 
   } = useStore();
@@ -161,7 +165,10 @@ export const AdminPage: React.FC = () => {
   const [couponForm, setCouponForm] = useState<Partial<Coupon>>({});
 
   // CMS Form State
-  const [cmsForm, setCmsForm] = useState<HomepageCMS>(cms);
+  const [cmsForm, setCmsForm] = useState<HomepageCMS>(() => ({
+    ...cms,
+    dailyRitual: cms.dailyRitual || INITIAL_DAILY_RITUAL
+  }));
 
   // Media Library State
   const [mediaAssets, setMediaAssets] = useState<Array<{ url: string; name: string; publicId: string }>>([
@@ -177,7 +184,10 @@ export const AdminPage: React.FC = () => {
 
   // Sync CMS form when store CMS changes
   useEffect(() => {
-    setCmsForm(cms);
+    setCmsForm(prev => ({
+      ...cms,
+      dailyRitual: cms.dailyRitual || prev.dailyRitual || INITIAL_DAILY_RITUAL
+    }));
   }, [cms]);
 
   // ---------------------------------------------------------------------------
@@ -1463,6 +1473,429 @@ export const AdminPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* The 4-Step Daily Glow Ritual Section (image copy 74.png) */}
+              <div className="bg-white rounded-2xl border border-[#F8C6CF]/60 p-5 shadow-xs space-y-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-stone-100">
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-[#40251D] flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-[#A82F4D]" />
+                      <span>The Daily Glow Ritual Section (image copy 74.png)</span>
+                    </h3>
+                    <p className="text-xs text-stone-500">
+                      Manage steps, numbers, actions, titles, routine times, prices (₹), beauty tips, and step visual images. Changes sync live to the storefront.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const currentSteps = cmsForm.dailyRitual?.steps || INITIAL_DAILY_RITUAL.steps;
+                      const nextNum = String(currentSteps.length + 1).padStart(2, '0');
+                      const newStep: DailyRitualStep = {
+                        id: `step-${Date.now()}`,
+                        number: nextNum,
+                        title: 'Overnight Intensive Nourishment',
+                        action: 'Nourish & Restore',
+                        time: 'Bedtime Sanctuary',
+                        description: 'Enrich skin lipid barrier overnight with botanical Kumkumadi and cold-pressed botanical squalane.',
+                        productName: 'Kumkumadi Night Elixir',
+                        price: 599,
+                        image: '/assets/ritual-step-1.png',
+                        tips: 'Gently massage 2-3 drops into clean skin before sleep.',
+                        categoryLink: '/skin-care'
+                      };
+                      setCmsForm(prev => {
+                        const ritual = prev.dailyRitual || INITIAL_DAILY_RITUAL;
+                        return {
+                          ...prev,
+                          dailyRitual: {
+                            ...ritual,
+                            steps: [...(ritual.steps || []), newStep]
+                          }
+                        };
+                      });
+                      showToast(`New Ritual Step ${nextNum} added! Click Publish to save.`);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#A82F4D] text-white text-xs font-bold cursor-pointer hover:bg-[#8D253F] shadow-sm transition-all shrink-0"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>+ Add New Ritual Step</span>
+                  </button>
+                </div>
+
+                {/* Section Global Headings */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs">
+                  <div>
+                    <label className="block font-semibold text-stone-700 mb-1">Script Subheading (Calligraphy style)</label>
+                    <input
+                      type="text"
+                      value={cmsForm.dailyRitual?.scriptHeading ?? INITIAL_DAILY_RITUAL.scriptHeading}
+                      onChange={(e) => setCmsForm(prev => ({
+                        ...prev,
+                        dailyRitual: {
+                          ...(prev.dailyRitual || INITIAL_DAILY_RITUAL),
+                          scriptHeading: e.target.value
+                        }
+                      }))}
+                      placeholder="e.g. The Art of Self-Care ♡"
+                      className="w-full px-3 py-2 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-semibold text-stone-700 mb-1">Main Section Heading</label>
+                    <input
+                      type="text"
+                      value={cmsForm.dailyRitual?.heading ?? INITIAL_DAILY_RITUAL.heading}
+                      onChange={(e) => setCmsForm(prev => ({
+                        ...prev,
+                        dailyRitual: {
+                          ...(prev.dailyRitual || INITIAL_DAILY_RITUAL),
+                          heading: e.target.value
+                        }
+                      }))}
+                      placeholder="e.g. The 4-Step Daily Glow Ritual"
+                      className="w-full px-3 py-2 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block font-semibold text-stone-700 mb-1">Section Subtitle / Description</label>
+                    <textarea
+                      rows={2}
+                      value={cmsForm.dailyRitual?.description ?? INITIAL_DAILY_RITUAL.description}
+                      onChange={(e) => setCmsForm(prev => ({
+                        ...prev,
+                        dailyRitual: {
+                          ...(prev.dailyRitual || INITIAL_DAILY_RITUAL),
+                          description: e.target.value
+                        }
+                      }))}
+                      placeholder="Description explaining the routine..."
+                      className="w-full px-3 py-2 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                    />
+                  </div>
+                </div>
+
+                {/* Steps List */}
+                <div className="space-y-4">
+                  {(cmsForm.dailyRitual?.steps || INITIAL_DAILY_RITUAL.steps).map((step, idx, arr) => (
+                    <div key={step.id || idx} className="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-4 text-xs">
+                      {/* Step Header */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-stone-200">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-full bg-[#A82F4D] text-white">
+                            Step {step.number || idx + 1}
+                          </span>
+                          <span className="font-bold text-[#40251D] text-sm">{step.title}</span>
+                          <span className="px-2 py-0.5 rounded-full bg-[#78844B]/15 text-[#78844B] font-bold text-[10px]">
+                            {step.action}
+                          </span>
+                          <span className="px-2 py-0.5 rounded-full bg-[#A82F4D]/10 text-[#A82F4D] font-bold text-xs">
+                            ₹{step.price}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5">
+                          {/* Reorder Buttons */}
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => {
+                              if (idx === 0) return;
+                              const updated = [...arr];
+                              const temp = updated[idx - 1];
+                              updated[idx - 1] = updated[idx];
+                              updated[idx] = temp;
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: {
+                                  ...(prev.dailyRitual || INITIAL_DAILY_RITUAL),
+                                  steps: updated
+                                }
+                              }));
+                            }}
+                            className="p-1 rounded bg-white border border-stone-200 text-stone-600 hover:text-[#A82F4D] disabled:opacity-30 disabled:cursor-not-allowed"
+                            title="Move Up"
+                          >
+                            <ArrowUp className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === arr.length - 1}
+                            onClick={() => {
+                              if (idx === arr.length - 1) return;
+                              const updated = [...arr];
+                              const temp = updated[idx + 1];
+                              updated[idx + 1] = updated[idx];
+                              updated[idx] = temp;
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: {
+                                  ...(prev.dailyRitual || INITIAL_DAILY_RITUAL),
+                                  steps: updated
+                                }
+                              }));
+                            }}
+                            className="p-1 rounded bg-white border border-stone-200 text-stone-600 hover:text-[#A82F4D] disabled:opacity-30 disabled:cursor-not-allowed"
+                            title="Move Down"
+                          >
+                            <ArrowDown className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Delete Step */}
+                          {arr.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (window.confirm(`Delete Step ${step.number || idx + 1}: "${step.title}"?`)) {
+                                  const updated = arr.filter((_, i) => i !== idx);
+                                  setCmsForm(prev => ({
+                                    ...prev,
+                                    dailyRitual: {
+                                      ...(prev.dailyRitual || INITIAL_DAILY_RITUAL),
+                                      steps: updated
+                                    }
+                                  }));
+                                  showToast(`Step deleted! Click Publish to apply changes.`);
+                                }
+                              }}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-red-600 bg-red-50 hover:bg-red-100 font-bold text-[11px] cursor-pointer"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                              <span>Delete</span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Step Fields Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div>
+                          <label className="block font-semibold text-stone-700 mb-1">Step Number</label>
+                          <input
+                            type="text"
+                            value={step.number}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], number: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="e.g. 01"
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg font-mono font-bold focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-semibold text-stone-700 mb-1">Action Badge</label>
+                          <input
+                            type="text"
+                            value={step.action}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], action: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="e.g. Cleanse"
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-semibold text-stone-700 mb-1">Routine Timing</label>
+                          <input
+                            type="text"
+                            value={step.time}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], time: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="e.g. Morning & Evening"
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-semibold text-stone-700 mb-1">Category Link</label>
+                          <input
+                            type="text"
+                            value={step.categoryLink || '/skin-care'}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], categoryLink: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="e.g. /skin-care"
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label className="block font-semibold text-stone-700 mb-1">Step Title</label>
+                          <input
+                            type="text"
+                            value={step.title}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], title: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="e.g. Purify & Awaken"
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg font-serif font-bold focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-semibold text-stone-700 mb-1">Product Name</label>
+                          <input
+                            type="text"
+                            value={step.productName}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], productName: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="e.g. Botanical Clarifying Wash"
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-semibold text-stone-700 mb-1">Product Price (₹)</label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={step.price}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], price: Number(e.target.value) || 0 };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="e.g. 299"
+                            className="w-full px-2.5 py-1.5 bg-white border border-[#A82F4D]/50 text-[#A82F4D] font-bold rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label className="block font-semibold text-stone-700 mb-1">Step Description</label>
+                          <textarea
+                            rows={2}
+                            value={step.description}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], description: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="Detailed routine instructions..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label className="block font-semibold text-stone-700 mb-1">Beauty Tip</label>
+                          <textarea
+                            rows={2}
+                            value={step.tips}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], tips: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="Pro-tip for best results..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-[#A82F4D]"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Image Uploader & Preview */}
+                      <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold text-stone-700">Step Visual Image</span>
+                          <label className="cursor-pointer text-[11px] font-bold text-[#A82F4D] hover:underline flex items-center gap-1">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>Upload Image (Cloudinary)</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                showToast(`Uploading image for Step ${step.number}...`);
+                                try {
+                                  const res = await uploadImageToCloudinary(file);
+                                  if (res.url) {
+                                    const updated = [...arr];
+                                    updated[idx] = { ...updated[idx], image: res.url };
+                                    setCmsForm(prev => ({
+                                      ...prev,
+                                      dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                                    }));
+                                    showToast(`Image uploaded for Step ${step.number}! Click Publish to save.`);
+                                  }
+                                } catch (err: any) {
+                                  showToast(`Upload failed: ${err.message}`);
+                                }
+                              }}
+                            />
+                          </label>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row items-center gap-3">
+                          <input
+                            type="text"
+                            value={step.image || ''}
+                            onChange={(e) => {
+                              const updated = [...arr];
+                              updated[idx] = { ...updated[idx], image: e.target.value };
+                              setCmsForm(prev => ({
+                                ...prev,
+                                dailyRitual: { ...(prev.dailyRitual || INITIAL_DAILY_RITUAL), steps: updated }
+                              }));
+                            }}
+                            placeholder="/assets/... or Cloudinary image URL"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-stone-200 rounded-lg focus:outline-none"
+                          />
+                          {step.image && (
+                            <img
+                              src={step.image}
+                              alt={step.title}
+                              className="w-16 h-16 rounded-xl object-cover border border-stone-200 shrink-0 shadow-xs"
+                            />
+                          )}
+                        </div>
+                      </div>
+
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="text-right">
                 <button
                   type="button"
@@ -1499,44 +1932,73 @@ export const AdminPage: React.FC = () => {
                         <th className="py-3 px-4">Total</th>
                         <th className="py-3 px-4">Payment</th>
                         <th className="py-3 px-4">Status</th>
-                        <th className="py-3 px-4 text-right">Update</th>
+                        <th className="py-3 px-4">Date</th>
+                        <th className="py-3 px-4 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-stone-100">
-                      {orders.map(o => (
-                        <tr key={o.id} className="hover:bg-stone-50/60 transition-colors">
-                          <td className="py-3 px-4 font-bold text-[#40251D]">{o.orderNumber}</td>
-                          <td className="py-3 px-4">
-                            <span className="font-semibold text-stone-800 block">{o.customer?.fullName}</span>
-                            <span className="text-[10px] text-stone-400">{o.customer?.phone}</span>
-                          </td>
-                          <td className="py-3 px-4 text-stone-600">{o.items?.length || 0} items</td>
-                          <td className="py-3 px-4 font-bold text-[#A82F4D]">₹{o.total}</td>
-                          <td className="py-3 px-4">
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${
-                              o.paymentStatus === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                            }`}>
-                              {o.paymentStatus}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            <select
-                              value={o.orderStatus}
-                              onChange={(e) => updateOrderStatus(o.id, e.target.value as OrderStatus)}
-                              className="px-2 py-1 bg-stone-50 border border-stone-200 rounded-lg text-xs font-semibold focus:outline-none cursor-pointer"
-                            >
-                              <option value="placed">Placed</option>
-                              <option value="processing">Processing</option>
-                              <option value="dispatched">Dispatched</option>
-                              <option value="delivered">Delivered</option>
-                              <option value="cancelled">Cancelled</option>
-                            </select>
-                          </td>
-                          <td className="py-3 px-4 text-right text-[10px] text-stone-400">
-                            {o.date}
+                      {orders.length === 0 ? (
+                        <tr>
+                          <td colSpan={8} className="py-16 text-center text-stone-400">
+                            <div className="w-12 h-12 rounded-full bg-[#FDF1F4] text-[#A82F4D] flex items-center justify-center mx-auto mb-3">
+                              <ShoppingBag className="w-6 h-6" />
+                            </div>
+                            <p className="font-bold text-stone-700 text-sm">No live orders received yet</p>
+                            <p className="text-xs text-stone-400 mt-1 max-w-sm mx-auto">
+                              When a customer completes a checkout order on the website, it will immediately appear here with real-time live synchronization.
+                            </p>
                           </td>
                         </tr>
-                      ))}
+                      ) : (
+                        orders.map(o => (
+                          <tr key={o.id} className="hover:bg-stone-50/60 transition-colors">
+                            <td className="py-3 px-4 font-bold text-[#40251D]">{o.orderNumber}</td>
+                            <td className="py-3 px-4">
+                              <span className="font-semibold text-stone-800 block">{o.customer?.fullName}</span>
+                              <span className="text-[10px] text-stone-400">{o.customer?.phone}</span>
+                            </td>
+                            <td className="py-3 px-4 text-stone-600">{o.items?.length || 0} items</td>
+                            <td className="py-3 px-4 font-bold text-[#A82F4D]">₹{o.total}</td>
+                            <td className="py-3 px-4">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${
+                                o.paymentStatus === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                              }`}>
+                                {o.paymentStatus}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4">
+                              <select
+                                value={o.orderStatus}
+                                onChange={(e) => updateOrderStatus(o.id, e.target.value as OrderStatus)}
+                                className="px-2 py-1 bg-stone-50 border border-stone-200 rounded-lg text-xs font-semibold focus:outline-none cursor-pointer"
+                              >
+                                <option value="placed">Placed</option>
+                                <option value="processing">Processing</option>
+                                <option value="dispatched">Dispatched</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                              </select>
+                            </td>
+                            <td className="py-3 px-4 text-[11px] text-stone-500">
+                              {o.date}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (window.confirm(`Permanently delete order ${o.orderNumber}?`)) {
+                                    deleteOrder(o.id);
+                                  }
+                                }}
+                                className="p-1.5 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                                title="Delete Order"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>

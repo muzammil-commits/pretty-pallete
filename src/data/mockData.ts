@@ -1,4 +1,64 @@
-import { Product, HomepageCMS, Coupon, Order, Review } from '../types';
+import { Product, HomepageCMS, Coupon, Order, Review, DailyRitualCMS, DailyRitualStep } from '../types';
+
+export const INITIAL_DAILY_RITUAL: DailyRitualCMS = {
+  scriptHeading: 'The Art of Self-Care ♡',
+  heading: 'The 4-Step Daily Glow Ritual',
+  description: 'Beauty is not a chore — it is your daily sanctuary. Follow our Ayurvedic nature-inspired routine to unlock your healthiest, lit-from-within complexion.',
+  steps: [
+    {
+      id: 'step-1',
+      number: '01',
+      title: 'Purify & Awaken',
+      action: 'Cleanse',
+      time: 'Morning & Evening',
+      description: 'Remove environmental toxins, unclog micro-pores and purify skin with our sulphate-free botanical face cleanser infused with rose water and gotu kola.',
+      productName: 'Botanical Clarifying Wash',
+      price: 299,
+      image: '/assets/ritual-step-1.png',
+      tips: 'Massage in gentle upward circular motions for 60 seconds with lukewarm water.',
+      categoryLink: '/skin-care'
+    },
+    {
+      id: 'step-2',
+      number: '02',
+      title: 'Replenish & Balance',
+      action: 'Tone & Mist',
+      time: 'Post-Cleanse / Anytime',
+      description: 'Spritz pure steam-distilled Damask rose water across face and neck to re-establish the skin’s physiological acid mantle and prepare cells for serum absorption.',
+      productName: 'Rose & Hibiscus Hydrating Mist',
+      price: 349,
+      image: '/assets/ritual-step-2.png',
+      tips: 'Pat gently onto damp skin. Do not let it fully dry before applying your serum.',
+      categoryLink: '/skin-care'
+    },
+    {
+      id: 'step-3',
+      number: '03',
+      title: 'Illuminate & Repair',
+      action: 'Treat',
+      time: 'Daily Ritual',
+      description: 'Infuse deep dermal layers with Kashmiri Mogra saffron, ethyl ascorbic acid and hyaluronic acid to erase dullness and reverse free radical damage.',
+      productName: 'Kashmiri Saffron Glow Serum',
+      price: 549,
+      image: '/assets/ritual-step-3.png',
+      tips: 'Warm 3 to 4 drops between clean palms and press gently into face, neck, and decollete.',
+      categoryLink: '/skin-care'
+    },
+    {
+      id: 'step-4',
+      number: '04',
+      title: 'Lock In Luminous Moisture',
+      action: 'Protect & Glow',
+      time: 'Final Seal',
+      description: 'Seal in hydration with our signature Radiance Day Cream, fortified with cold-pressed rosehip seed oil and botanical squalane for 24-hour glow.',
+      productName: 'Radiance Day Cream',
+      price: 499,
+      image: '/assets/ritual-step-4.png',
+      tips: 'Follow with lead-free Matte Lust Lipstick or Lip & Cheek Tint for effortless natural radiance.',
+      categoryLink: '/skin-care'
+    }
+  ]
+};
 
 export const INITIAL_PRODUCTS: Product[] = [
   {
@@ -460,6 +520,7 @@ export const INITIAL_CMS: HomepageCMS = {
     heading: 'Stay Beautiful, Stay Connected ♡',
     description: 'Subscribe for exclusive beauty tips, offers and updates!'
   },
+  dailyRitual: INITIAL_DAILY_RITUAL,
   settings: {
     freeShippingThreshold: 999,
     shippingFee: 99,
@@ -556,61 +617,5 @@ export const INITIAL_REVIEWS: Review[] = [
   }
 ];
 
-export const INITIAL_ORDERS: Order[] = [
-  {
-    id: 'ord-1001',
-    orderNumber: 'PP-98210',
-    date: '2026-10-28',
-    customer: {
-      fullName: 'Meera Venkat',
-      email: 'meera.v@example.com',
-      phone: '+91 9845012345'
-    },
-    shippingAddress: {
-      fullName: 'Meera Venkat',
-      phone: '+91 9845012345',
-      email: 'meera.v@example.com',
-      addressLine1: 'Plot 42, Jubilee Hills Road No 36',
-      city: 'Hyderabad',
-      state: 'Telangana',
-      pincode: '500033'
-    },
-    items: [
-      {
-        productId: 'prod-1',
-        productName: 'Matte Lust Lipstick',
-        productImage: '/assets/prod-lipstick-photo.png',
-        price: 299,
-        quantity: 1,
-        variantName: 'Ruby Romance (#A82F4D)'
-      },
-      {
-        productId: 'prod-2',
-        productName: 'Radiance Face Cream',
-        productImage: '/assets/prod-facecream-photo.png',
-        price: 499,
-        quantity: 1
-      },
-      {
-        productId: 'prod-3',
-        productName: 'Nourishing Hair Oil',
-        productImage: '/assets/prod-hairoil-photo.png',
-        price: 399,
-        quantity: 1
-      }
-    ],
-    subtotal: 1197,
-    shippingFee: 0,
-    discountAmount: 119.7,
-    couponCode: 'WELCOME10',
-    total: 1077.3,
-    paymentMethod: 'upi',
-    paymentStatus: 'paid',
-    orderStatus: 'in_transit',
-    trackingNumber: 'DELHIVERY9821045',
-    courierName: 'Delhivery Express',
-    estimatedDelivery: '2026-11-06',
-    createdAt: '2026-10-28T14:32:00Z'
-  }
-];
+export const INITIAL_ORDERS: Order[] = [];
 

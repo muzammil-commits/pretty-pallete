@@ -28,6 +28,7 @@ import {
   getDbOrders, 
   insertDbOrder, 
   updateDbOrderStatus, 
+  deleteDbOrder,
   logAdminActivity, 
   getDbActivityLogs,
   getDbServices,
@@ -147,6 +148,7 @@ export interface StoreContextType {
   removeCoupon: () => void;
   createOrder: (orderData: Omit<Order, 'id' | 'orderNumber' | 'date' | 'createdAt'>) => Order;
   updateOrderStatus: (orderId: string, status: OrderStatus, trackingNumber?: string, courierName?: string) => void;
+  deleteOrder: (orderId: string) => Promise<void>;
   addReview: (review: Omit<Review, 'id' | 'date'>) => void;
   updateReview: (review: Review) => void;
   deleteReview: (reviewId: string) => void;
@@ -245,7 +247,17 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Orders
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem('pp_orders');
-    return saved ? JSON.parse(saved) : INITIAL_ORDERS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(o => o.orderNumber !== 'PP-98210' && o.id !== 'ord-1001');
+        }
+      } catch {
+        return [];
+      }
+    }
+    return INITIAL_ORDERS;
   });
 
   // Reviews
@@ -315,7 +327,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       // 3. Fetch Orders
       const dbOrders = await getDbOrders();
-      if (dbOrders && dbOrders.length > 0) {
+      if (dbOrders !== null) {
         setOrders(dbOrders);
         setIsDbConnected(true);
       }
@@ -353,7 +365,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, async () => {
         const latest = await getDbOrders();
-        if (latest && latest.length > 0) setOrders(latest);
+        if (latest !== null) setOrders(latest);
       })
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
@@ -554,6 +566,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     updateDbOrderStatus(orderId, status, trackingNumber, courierName);
     logAdminActivity('UPDATE', 'ORDER', orderId, `Status updated to ${status}`);
     showToast(`Order status updated to ${status}.`);
+  };
+
+  const deleteOrder = async (orderId: string) => {
+    setOrders(prev => prev.filter(ord => ord.id !== orderId));
+    await deleteDbOrder(orderId);
+    logAdminActivity('DELETE', 'ORDER', orderId, `Order ${orderId} deleted by admin`);
+    showToast('Order removed.');
   };
 
   const addReview = (reviewData: Omit<Review, 'id' | 'date'>) => {
@@ -893,6 +912,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         removeCoupon,
         createOrder,
         updateOrderStatus,
+        deleteOrder,
         addReview,
         updateReview,
         deleteReview,
