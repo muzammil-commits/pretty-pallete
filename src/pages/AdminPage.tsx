@@ -1366,9 +1366,11 @@ export const AdminPage: React.FC = () => {
                                   const res = await uploadImageToCloudinary(file);
                                   if (res.url) {
                                     const next = [...cmsForm.hero.slides];
-                                    next[idx].bgImage = res.url;
-                                    setCmsForm(prev => ({ ...prev, hero: { ...prev.hero, slides: next } }));
-                                    showToast('Desktop hero image updated!');
+                                    next[idx] = { ...next[idx], bgImage: res.url };
+                                    const updatedCMS = { ...cmsForm, hero: { ...cmsForm.hero, slides: next } };
+                                    setCmsForm(updatedCMS);
+                                    await updateCMS(updatedCMS);
+                                    showToast('Desktop hero image updated & published live! ✨');
                                   }
                                 } catch (err: any) {
                                   showToast(`Upload failed: ${err.message}`);
@@ -1382,14 +1384,19 @@ export const AdminPage: React.FC = () => {
                           value={slide.bgImage || ''}
                           onChange={(e) => {
                             const next = [...cmsForm.hero.slides];
-                            next[idx].bgImage = e.target.value;
+                            next[idx] = { ...next[idx], bgImage: e.target.value };
                             setCmsForm(prev => ({ ...prev, hero: { ...prev.hero, slides: next } }));
                           }}
-                          placeholder="/assets/... or Cloudinary URL"
+                          placeholder="/assets/hero-bg.png or Cloudinary URL"
                           className="w-full px-2 py-1 text-xs border border-stone-200 rounded"
                         />
                         {slide.bgImage && (
-                          <img src={slide.bgImage} alt="Desktop Preview" className="w-full h-20 object-cover rounded" />
+                          <div className="relative mt-2 rounded-lg overflow-hidden border border-stone-200 bg-stone-100 flex items-center justify-center p-1">
+                            <img src={slide.bgImage} alt="Desktop Preview" className="w-full h-20 object-cover rounded" />
+                            <span className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/60 text-white text-[9px] font-bold">
+                              🖥️ Desktop View
+                            </span>
+                          </div>
                         )}
                       </div>
 
@@ -1412,9 +1419,11 @@ export const AdminPage: React.FC = () => {
                                   const res = await uploadImageToCloudinary(file);
                                   if (res.url) {
                                     const next = [...cmsForm.hero.slides];
-                                    next[idx].mobileBgImage = res.url;
-                                    setCmsForm(prev => ({ ...prev, hero: { ...prev.hero, slides: next } }));
-                                    showToast('Mobile hero image updated!');
+                                    next[idx] = { ...next[idx], mobileBgImage: res.url };
+                                    const updatedCMS = { ...cmsForm, hero: { ...cmsForm.hero, slides: next } };
+                                    setCmsForm(updatedCMS);
+                                    await updateCMS(updatedCMS);
+                                    showToast('Mobile hero image updated & published live to website! ✨');
                                   }
                                 } catch (err: any) {
                                   showToast(`Upload failed: ${err.message}`);
@@ -1425,18 +1434,42 @@ export const AdminPage: React.FC = () => {
                         </div>
                         <input
                           type="text"
-                          value={slide.mobileBgImage || ''}
+                          value={slide.mobileBgImage !== undefined ? slide.mobileBgImage : '/assets/hero-mobile-bg.png'}
                           onChange={(e) => {
                             const next = [...cmsForm.hero.slides];
-                            next[idx].mobileBgImage = e.target.value;
+                            next[idx] = { ...next[idx], mobileBgImage: e.target.value };
                             setCmsForm(prev => ({ ...prev, hero: { ...prev.hero, slides: next } }));
                           }}
-                          placeholder="/assets/... or Cloudinary URL"
+                          placeholder="/assets/hero-mobile-bg.png or Cloudinary URL"
                           className="w-full px-2 py-1 text-xs border border-stone-200 rounded"
                         />
-                        {slide.mobileBgImage && (
-                          <img src={slide.mobileBgImage} alt="Mobile Preview" className="w-full h-20 object-cover rounded" />
+                        {(slide.mobileBgImage || '/assets/hero-mobile-bg.png') && (
+                          <div className="relative mt-2 rounded-lg overflow-hidden border border-stone-200 bg-stone-100 flex items-center justify-center p-1.5">
+                            <img 
+                              src={slide.mobileBgImage || '/assets/hero-mobile-bg.png'} 
+                              alt="Mobile Hero Preview" 
+                              className="h-28 max-w-full object-cover rounded shadow-xs" 
+                            />
+                            <span className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/70 text-white text-[9px] font-bold tracking-wider">
+                              📱 Mobile Screen Hero
+                            </span>
+                          </div>
                         )}
+                      </div>
+
+                      {/* Slide Save & Publish Shortcut */}
+                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-stone-200">
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            await updateCMS(cmsForm);
+                            showToast(`Slide #${idx + 1} published live to website! ✨`);
+                          }}
+                          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#A82F4D] hover:bg-[#8D253F] text-white text-xs font-bold cursor-pointer transition-all shadow-xs"
+                        >
+                          <Save className="w-3.5 h-3.5" />
+                          <span>Save & Publish Slide #{idx + 1}</span>
+                        </button>
                       </div>
 
                     </div>

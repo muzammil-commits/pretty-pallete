@@ -422,7 +422,8 @@ export const INITIAL_CMS: HomepageCMS = {
         ctaText: 'Shop Now',
         ctaLink: '/shop',
         taglineTopRight: 'Care\nGlow\nRepeat ♡',
-        bgImage: '/assets/hero-bg.png'
+        bgImage: '/assets/hero-bg.png',
+        mobileBgImage: '/assets/hero-mobile-bg.png'
       },
       {
         id: 'slide-2',
@@ -432,7 +433,8 @@ export const INITIAL_CMS: HomepageCMS = {
         ctaText: 'Explore Skincare',
         ctaLink: '/skin-care',
         taglineTopRight: 'Nourish\nProtect\nGlow ♡',
-        bgImage: '/assets/hero-bg.png'
+        bgImage: '/assets/hero-bg.png',
+        mobileBgImage: '/assets/hero-mobile-bg.png'
       },
       {
         id: 'slide-3',
@@ -442,7 +444,8 @@ export const INITIAL_CMS: HomepageCMS = {
         ctaText: 'Explore Haircare',
         ctaLink: '/hair-care',
         taglineTopRight: 'Pure\nGentle\nSafe ♡',
-        bgImage: '/assets/hero-bg.png'
+        bgImage: '/assets/hero-bg.png',
+        mobileBgImage: '/assets/hero-mobile-bg.png'
       }
     ]
   },

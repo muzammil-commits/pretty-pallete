@@ -16,7 +16,8 @@ export const Hero: React.FC = () => {
       ctaText: 'Shop Now',
       ctaLink: '/shop',
       taglineTopRight: 'Care\nGlow\nRepeat ♡',
-      bgImage: '/assets/hero-bg.png'
+      bgImage: '/assets/hero-bg.png',
+      mobileBgImage: '/assets/hero-mobile-bg.png'
     }
   ];
 
@@ -71,9 +72,9 @@ export const Hero: React.FC = () => {
                 }}
               />
 
-              {/* MOBILE BACKGROUND: uses active slide mobileBgImage with fallback */}
+              {/* MOBILE BACKGROUND: uses active slide mobileBgImage with fallback to /assets/hero-mobile-bg.png */}
               <img 
-                src={activeSlide.mobileBgImage || activeSlide.bgImage || '/assets/hero-mobile-bg.png'} 
+                src={activeSlide.mobileBgImage || '/assets/hero-mobile-bg.png'} 
                 alt="Pretty Palette Natural Beauty Mobile Banner" 
                 className="block md:hidden w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000 ease-out"
                 style={{

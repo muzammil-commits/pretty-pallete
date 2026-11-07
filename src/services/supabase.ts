@@ -150,10 +150,17 @@ export async function getDbCMS(): Promise<HomepageCMS | null> {
     if (error || !data) return null;
 
     const dailyRitual = (data as any).daily_ritual || (data.about as any)?.dailyRitual || INITIAL_DAILY_RITUAL;
+    const hero = data.hero ? {
+      ...data.hero,
+      slides: (data.hero.slides || []).map((s: any) => ({
+        ...s,
+        mobileBgImage: s.mobileBgImage || '/assets/hero-mobile-bg.png'
+      }))
+    } : data.hero;
 
     return {
       announcementBar: data.announcement_bar,
-      hero: data.hero,
+      hero,
       benefits: data.benefits,
       categories: data.categories,
       about: data.about,
