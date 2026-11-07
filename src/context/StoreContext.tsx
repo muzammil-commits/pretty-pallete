@@ -30,6 +30,9 @@ import {
   updateDbOrderStatus, 
   logAdminActivity, 
   getDbActivityLogs,
+  getDbServices,
+  upsertDbService,
+  deleteDbService,
   ServiceItem,
   ActivityLogItem
 } from '../services/supabase';
@@ -162,9 +165,9 @@ export interface StoreContextType {
   updateCustomer: (cust: Customer) => void;
   deleteCustomer: (id: string) => void;
   clearActivityLogs: () => void;
-  addService: (service: Omit<ServiceItem, 'id' | 'slug'>) => void;
-  updateService: (service: ServiceItem) => void;
-  deleteService: (serviceId: string) => void;
+  addService: (service: Omit<ServiceItem, 'id' | 'slug'>) => Promise<ServiceItem>;
+  updateService: (service: ServiceItem) => Promise<void>;
+  deleteService: (serviceId: string) => Promise<void>;
   syncWithSupabase: () => Promise<void>;
   seedToSupabase: () => Promise<{ success: boolean; count: number; error?: string }>;
   loginUser: (email: string, name: string, phone: string) => void;
@@ -321,6 +324,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const logs = await getDbActivityLogs();
       if (logs.length > 0) {
         setActivityLogs(logs);
+      }
+
+      // 5. Fetch Services
+      const dbServices = await getDbServices();
+      if (dbServices && dbServices.length > 0) {
+        setServices(dbServices);
       }
     } catch (err) {
       console.warn('[Supabase Sync Warning]:', err);
@@ -629,9 +638,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   // ---------------------------------------------------------------------------
-  // SERVICES MUTATIONS
+  // SERVICES MUTATIONS (WITH SUPABASE + LOCAL DUAL PERSISTENCE)
   // ---------------------------------------------------------------------------
-  const addService = (serviceData: Omit<ServiceItem, 'id' | 'slug'>) => {
+  const addService = async (serviceData: Omit<ServiceItem, 'id' | 'slug'>): Promise<ServiceItem> => {
     const slug = serviceData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     const newServ: ServiceItem = {
       ...serviceData,
@@ -639,20 +648,37 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       slug
     };
     setServices(prev => [newServ, ...prev]);
-    showToast(`Service "${newServ.name}" added!`);
-    logAdminActivity('CREATE', 'SERVICE', newServ.id, `Created service ${newServ.name}`);
+    showToast(`Service "${newServ.name}" created successfully.`);
+    const res = await upsertDbService(newServ);
+    if (res.success) {
+      logAdminActivity('CREATE', 'SERVICE', newServ.id, `Created service ${newServ.name}`);
+    } else if (res.error) {
+      console.warn('Supabase service creation notice:', res.error);
+    }
+    return newServ;
   };
 
-  const updateService = (service: ServiceItem) => {
+  const updateService = async (service: ServiceItem): Promise<void> => {
     setServices(prev => prev.map(s => s.id === service.id ? service : s));
-    showToast(`Service "${service.name}" updated!`);
-    logAdminActivity('UPDATE', 'SERVICE', service.id, `Updated service ${service.name}`);
+    showToast(`Service "${service.name}" updated successfully.`);
+    const res = await upsertDbService(service);
+    if (res.success) {
+      logAdminActivity('UPDATE', 'SERVICE', service.id, `Updated service ${service.name}`);
+    } else if (res.error) {
+      console.warn('Supabase service update notice:', res.error);
+    }
   };
 
-  const deleteService = (serviceId: string) => {
+  const deleteService = async (serviceId: string): Promise<void> => {
+    const target = services.find(s => s.id === serviceId);
     setServices(prev => prev.filter(s => s.id !== serviceId));
-    showToast('Service removed.');
-    logAdminActivity('DELETE', 'SERVICE', serviceId, `Deleted service ${serviceId}`);
+    showToast('Service deleted successfully.');
+    const res = await deleteDbService(serviceId);
+    if (res.success) {
+      logAdminActivity('DELETE', 'SERVICE', serviceId, `Deleted service ${target?.name || serviceId}`);
+    } else if (res.error) {
+      console.warn('Supabase service deletion notice:', res.error);
+    }
   };
 
   // ---------------------------------------------------------------------------
@@ -788,9 +814,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const res = await upsertDbProduct(p);
         if (res.success) count++;
       }
+      for (const s of services) {
+        await upsertDbService(s);
+      }
       await upsertDbCMS(cms);
       setIsDbConnected(true);
-      showToast(`Successfully synced ${count} products & CMS to Supabase! ✨`);
+      showToast(`Successfully synced ${count} products, services & CMS to Supabase! ✨`);
       logAdminActivity('SYNC', 'DATABASE', 'all', `Seeded ${count} products to Supabase`);
       return { success: true, count };
     } catch (err: any) {

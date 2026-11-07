@@ -326,3 +326,80 @@ export async function getDbActivityLogs(): Promise<ActivityLogItem[]> {
   }
 }
 
+// ---------------------------------------------------------------------------
+// 5. SERVICES DB HELPERS
+// ---------------------------------------------------------------------------
+export async function getDbServices(): Promise<ServiceItem[] | null> {
+  try {
+    const { data, error } = await supabase
+      .from('services')
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error || !data || data.length === 0) return null;
+
+    return data.map((s: any) => ({
+      id: s.id,
+      name: s.name,
+      slug: s.slug,
+      tagline: s.tagline || '',
+      description: s.description || '',
+      price: Number(s.price || 0),
+      duration: s.duration || '',
+      features: Array.isArray(s.features) ? s.features : (typeof s.features === 'string' ? JSON.parse(s.features) : []),
+      image: s.image || '',
+      isActive: s.is_active ?? true
+    }));
+  } catch (err) {
+    console.warn('[Supabase getDbServices error]:', err);
+    return null;
+  }
+}
+
+export async function upsertDbService(service: ServiceItem): Promise<{ success: boolean; error?: string }> {
+  try {
+    const payload = {
+      id: service.id,
+      name: service.name,
+      slug: service.slug || service.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      tagline: service.tagline,
+      description: service.description,
+      price: service.price,
+      duration: service.duration,
+      features: service.features,
+      image: service.image,
+      is_active: service.isActive,
+      updated_at: new Date().toISOString()
+    };
+
+    const { error } = await supabase
+      .from('services')
+      .upsert(payload, { onConflict: 'id' });
+
+    if (error) {
+      console.error('[Supabase upsertDbService error]:', error);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function deleteDbService(serviceId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { error } = await supabase
+      .from('services')
+      .delete()
+      .eq('id', serviceId);
+
+    if (error) {
+      console.error('[Supabase deleteDbService error]:', error);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+

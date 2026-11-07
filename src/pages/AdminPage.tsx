@@ -97,7 +97,31 @@ export const AdminPage: React.FC = () => {
 
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 1024;
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleTabSelect = (tab: AdminTab) => {
+    setActiveTab(tab);
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      setIsSidebarOpen(false);
+    }
+  };
 
   // Product form modal state
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -111,6 +135,9 @@ export const AdminPage: React.FC = () => {
   const [editingService, setEditingService] = useState<ServiceItem | null>(null);
   const [isNewService, setIsNewService] = useState(false);
   const [serviceForm, setServiceForm] = useState<Partial<ServiceItem>>({});
+  const [isSavingService, setIsSavingService] = useState(false);
+  const [serviceError, setServiceError] = useState<string | null>(null);
+  const [newFeatureInput, setNewFeatureInput] = useState('');
 
   // Category modal state
   const [editingCategory, setEditingCategory] = useState<HomepageCMS['categories'][0] | null>(null);
@@ -279,6 +306,91 @@ export const AdminPage: React.FC = () => {
   };
 
   // ---------------------------------------------------------------------------
+  // SERVICE HANDLERS (FULL ADD + EDIT + PERSISTENCE)
+  // ---------------------------------------------------------------------------
+  const handleOpenAddService = () => {
+    setIsNewService(true);
+    setEditingService(null);
+    setServiceForm({
+      name: '',
+      tagline: '',
+      description: '',
+      price: 999,
+      duration: '60 Mins',
+      features: ['Personalized beauty consultation', 'Custom herbal routine', 'Dietary & lifestyle guidance'],
+      image: '/assets/prod-facecream-photo.png',
+      isActive: true,
+    });
+    setServiceError(null);
+    setNewFeatureInput('');
+  };
+
+  const handleOpenEditService = (service: ServiceItem) => {
+    setIsNewService(false);
+    setEditingService(service);
+    setServiceForm({
+      name: service.name,
+      slug: service.slug,
+      tagline: service.tagline,
+      description: service.description,
+      price: service.price,
+      duration: service.duration,
+      features: Array.isArray(service.features) ? [...service.features] : [],
+      image: service.image || '/assets/prod-facecream-photo.png',
+      isActive: service.isActive ?? true,
+    });
+    setServiceError(null);
+    setNewFeatureInput('');
+  };
+
+  const handleSaveService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!serviceForm.name || !serviceForm.name.trim()) {
+      setServiceError('Service name is required.');
+      return;
+    }
+    if (serviceForm.price === undefined || Number(serviceForm.price) < 0) {
+      setServiceError('Please enter a valid price (₹0 or greater).');
+      return;
+    }
+    if (!serviceForm.duration || !serviceForm.duration.trim()) {
+      setServiceError('Please specify duration (e.g. 45 Mins, 60 Mins, 3 Months).');
+      return;
+    }
+
+    setIsSavingService(true);
+    setServiceError(null);
+
+    try {
+      const payload: Omit<ServiceItem, 'id' | 'slug'> = {
+        name: serviceForm.name.trim(),
+        tagline: serviceForm.tagline?.trim() || '',
+        description: serviceForm.description?.trim() || '',
+        price: Number(serviceForm.price) || 0,
+        duration: serviceForm.duration.trim(),
+        features: Array.isArray(serviceForm.features) ? serviceForm.features : [],
+        image: serviceForm.image || '/assets/prod-facecream-photo.png',
+        isActive: serviceForm.isActive ?? true,
+      };
+
+      if (isNewService) {
+        await addService(payload);
+      } else if (editingService) {
+        await updateService({
+          ...editingService,
+          ...payload,
+        });
+      }
+      setIsNewService(false);
+      setEditingService(null);
+    } catch (err: any) {
+      setServiceError(err.message || 'Failed to save service.');
+    } finally {
+      setIsSavingService(false);
+    }
+  };
+
+  // ---------------------------------------------------------------------------
   // CLOUDINARY UPLOAD HANDLER
   // ---------------------------------------------------------------------------
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isGallery = false) => {
@@ -378,116 +490,151 @@ export const AdminPage: React.FC = () => {
       </header>
 
       {/* Main Admin Layout: Sidebar + Workspace */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden relative">
         
-        {/* Sidebar Navigation */}
-        <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-[#F8C6CF]/60 transition-all duration-300 flex flex-col justify-between shrink-0 overflow-y-auto`}>
-          <div className="p-3 space-y-1">
-            
-            <SidebarItem 
-              icon={<LayoutDashboard className="w-4 h-4" />} 
-              label="Dashboard Overview" 
-              active={activeTab === 'dashboard'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('dashboard')} 
-            />
+        {/* Mobile Backdrop */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-xs transition-opacity"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
 
-            <SidebarItem 
-              icon={<Package className="w-4 h-4" />} 
-              label={`Products (${products.length})`} 
-              active={activeTab === 'products'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('products')} 
-            />
+        {/* Sidebar Navigation (Overlay drawer on mobile, collapsible on desktop) */}
+        <aside className={`
+          fixed inset-y-0 left-0 z-50 bg-white border-r border-[#F8C6CF]/60 transition-all duration-300 flex flex-col justify-between shrink-0 overflow-y-auto
+          lg:static lg:z-auto
+          ${isSidebarOpen 
+            ? 'w-72 sm:w-80 lg:w-64 translate-x-0 shadow-2xl lg:shadow-none' 
+            : '-translate-x-full lg:translate-x-0 lg:w-20'
+          }
+        `}>
+          <div>
+            {/* Mobile Header inside drawer */}
+            <div className="flex items-center justify-between p-4 border-b border-[#F8C6CF]/50 lg:hidden">
+              <div className="flex items-center gap-2">
+                <span className="font-script text-2xl text-[#A82F4D] font-bold">Pretty Palette</span>
+                <span className="bg-[#A82F4D] text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  Menu
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-1.5 text-stone-500 hover:text-stone-800 rounded-xl hover:bg-stone-100 transition-colors cursor-pointer"
+                title="Close Menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-            <SidebarItem 
-              icon={<Layers className="w-4 h-4" />} 
-              label={`Categories (${cms.categories?.length || 3})`} 
-              active={activeTab === 'categories'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('categories')} 
-            />
+            <div className="p-3 space-y-1">
+              
+              <SidebarItem 
+                icon={<LayoutDashboard className="w-4 h-4" />} 
+                label="Dashboard Overview" 
+                active={activeTab === 'dashboard'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('dashboard')} 
+              />
 
-            <SidebarItem 
-              icon={<Sparkles className="w-4 h-4" />} 
-              label={`Services (${services.length})`} 
-              active={activeTab === 'services'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('services')} 
-            />
+              <SidebarItem 
+                icon={<Package className="w-4 h-4" />} 
+                label={`Products (${products.length})`} 
+                active={activeTab === 'products'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('products')} 
+              />
 
-            <SidebarItem 
-              icon={<FileText className="w-4 h-4" />} 
-              label="Homepage & Hero Slides" 
-              active={activeTab === 'homepage'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('homepage')} 
-            />
+              <SidebarItem 
+                icon={<Layers className="w-4 h-4" />} 
+                label={`Categories (${cms.categories?.length || 3})`} 
+                active={activeTab === 'categories'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('categories')} 
+              />
 
-            <SidebarItem 
-              icon={<ShoppingBag className="w-4 h-4" />} 
-              label={`Orders (${orders.length})`} 
-              active={activeTab === 'orders'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('orders')} 
-            />
+              <SidebarItem 
+                icon={<Sparkles className="w-4 h-4" />} 
+                label={`Services (${services.length})`} 
+                active={activeTab === 'services'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('services')} 
+              />
 
-            <SidebarItem 
-              icon={<Users className="w-4 h-4" />} 
-              label={`Customers (${customers.length})`} 
-              active={activeTab === 'customers'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('customers')} 
-            />
+              <SidebarItem 
+                icon={<FileText className="w-4 h-4" />} 
+                label="Homepage & Hero Slides" 
+                active={activeTab === 'homepage'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('homepage')} 
+              />
 
-            <SidebarItem 
-              icon={<Star className="w-4 h-4" />} 
-              label={`Reviews (${reviews.length})`} 
-              active={activeTab === 'reviews'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('reviews')} 
-            />
+              <SidebarItem 
+                icon={<ShoppingBag className="w-4 h-4" />} 
+                label={`Orders (${orders.length})`} 
+                active={activeTab === 'orders'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('orders')} 
+              />
 
-            <SidebarItem 
-              icon={<Tag className="w-4 h-4" />} 
-              label={`Coupons (${coupons.length})`} 
-              active={activeTab === 'coupons'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('coupons')} 
-            />
+              <SidebarItem 
+                icon={<Users className="w-4 h-4" />} 
+                label={`Customers (${customers.length})`} 
+                active={activeTab === 'customers'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('customers')} 
+              />
 
-            <SidebarItem 
-              icon={<ImageIcon className="w-4 h-4" />} 
-              label="Media Library" 
-              active={activeTab === 'media'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('media')} 
-            />
+              <SidebarItem 
+                icon={<Star className="w-4 h-4" />} 
+                label={`Reviews (${reviews.length})`} 
+                active={activeTab === 'reviews'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('reviews')} 
+              />
 
-            <SidebarItem 
-              icon={<Globe className="w-4 h-4" />} 
-              label="SEO Management" 
-              active={activeTab === 'seo'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('seo')} 
-            />
+              <SidebarItem 
+                icon={<Tag className="w-4 h-4" />} 
+                label={`Coupons (${coupons.length})`} 
+                active={activeTab === 'coupons'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('coupons')} 
+              />
 
-            <SidebarItem 
-              icon={<Settings className="w-4 h-4" />} 
-              label="Website Settings" 
-              active={activeTab === 'settings'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('settings')} 
-            />
+              <SidebarItem 
+                icon={<ImageIcon className="w-4 h-4" />} 
+                label="Media Library" 
+                active={activeTab === 'media'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('media')} 
+              />
 
-            <SidebarItem 
-              icon={<RefreshCw className="w-4 h-4" />} 
-              label={`Activity Logs (${activityLogs.length})`} 
-              active={activeTab === 'logs'} 
-              collapsed={!isSidebarOpen}
-              onClick={() => setActiveTab('logs')} 
-            />
+              <SidebarItem 
+                icon={<Globe className="w-4 h-4" />} 
+                label="SEO Management" 
+                active={activeTab === 'seo'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('seo')} 
+              />
 
+              <SidebarItem 
+                icon={<Settings className="w-4 h-4" />} 
+                label="Website Settings" 
+                active={activeTab === 'settings'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('settings')} 
+              />
+
+              <SidebarItem 
+                icon={<RefreshCw className="w-4 h-4" />} 
+                label={`Activity Logs (${activityLogs.length})`} 
+                active={activeTab === 'logs'} 
+                collapsed={!isSidebarOpen}
+                onClick={() => handleTabSelect('logs')} 
+              />
+
+            </div>
           </div>
 
           {/* Quick sync footer */}
@@ -504,7 +651,7 @@ export const AdminPage: React.FC = () => {
         </aside>
 
         {/* Content Workspace */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#FFFDF9]">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#FFFDF9] min-w-0 w-full">
           
           {/* ================================================================= */}
           {/* TAB 1: DASHBOARD OVERVIEW                                         */}
@@ -611,15 +758,23 @@ export const AdminPage: React.FC = () => {
                   <h3 className="font-serif text-lg font-bold text-[#40251D] pb-2 border-b border-stone-100">Quick Shortcuts</h3>
                   <button
                     type="button"
-                    onClick={() => setActiveTab('homepage')}
+                    onClick={() => handleTabSelect('services')}
                     className="w-full text-left p-3 rounded-xl bg-[#FDF1F4] hover:bg-[#FCE5E8] transition-colors flex items-center justify-between text-xs font-semibold text-[#A82F4D] cursor-pointer"
+                  >
+                    <span>Manage Bespoke Services</span>
+                    <Sparkles className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleTabSelect('homepage')}
+                    className="w-full text-left p-3 rounded-xl bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between text-xs font-semibold text-stone-700 cursor-pointer"
                   >
                     <span>Manage Hero Slides & Banners</span>
                     <Plus className="w-4 h-4" />
                   </button>
                   <button
                     type="button"
-                    onClick={() => setActiveTab('categories')}
+                    onClick={() => handleTabSelect('categories')}
                     className="w-full text-left p-3 rounded-xl bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between text-xs font-semibold text-stone-700 cursor-pointer"
                   >
                     <span>Add / Edit Categories</span>
@@ -627,7 +782,7 @@ export const AdminPage: React.FC = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setActiveTab('coupons')}
+                    onClick={() => handleTabSelect('coupons')}
                     className="w-full text-left p-3 rounded-xl bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between text-xs font-semibold text-stone-700 cursor-pointer"
                   >
                     <span>Create Discount Coupon</span>
@@ -635,7 +790,7 @@ export const AdminPage: React.FC = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setActiveTab('media')}
+                    onClick={() => handleTabSelect('media')}
                     className="w-full text-left p-3 rounded-xl bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-between text-xs font-semibold text-stone-700 cursor-pointer"
                   >
                     <span>Upload to Cloudinary Library</span>
@@ -870,67 +1025,122 @@ export const AdminPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#F8C6CF]/50">
                 <div>
                   <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#40251D]">Services Management</h1>
-                  <p className="text-xs sm:text-sm text-stone-500">Manage bespoke beauty consultations and bridal rituals.</p>
+                  <p className="text-xs sm:text-sm text-stone-500">Manage bespoke beauty consultations, bridal care rituals, and wellness appointments.</p>
                 </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    setIsNewService(true);
-                    setServiceForm({
-                      name: '',
-                      tagline: '',
-                      description: '',
-                      price: 999,
-                      duration: '60 Mins',
-                      features: ['Custom consultation'],
-                      image: '/assets/prod-facecream-photo.png',
-                      isActive: true
-                    });
-                    setEditingService(null);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#A82F4D] hover:bg-[#8D253F] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer"
+                  onClick={handleOpenAddService}
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#A82F4D] hover:bg-[#8D253F] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer shrink-0"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Service</span>
+                  <span>+ Add Service</span>
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {services.map(s => (
-                  <div key={s.id} className="bg-white rounded-2xl border border-[#F8C6CF]/60 p-5 shadow-xs flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold text-[#A82F4D] uppercase">{s.duration}</span>
-                        <span className="font-serif text-lg font-bold text-[#40251D]">₹{s.price}</span>
+              {services.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-[#F8C6CF]/60 p-8 text-center space-y-3">
+                  <Sparkles className="w-8 h-8 text-[#A82F4D] mx-auto opacity-70" />
+                  <h3 className="font-serif text-lg font-bold text-[#40251D]">No Services Added Yet</h3>
+                  <p className="text-xs text-stone-500 max-w-sm mx-auto">Create bespoke consultations and bridal rituals that your customers can explore.</p>
+                  <button
+                    type="button"
+                    onClick={handleOpenAddService}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#A82F4D] text-white text-xs font-bold uppercase tracking-wider cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Create Your First Service</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+                  {services.map(s => (
+                    <div key={s.id} className="bg-white rounded-2xl border border-[#F8C6CF]/60 p-5 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
+                      <div>
+                        {/* Header with thumbnail, price, duration */}
+                        <div className="flex items-start gap-4 mb-3">
+                          {s.image ? (
+                            <img 
+                              src={s.image} 
+                              alt={s.name} 
+                              className="w-16 h-16 rounded-xl object-cover border border-[#F8C6CF]/60 bg-[#FDF1F4] shrink-0" 
+                            />
+                          ) : (
+                            <div className="w-16 h-16 rounded-xl bg-[#FDF1F4] border border-[#F8C6CF]/60 flex items-center justify-center text-[#A82F4D] shrink-0">
+                              <Sparkles className="w-6 h-6" />
+                            </div>
+                          )}
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2 mb-1">
+                              <span className="text-[11px] font-bold text-[#A82F4D] uppercase tracking-wider bg-[#FDF1F4] px-2 py-0.5 rounded-full border border-[#F8C6CF]/50">
+                                {s.duration}
+                              </span>
+                              <span className="font-serif text-lg sm:text-xl font-bold text-[#40251D]">₹{s.price}</span>
+                            </div>
+                            <h3 className="font-serif text-base sm:text-lg font-bold text-[#40251D] truncate" title={s.name}>{s.name}</h3>
+                            {s.tagline && (
+                              <p className="text-xs text-[#78844B] italic font-medium truncate" title={s.tagline}>"{s.tagline}"</p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-xs text-stone-600 leading-relaxed mb-4 line-clamp-3">{s.description}</p>
+
+                        {/* Features List */}
+                        {s.features && s.features.length > 0 && (
+                          <div className="bg-stone-50/80 p-3 rounded-xl border border-stone-100 mb-4">
+                            <span className="text-[10px] font-bold uppercase text-stone-400 tracking-wider block mb-1.5">Inclusions & Ritual Steps</span>
+                            <ul className="space-y-1">
+                              {s.features.map((f, i) => (
+                                <li key={i} className="text-xs text-stone-600 flex items-center gap-2">
+                                  <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                  <span className="truncate">{f}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                      <h3 className="font-serif text-lg font-bold text-[#40251D] mb-1">{s.name}</h3>
-                      <p className="text-xs text-[#78844B] italic mb-3 font-medium">"{s.tagline}"</p>
-                      <p className="text-xs text-stone-600 leading-relaxed mb-4">{s.description}</p>
-                      <ul className="space-y-1 mb-4">
-                        {s.features.map((f, i) => (
-                          <li key={i} className="text-xs text-stone-500 flex items-center gap-2">
-                            <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                            <span>{f}</span>
-                          </li>
-                        ))}
-                      </ul>
+
+                      {/* Footer Actions: Active badge + Edit | Delete */}
+                      <div className="flex items-center justify-between pt-3 border-t border-stone-100">
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                          s.isActive !== false ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-stone-100 text-stone-500'
+                        }`}>
+                          {s.isActive !== false ? 'Active' : 'Inactive'}
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditService(s)}
+                            className="inline-flex items-center gap-1 text-xs font-bold text-[#A82F4D] hover:underline cursor-pointer px-2.5 py-1 rounded-lg hover:bg-[#FDF1F4] transition-colors"
+                            title="Edit this service"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                            <span>Edit</span>
+                          </button>
+                          <span className="text-stone-300">|</span>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              if (window.confirm(`Are you sure you want to delete service "${s.name}"? This action cannot be undone.`)) {
+                                await deleteService(s.id);
+                              }
+                            }}
+                            className="inline-flex items-center gap-1 text-xs font-bold text-rose-600 hover:underline cursor-pointer px-2.5 py-1 rounded-lg hover:bg-rose-50 transition-colors"
+                            title="Delete this service"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-end gap-2 pt-3 border-t border-stone-100">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (window.confirm(`Delete service "${s.name}"?`)) {
-                            deleteService(s.id);
-                          }
-                        }}
-                        className="text-xs font-bold text-rose-600 hover:underline cursor-pointer"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -2672,6 +2882,255 @@ export const AdminPage: React.FC = () => {
                   className="px-6 py-2.5 rounded-full bg-[#A82F4D] hover:bg-[#8D253F] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer"
                 >
                   Save Coupon
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* --------------------------------------------------------------------- */}
+      {/* SERVICE ADD / EDIT MODAL                                              */}
+      {/* --------------------------------------------------------------------- */}
+      {(editingService || isNewService) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-white rounded-3xl border border-[#F8C6CF] max-w-lg w-full p-5 sm:p-7 shadow-2xl relative my-6 max-h-[92vh] overflow-y-auto">
+            
+            <div className="flex items-center justify-between pb-3 border-b border-[#F8C6CF]/50 mb-4">
+              <h2 className="font-serif text-xl font-bold text-[#40251D]">
+                {isNewService ? 'Add New Service' : `Edit Service: ${editingService?.name}`}
+              </h2>
+              <button
+                type="button"
+                onClick={() => { setEditingService(null); setIsNewService(false); setServiceError(null); }}
+                className="p-1 rounded-full text-stone-400 hover:text-stone-700 cursor-pointer"
+                title="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            {serviceError && (
+              <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
+                <span>{serviceError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveService} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-semibold mb-1 text-stone-700">Service Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Personalized Ayurvedic Skin Consultation"
+                  value={serviceForm.name || ''}
+                  onChange={(e) => setServiceForm(prev => ({ ...prev, name: e.target.value }))}
+                  className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#A82F4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold mb-1 text-stone-700">Short Tagline</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Discover your dosha & tailored herbal ritual"
+                  value={serviceForm.tagline || ''}
+                  onChange={(e) => setServiceForm(prev => ({ ...prev, tagline: e.target.value }))}
+                  className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#A82F4D]"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold mb-1 text-stone-700">Price (₹) *</label>
+                  <input
+                    type="number"
+                    required
+                    min={0}
+                    placeholder="499"
+                    value={serviceForm.price ?? ''}
+                    onChange={(e) => setServiceForm(prev => ({ ...prev, price: Number(e.target.value) }))}
+                    className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#A82F4D]"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold mb-1 text-stone-700">Duration *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. 45 Mins, 60 Mins, 3 Months"
+                    value={serviceForm.duration || ''}
+                    onChange={(e) => setServiceForm(prev => ({ ...prev, duration: e.target.value }))}
+                    className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#A82F4D]"
+                  />
+                </div>
+              </div>
+
+              {/* Service Image with Cloudinary Upload */}
+              <div className="p-3.5 rounded-2xl bg-[#FDF1F4] border border-[#F8C6CF]/60 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="font-semibold text-stone-700">Service Image</label>
+                  <label className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#A82F4D] text-white text-[10px] font-bold uppercase cursor-pointer hover:bg-[#8D253F] transition-all">
+                    <Upload className="w-3 h-3" />
+                    <span>{uploadingImage ? 'Uploading...' : 'Upload Cloudinary'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setUploadingImage(true);
+                        showToast('Uploading service image to Cloudinary...');
+                        try {
+                          const res = await uploadImageToCloudinary(file);
+                          if (res.url) {
+                            setServiceForm(prev => ({ ...prev, image: res.url }));
+                            showToast('Service image updated! ✨');
+                          }
+                        } catch (err: any) {
+                          showToast(`Upload failed: ${err.message}`);
+                        } finally {
+                          setUploadingImage(false);
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {serviceForm.image ? (
+                    <img src={serviceForm.image} alt="Preview" className="w-12 h-12 rounded-xl object-cover bg-white border border-stone-200 shrink-0" />
+                  ) : (
+                    <div className="w-12 h-12 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-400 shrink-0">
+                      <Sparkles className="w-4 h-4 text-[#A82F4D]" />
+                    </div>
+                  )}
+                  <input
+                    type="text"
+                    value={serviceForm.image || ''}
+                    onChange={(e) => setServiceForm(prev => ({ ...prev, image: e.target.value }))}
+                    placeholder="/assets/... or Cloudinary URL"
+                    className="flex-1 px-3 py-2 text-xs bg-white border border-stone-200 rounded-xl focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold mb-1 text-stone-700">Full Description</label>
+                <textarea
+                  rows={3}
+                  placeholder="Detailed description of what the customer receives in this consultation or ritual..."
+                  value={serviceForm.description || ''}
+                  onChange={(e) => setServiceForm(prev => ({ ...prev, description: e.target.value }))}
+                  className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#A82F4D]"
+                />
+              </div>
+
+              {/* Features & Benefits */}
+              <div>
+                <label className="block font-semibold mb-1.5 text-stone-700">Features & Inclusions</label>
+                {serviceForm.features && serviceForm.features.length > 0 && (
+                  <div className="space-y-1.5 mb-2.5 max-h-36 overflow-y-auto pr-1">
+                    {serviceForm.features.map((feat, idx) => (
+                      <div key={idx} className="flex items-center justify-between gap-2 p-2 rounded-xl bg-stone-50 border border-stone-200">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span className="text-stone-700 truncate">{feat}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setServiceForm(prev => ({
+                              ...prev,
+                              features: prev.features?.filter((_, i) => i !== idx)
+                            }));
+                          }}
+                          className="text-stone-400 hover:text-rose-600 p-1 cursor-pointer"
+                          title="Remove feature"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add an inclusion (e.g. '14-Day Progress Review')..."
+                    value={newFeatureInput}
+                    onChange={(e) => setNewFeatureInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (newFeatureInput.trim()) {
+                          setServiceForm(prev => ({
+                            ...prev,
+                            features: [...(prev.features || []), newFeatureInput.trim()]
+                          }));
+                          setNewFeatureInput('');
+                        }
+                      }
+                    }}
+                    className="flex-1 px-3 py-2 border border-stone-200 rounded-xl focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (newFeatureInput.trim()) {
+                        setServiceForm(prev => ({
+                          ...prev,
+                          features: [...(prev.features || []), newFeatureInput.trim()]
+                        }));
+                        setNewFeatureInput('');
+                      }
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-[#FDF1F4] hover:bg-[#FCE5E8] text-[#A82F4D] font-bold text-xs cursor-pointer transition-colors"
+                  >
+                    + Add
+                  </button>
+                </div>
+              </div>
+
+              <div className="pt-1">
+                <label className="flex items-center gap-2 cursor-pointer font-semibold text-stone-700">
+                  <input
+                    type="checkbox"
+                    checked={serviceForm.isActive ?? true}
+                    onChange={(e) => setServiceForm(prev => ({ ...prev, isActive: e.target.checked }))}
+                    className="rounded text-[#A82F4D]"
+                  />
+                  <span>Active & Visible on Storefront</span>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-stone-100">
+                <button
+                  type="button"
+                  onClick={() => { setEditingService(null); setIsNewService(false); setServiceError(null); }}
+                  className="px-4 py-2 text-stone-500 hover:text-stone-800 cursor-pointer"
+                  disabled={isSavingService}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingService}
+                  className={`px-6 py-2.5 rounded-full bg-[#A82F4D] hover:bg-[#8D253F] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer flex items-center gap-2 ${
+                    isSavingService ? 'opacity-70 cursor-not-allowed' : ''
+                  }`}
+                >
+                  {isSavingService ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>{isNewService ? 'Saving Service...' : 'Updating Service...'}</span>
+                    </>
+                  ) : (
+                    <span>{isNewService ? 'Create Service' : 'Save Changes'}</span>
+                  )}
                 </button>
               </div>
             </form>
