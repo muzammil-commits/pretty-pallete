@@ -213,7 +213,23 @@ CREATE TABLE IF NOT EXISTS public.activity_logs (
 );
 
 -- ----------------------------------------------------------------------------
--- 11. SEO METADATA TABLE
+-- 11. CUSTOMERS TABLE
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.customers (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    phone TEXT,
+    total_orders INT DEFAULT 0,
+    total_spent NUMERIC(10, 2) DEFAULT 0,
+    status TEXT DEFAULT 'active',
+    joined_date TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ----------------------------------------------------------------------------
+-- 12. SEO METADATA TABLE
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.seo_metadata (
     page_key TEXT PRIMARY KEY,
@@ -236,6 +252,7 @@ ALTER TABLE public.website_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.coupons ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.media_assets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.activity_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.seo_metadata ENABLE ROW LEVEL SECURITY;
@@ -248,6 +265,7 @@ CREATE POLICY "Public read homepage_cms" ON public.homepage_cms FOR SELECT USING
 CREATE POLICY "Public read website_settings" ON public.website_settings FOR SELECT USING (true);
 CREATE POLICY "Public read reviews" ON public.reviews FOR SELECT USING (is_approved = true);
 CREATE POLICY "Public read coupons" ON public.coupons FOR SELECT USING (is_active = true);
+CREATE POLICY "Public read customers" ON public.customers FOR SELECT USING (true);
 CREATE POLICY "Public read seo_metadata" ON public.seo_metadata FOR SELECT USING (true);
 CREATE POLICY "Public insert orders" ON public.orders FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public read own orders" ON public.orders FOR SELECT USING (true);
@@ -262,6 +280,7 @@ CREATE POLICY "Admin write website_settings" ON public.website_settings FOR ALL 
 CREATE POLICY "Admin write orders" ON public.orders FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Admin write reviews" ON public.reviews FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Admin write coupons" ON public.coupons FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Admin write customers" ON public.customers FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Admin write media_assets" ON public.media_assets FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Admin write activity_logs" ON public.activity_logs FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Admin write seo_metadata" ON public.seo_metadata FOR ALL USING (true) WITH CHECK (true);
@@ -272,4 +291,5 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.homepage_cms;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.website_settings;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.categories;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.orders;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.services;
 

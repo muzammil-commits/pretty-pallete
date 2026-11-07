@@ -177,3 +177,12 @@ VALUES
 ('serv-2', 'Bespoke Bridal Beauty Care Ritual', 'bridal-care-ritual', 'Artisanal glow for your wedding celebration', 'Comprehensive 3-month handcrafted skincare and haircare preparation for brides-to-be. Includes fresh seasonal micro-batch shipments prepared especially for you.', 3999, '3 Months', '["Monthly custom fresh batches", "Damask rose & saffron formulations", "Scalp detox & hair revitalization", "Complimentary travel vanity set"]'::jsonb, '/assets/prod-lipstick-photo.png', true)
 ON CONFLICT (id) DO NOTHING;
 
+-- 7. SEED INITIAL CUSTOMERS
+INSERT INTO public.customers (id, name, email, phone, total_orders, total_spent, status, joined_date)
+VALUES
+('cust-1', 'Ananya Reddy', 'ananya.reddy@gmail.com', '+91 98490 12345', 3, 2197, 'active', '2026-09-15'),
+('cust-2', 'Priya Sharma', 'priya.sharma@yahoo.com', '+91 98200 54321', 2, 1298, 'active', '2026-10-02'),
+('cust-3', 'Sneha Patel', 'sneha.patel@outlook.com', '+91 97123 98765', 1, 798, 'active', '2026-10-20'),
+('cust-4', 'Dr. Kavitha Menon', 'kavitha.menon@gmail.com', '+91 94440 67890', 4, 3890, 'active', '2026-08-11')
+ON CONFLICT (id) DO NOTHING;
+
